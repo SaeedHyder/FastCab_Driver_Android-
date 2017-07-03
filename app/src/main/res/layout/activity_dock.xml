@@ -12,23 +12,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <com.app.fastcapdriver.ui.views.TitleBar
+
+
+        <FrameLayout
+            android:id="@+id/mainFrameLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:paddingTop="@dimen/x50"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bg">
+        </FrameLayout>
+
+        <com.app.fastcab.ui.views.TitleBar
             android:id="@+id/header_main"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-             />
 
-        <FrameLayout
-            android:id="@+id/mainFrameLayout"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_below="@+id/header_main"
-            android:layout_centerHorizontal="true" >
-        </FrameLayout>
-
+            />
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleLarge"

@@ -26,6 +26,11 @@
     <color name="lite_purple">#9C94A3</color>
     <color name="gray_dark">#929292</color>
 
+    <color name="button_color">#37949c</color>
+    <color name="facebook_button_color">#3b5998</color>
+
+
+
 
 
     <!-- App specific colors -->

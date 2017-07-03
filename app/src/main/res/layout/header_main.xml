@@ -4,7 +4,7 @@
     android:id="@+id/header_layout"
     android:layout_width="fill_parent"
     android:layout_height="@dimen/x50"
-    android:background="@color/red">
+    >
 
 
     <ImageView
@@ -19,7 +19,7 @@
         android:visibility="visible" />
 
 
-    <com.app.fastcapdriver.ui.views.AnyTextView
+    <com.app.fastcab.ui.views.AnyTextView
         android:id="@+id/txt_subHead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,9 +27,18 @@
         android:gravity="center"
         android:text="Template"
         android:textColor="@color/white"
-        android:textSize="@dimen/x22"
+        android:textSize="@dimen/x18"
         app:typeface="OpenSans-Regular.ttf" />
 
+    <ImageView
+        android:id="@+id/btnRight1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/x10"
+        android:src="@drawable/ic_launcher"
+        android:visibility="visible"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/btnRight" />
 
     <ImageView
         android:id="@+id/btnRight"

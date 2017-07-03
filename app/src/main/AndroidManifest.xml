@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.app.fastcapdriver" >
+    package="com.app.fastcab" >
 
     <application
-        android:name="com.app.fastcapdriver.BaseApplication"
+        android:name="com.app.fastcab.BaseApplication"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/fastcab"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.app.fastcapdriver.activities.SplashActivity"
+            android:name="com.app.fastcab.activities.SplashActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.app.fastcapdriver.activities.MainActivity"
+            android:name="com.app.fastcab.activities.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"

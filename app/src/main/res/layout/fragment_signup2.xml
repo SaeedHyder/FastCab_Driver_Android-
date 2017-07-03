@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <com.app.fastcab.ui.views.AnyEditTextView
+        android:id="@+id/edtBriefIntro"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x200"
+        android:background="@color/white"
+        android:hint="Brief Introfuction..."
+        android:padding="@dimen/x15"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/x20"
+        android:layout_marginBottom="@dimen/x15"
+        android:scrollbars="vertical"
+        android:singleLine="false"
+        android:ems="10"
+        android:gravity="top"
+        android:inputType="textMultiLine"
+        android:maxHeight="@dimen/x100"
+        android:maxLines="10"
+        android:overScrollMode="always"
+        android:scrollbarStyle="insideInset"
+        android:textColor="@color/dark_grey"
+        android:textSize="@dimen/x14"
+        app:emptyAllowed="false"
+        app:typeface="Roboto-Regular.ttf" />
+
+    <com.app.fastcab.ui.views.AnyEditTextView
+        android:id="@+id/edtPrevWorkIntro"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x200"
+        android:background="@color/white"
+        android:hint="Previous Work History..."
+        android:layout_marginBottom="@dimen/x15"
+        android:padding="@dimen/x15"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:scrollbars="vertical"
+        android:singleLine="false"
+        android:ems="10"
+        android:gravity="top"
+        android:inputType="textMultiLine"
+        android:maxHeight="@dimen/x100"
+        android:maxLines="10"
+        android:overScrollMode="always"
+        android:scrollbarStyle="insideInset"
+        android:textColor="@color/dark_grey"
+        android:textSize="@dimen/x14"
+        app:emptyAllowed="false"
+        app:typeface="Roboto-Regular.ttf" />
+
+    <Button
+        android:id="@+id/btn_submuit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x50"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:text="@string/submit"
+        android:textColor="@color/white"
+        android:textSize="@dimen/x14"
+        android:background="#37949C"/>
+
+
+</LinearLayout>

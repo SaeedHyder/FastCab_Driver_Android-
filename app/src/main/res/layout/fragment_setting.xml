@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/x15">
+
+    <LinearLayout
+        android:id="@+id/ll_notificationToggel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.app.fastcab.ui.views.AnyTextView
+            android:id="@+id/txt_notification"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:text="Notifications"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x16"
+            app:typeface="Roboto-Regular.ttf"/>
+
+        <ToggleButton
+            android:id="@+id/toggle_notifications"
+            android:layout_width="@dimen/x50"
+            android:layout_height="@dimen/x25"
+            android:background="@drawable/selector_toggle"
+            android:checked="true"
+            android:gravity="right|center_vertical"
+            android:text=""
+            android:textOff=""
+            android:textOn="" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_ChangePassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/x10"
+        android:orientation="horizontal">
+
+        <com.app.fastcab.ui.views.AnyTextView
+            android:id="@+id/txt_changePassword"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Change Password"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x16"
+            app:typeface="Roboto-Regular.ttf"/>
+
+    </LinearLayout>
+
+</LinearLayout>

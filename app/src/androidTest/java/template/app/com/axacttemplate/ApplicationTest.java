@@ -1,4 +1,4 @@
-package com.app.fastcapdriver;
+package com.app.fastcab;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

@@ -52,4 +52,9 @@ dependencies {
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile project(':nineoldandroids-library-2.4.0')
+    compile 'org.jetbrains:annotations-java5:15.0'
+    //DatePicker
+    compile 'co.infinum:materialdatetimepicker-support:3.2.0'
+
+
 }

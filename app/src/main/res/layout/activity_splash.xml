@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img_splash"
+    android:background="@drawable/bg"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/txt"
+    <ImageView
+        android:id="@+id/logo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:textColor="@color/white"
-        android:visibility="gone" />
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:src="@drawable/logo"
+        />
 
-</RelativeLayout>
+</LinearLayout>
