@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:background="@drawable/roundshapelayout"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/textLayout"
+        android:layout_width="@dimen/x350"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:paddingLeft="@dimen/x15"
+        android:paddingRight="@dimen/x15"
+        android:paddingTop="@dimen/x10"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.app.fastcab.ui.views.AnyTextView
+            android:id="@+id/txt_NewRide"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x20"
+            android:layout_marginBottom="@dimen/x15"
+            android:alpha="0.7"
+            android:gravity="center"
+            android:text="@string/new_ride_request"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:typeface="Roboto-Regular.ttf" />
+
+
+        <LinearLayout
+            android:id="@+id/ll_fieldsRow1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/x15"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/ll_username"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.app.fastcab.ui.views.AnyTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.6"
+                    android:gravity="left"
+                    android:layout_marginBottom="@dimen/x3"
+                    android:text="@string/username"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x12"
+                    app:typeface="Roboto-Regular.ttf" />
+
+                <com.app.fastcab.ui.views.AnyTextView
+                    android:id="@+id/txt_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.7"
+                    android:gravity="left"
+                    android:text="James Cameron"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x14"
+                    app:typeface="Roboto-Regular.ttf" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_userRating"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.app.fastcab.ui.views.AnyTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.6"
+                    android:gravity="left"
+                    android:layout_marginBottom="@dimen/x3"
+                    android:text="@string/user_rating"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x12"
+                    app:typeface="Roboto-Regular.ttf" />
+
+                <com.app.fastcab.ui.views.CustomRatingBar
+                    android:id="@+id/rbAddRating"
+                    android:layout_width="@dimen/x80"
+                    android:layout_height="match_parent"
+                    android:isIndicator="true"
+                    android:visibility="visible"
+                    app:maxStars="4"
+                    app:starOff="@drawable/star_unfilled"
+                    app:starOn="@drawable/star_filled"
+                    app:starPadding="@dimen/x3"
+                    app:stars="0" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_fieldsRow2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/x15"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/ll_orderId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.app.fastcab.ui.views.AnyTextView
+                    android:id="@+id/anyTextView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/x3"
+                    android:alpha="0.6"
+                    android:gravity="left"
+                    android:text="@string/order_id"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x12"
+                    app:typeface="Roboto-Regular.ttf" />
+
+                <com.app.fastcab.ui.views.AnyTextView
+                    android:id="@+id/txt_orderId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.7"
+                    android:gravity="left"
+                    android:text="584518363"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x14"
+                    app:typeface="Roboto-Regular.ttf" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_estimatedFare"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.app.fastcab.ui.views.AnyTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.6"
+                    android:gravity="left"
+                    android:layout_marginBottom="@dimen/x3"
+                    android:text="@string/estimated_fare"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x12"
+                    app:typeface="Roboto-Regular.ttf" />
+
+                <com.app.fastcab.ui.views.AnyTextView
+                    android:id="@+id/txt_estimatedFare"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.7"
+                    android:gravity="left"
+                    android:text="$25"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x14"
+                    app:typeface="Roboto-Regular.ttf" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <com.app.fastcab.ui.views.AnyTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.6"
+            android:gravity="left"
+            android:layout_marginBottom="@dimen/x3"
+            android:text="@string/pickup_location"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x12"
+            app:typeface="Roboto-Regular.ttf" />
+
+        <com.app.fastcab.ui.views.AnyTextView
+            android:id="@+id/txt_pickupLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.7"
+            android:gravity="left"
+            android:text="Al Masaken Al iqtisadeyah,iqti.."
+            android:textColor="@color/black"
+            android:maxLines="1"
+            android:textSize="@dimen/x14"
+            android:layout_marginBottom="@dimen/x15"
+            app:typeface="Roboto-Regular.ttf" />
+
+        <com.app.fastcab.ui.views.AnyTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.6"
+            android:gravity="left"
+            android:layout_marginBottom="@dimen/x3"
+            android:text="@string/Destination_Location"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x12"
+            app:typeface="Roboto-Regular.ttf" />
+
+        <com.app.fastcab.ui.views.AnyTextView
+            android:id="@+id/txt_destinationLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.7"
+            android:gravity="left"
+            android:text="Halwan Ash Sharqeyah ,Qesm Helwan..."
+            android:textColor="@color/black"
+            android:textSize="@dimen/x14"
+            android:layout_marginBottom="@dimen/x5"
+            app:typeface="Roboto-Regular.ttf" />
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_alignBottom="@+id/textLayout"
+        >
+
+        <Button
+            android:id="@+id/btnReject"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/x7"
+            android:layout_marginBottom="@dimen/x5"
+            android:text="@string/reject"
+            android:background="@color/transparent"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x16" />
+
+        <Button
+            android:id="@+id/btn_accept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#37949C"
+            android:layout_marginRight="@dimen/x7"
+            android:layout_marginBottom="@dimen/x5"
+            android:background="@color/transparent"
+            android:textSize="@dimen/x16"
+            android:text="@string/accept"
+            android:textAllCaps="false"
+            android:layout_weight="1"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -119,6 +119,7 @@
     <orderEntry type="library" exported="" name="butterknife-annotations-8.5.1" level="project" />
     <orderEntry type="library" exported="" name="stickylistheaders-2.7.0" level="project" />
     <orderEntry type="library" exported="" name="roundedimageview-2.2.1" level="project" />
+    <orderEntry type="library" exported="" name="showhidepasswordedittext-0.8" level="project" />
     <orderEntry type="library" exported="" name="retrofit-2.1.0" level="project" />
     <orderEntry type="library" exported="" name="gson-2.7" level="project" />
     <orderEntry type="library" exported="" name="converter-gson-2.1.0" level="project" />

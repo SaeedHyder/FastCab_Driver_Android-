@@ -15,6 +15,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.app.fastcab.R;
+import com.app.fastcab.entities.CompletedTripsEnt;
 import com.app.fastcab.entities.NavigationEnt;
 import com.app.fastcab.fragments.abstracts.BaseFragment;
 import com.app.fastcab.helpers.ClickableSpanHelper;
@@ -100,7 +101,7 @@ public class SideMenuFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         BindData();
-        setGooglePlayShortcut(getResources().getString(R.string.drive_with_fastcab),
+        setGooglePlayShortcut(getResources().getString(R.string.ride_with_fastcab),
                 getResources().getString(R.string.fastcab), txtDriveoption);
 
 
@@ -139,17 +140,15 @@ public class SideMenuFragment extends BaseFragment {
                 }
                 else if (navigationEnts.get(position).getTitle().equals(getString(R.string.Pending_Requests))) {
                     getMainActivity().getResideMenu().closeMenu();
-                    UIHelper.showShortToastInCenter(getDockActivity(), "Will be Implemented in Beta Version");
-                    //getDockActivity().replaceDockableFragment(NotificationFragment.newInstance(), NotificationFragment.class.getSimpleName());
+                    getDockActivity().replaceDockableFragment(PendingRidesFragment.newInstance(), PendingRidesFragment.class.getSimpleName());
                 }
                 else if (navigationEnts.get(position).getTitle().equals(getString(R.string.Completed_Rides))) {
                     getMainActivity().getResideMenu().closeMenu();
-                    UIHelper.showShortToastInCenter(getDockActivity(), "Will be Implemented in Beta Version");
-                    //getDockActivity().replaceDockableFragment(NotificationFragment.newInstance(), NotificationFragment.class.getSimpleName());
+                    getDockActivity().replaceDockableFragment(CompletedRidesFragment.newInstance(), CompletedRidesFragment.class.getSimpleName());
 
                 }else if (navigationEnts.get(position).getTitle().equals(getResources().getString(R.string.profile))) {
                     getMainActivity().getResideMenu().closeMenu();
-                    //getDockActivity().replaceDockableFragment(SettingFragment.newInstance(), SettingFragment.class.getSimpleName());
+                    getDockActivity().replaceDockableFragment(DriverProfileFragment.newInstance(), DriverProfileFragment.class.getSimpleName());
                 }
                 else if (navigationEnts.get(position).getTitle().equals(getResources().getString(R.string.settings))) {
                     getMainActivity().getResideMenu().closeMenu();

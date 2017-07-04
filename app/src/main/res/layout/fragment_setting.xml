@@ -4,12 +4,13 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/x15">
+    android:background="@drawable/bg2">
 
     <LinearLayout
         android:id="@+id/ll_notificationToggel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/x15"
         android:orientation="horizontal">
 
         <com.app.fastcab.ui.views.AnyTextView
@@ -40,6 +41,7 @@
         android:id="@+id/ll_ChangePassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/x15"
         android:layout_marginTop="@dimen/x10"
         android:orientation="horizontal">
 

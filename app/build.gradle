@@ -21,6 +21,13 @@ android {
     }
 
 }
+allprojects {
+    repositories {
+        maven {
+            url "https://jitpack.io"
+        }
+    }
+}
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -55,6 +62,9 @@ dependencies {
     compile 'org.jetbrains:annotations-java5:15.0'
     //DatePicker
     compile 'co.infinum:materialdatetimepicker-support:3.2.0'
+
+    //Show Hide Password
+    compile 'com.github.scottyab:showhidepasswordedittext:0.8'
 
 
 }

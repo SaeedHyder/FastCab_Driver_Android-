@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_completedTrips"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x150"
+        android:src="@drawable/trip"/>
+
+    <LinearLayout
+        android:id="@+id/ll_completeTripDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/x10"
+        android:layout_marginBottom="@dimen/x10"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.app.fastcab.ui.views.AnyTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.05"
+                android:alpha="0.5"
+                android:text="Ride"
+                android:textColor="@color/black"
+                app:typeface="Roboto-Regular.ttf" />
+
+            <com.app.fastcab.ui.views.AnyTextView
+                android:id="@+id/txt_RideNo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:text="055082595"
+                android:textColor="@color/black"
+                app:typeface="Roboto-Regular.ttf" />
+
+            <com.app.fastcab.ui.views.AnyTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/x10"
+                android:layout_weight="0.1"
+                android:alpha="0.5"
+                android:gravity="right"
+                android:paddingRight="@dimen/x3"
+                android:text="Fare"
+                android:textColor="@color/black"
+                app:typeface="Roboto-Regular.ttf" />
+
+            <com.app.fastcab.ui.views.AnyTextView
+                android:id="@+id/txt_fare"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:text="AED 15.00"
+                android:textColor="@color/black"
+                app:typeface="Roboto-Regular.ttf" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/x10"
+            android:orientation="horizontal">
+
+            <com.app.fastcab.ui.views.AnyTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.12"
+                android:alpha="0.5"
+                android:text="Time/Date"
+                android:textColor="@color/black"
+                app:typeface="Roboto-Regular.ttf" />
+
+            <com.app.fastcab.ui.views.AnyTextView
+                android:id="@+id/txt_time_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:text="13-06-17  1:36PM"
+                android:textColor="@color/black"
+                app:typeface="Roboto-Regular.ttf" />
+
+            <com.app.fastcab.ui.views.AnyTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/x10"
+                android:layout_weight="0.1"
+                android:alpha="0.5"
+                android:gravity="right"
+                android:paddingRight="@dimen/x3"
+                android:text="Tip"
+                android:textColor="@color/black"
+                app:typeface="Roboto-Regular.ttf" />
+
+            <com.app.fastcab.ui.views.AnyTextView
+                android:id="@+id/txt_tip"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.12"
+                android:text="AED 2.00"
+                android:textColor="@color/black"
+                app:typeface="Roboto-Regular.ttf" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

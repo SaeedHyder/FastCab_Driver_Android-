@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/x1"
         android:alpha="0.4"
-        android:background="@drawable/line" />
+        android:background="@drawable/line1" />
 
     <ListView
         android:id="@+id/sideoptions"
@@ -59,7 +59,7 @@
         android:layout_height="@dimen/x1"
         android:layout_below="@+id/ll_driver"
         android:alpha="0.4"
-        android:background="@drawable/line" />
+        android:background="@drawable/line1" />
 
     <com.app.fastcab.ui.views.AnyTextView
         android:id="@+id/txt_driveoption"
@@ -71,7 +71,7 @@
         android:layout_marginTop="@dimen/x10"
 
         android:gravity="start"
-        android:text="@string/drive_with_fastcab"
+        android:text="@string/ride_with_fastcab"
         android:textColor="@color/white"
         android:textSize="@dimen/x16"
         app:typeface="Roboto-Regular.ttf" />

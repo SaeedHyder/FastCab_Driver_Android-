@@ -64,6 +64,8 @@ public class MessagesFragment extends BaseFragment implements View.OnClickListen
         userCollection =new ArrayList<>();
 
         userCollection.add(new MessagesEnt("Please Wait","03362912002"));
+        userCollection.add(new MessagesEnt("Please Wait","03362912002"));
+        userCollection.add(new MessagesEnt("Please Wait","03362912002"));
 
 
         if (userCollection.size() <= 0) {

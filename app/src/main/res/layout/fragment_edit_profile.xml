@@ -1,12 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sv_signup"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-
-    >
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,30 +14,124 @@
             android:id="@+id/ll_ProfileImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/x20"
+            android:layout_marginTop="@dimen/x40"
             android:orientation="vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/CircularImageSharePop"
                 android:layout_width="@dimen/x120"
                 android:layout_height="@dimen/x100"
-                android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
-                android:src="@drawable/picture" />
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/image_holder"/>
 
-            <ImageView
-                android:id="@+id/iv_camera"
-                android:layout_width="@dimen/x20"
-                android:layout_height="@dimen/x20"
-                android:layout_marginBottom="@dimen/x5"
-                android:layout_marginEnd="@dimen/x10"
-                android:src="@drawable/camera"
-                android:background="@drawable/picture"
-                android:layout_alignParentBottom="true"
-                android:layout_alignEnd="@+id/CircularImageSharePop" />
+
 
 
         </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_rect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/x20"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginBottom="@dimen/x12"
+        android:background="@drawable/black_border"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/ll_rating"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+
+            <com.app.fastcab.ui.views.CustomRatingBar
+                android:id="@+id/rbAddRating"
+                android:layout_width="@dimen/x110"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/x20"
+                android:layout_marginLeft="@dimen/x10"
+                android:layout_marginRight="@dimen/x10"
+                android:layout_marginBottom="@dimen/x10"
+                android:visibility="visible"
+                app:maxStars="5"
+                android:isIndicator="true"
+                app:starOff="@drawable/star_unfilled"
+                app:starOn="@drawable/star_filled"
+                app:starPadding="@dimen/x2"
+                app:stars="3" />
+
+            <com.app.fastcab.ui.views.AnyTextView
+                android:id="@+id/txt_ratingName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/x15"
+                android:layout_marginTop="@dimen/x8"
+                android:alpha="0.9"
+                android:gravity="center"
+                android:text="@string/rating"
+                android:textColor="@color/white"
+                android:textSize="@dimen/x16"
+                app:typeface="Roboto-Regular.ttf" />
+
+        </LinearLayout>
+
+
+
+        <View
+            android:id="@+id/txt_line"
+            android:layout_width="@dimen/x1"
+            android:layout_height="match_parent"
+            android:background="@drawable/horizontal_line"/>
+
+        <LinearLayout
+            android:id="@+id/ll_rides"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.app.fastcab.ui.views.AnyTextView
+                android:id="@+id/txt_rides"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/x15"
+                android:layout_marginBottom="@dimen/x10"
+                android:text="1536"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/x25"
+                app:typeface="Roboto-Regular.ttf"
+                />
+
+            <com.app.fastcab.ui.views.AnyTextView
+                android:id="@+id/txt_ridesName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/x15"
+                android:text="@string/rides"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:alpha="0.9"
+                android:textSize="@dimen/x16"
+                app:typeface="Roboto-Regular.ttf"
+                />
+
+
+
+        </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+
 
         <LinearLayout
             android:id="@+id/ll_SignUpFields"
@@ -51,43 +142,7 @@
             android:layout_marginBottom="@dimen/x10"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/ll_userName"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/x50"
-                android:layout_marginTop="@dimen/x10"
-                android:background="@color/white"
-                android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/iv_username"
-                    android:layout_width="@dimen/x20"
-                    android:layout_height="@dimen/x20"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/x10"
-                    android:contentDescription=""
-                    android:src="@drawable/fullname" />
-
-                <com.app.fastcab.ui.views.AnyEditTextView
-                    android:id="@+id/edtUserName"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/x12"
-                    android:layout_marginRight="@dimen/x20"
-                    android:background="@android:color/transparent"
-                    android:hint="@string/full_name"
-                    android:imeOptions="actionNext"
-                    android:inputType="textPersonName"
-                    android:maxLength="30"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/x14"
-                    app:testType="personName"
-                    app:typeface="Roboto-Regular.ttf" />
-
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_DateOfBirth"
@@ -130,7 +185,7 @@
                 android:id="@+id/ll_MobileNumber"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/x50"
-                android:layout_marginTop="@dimen/x10"
+                android:layout_marginTop="@dimen/x12"
                 android:background="@color/white"
                 android:orientation="horizontal">
 
@@ -150,7 +205,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/x12"
                     android:layout_marginRight="@dimen/x20"
-                    android:hint="@string/mobile_number"
+                    android:hint="+123-456-789"
                     android:background="@android:color/transparent"
                     android:imeOptions="actionNext"
                     android:inputType="number"
@@ -163,8 +218,6 @@
                     app:typeface="Roboto-Regular.ttf" />
 
             </LinearLayout>
-
-
 
             <LinearLayout
                 android:id="@+id/ll_currentAddress"
@@ -204,56 +257,6 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/ll_LicenseNumber"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/x50"
-                android:layout_marginTop="@dimen/x10"
-                android:background="@color/white"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/iv_LicenseNumber"
-                    android:layout_width="@dimen/x20"
-                    android:layout_height="@dimen/x20"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/x10"
-                    android:contentDescription=""
-                    android:src="@drawable/license" />
-
-                <com.app.fastcab.ui.views.AnyEditTextView
-                    android:id="@+id/edtLicenseeNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/x12"
-                    android:layout_marginRight="@dimen/x20"
-                    android:hint="@string/license_number"
-                    android:background="@android:color/transparent"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:maxLength="30"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/x14"
-                    app:testType="numeric"
-                    app:typeface="Roboto-Regular.ttf" />
-
-            </LinearLayout>
-
-
-
-
-            <Button
-                android:id="@+id/btn_submuit"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/x50"
-                android:layout_marginTop="@dimen/x10"
-                android:text="@string/submit"
-                android:textColor="@color/white"
-                android:textSize="@dimen/x14"
-                android:background="#37949C"/>
 
 
         </LinearLayout>

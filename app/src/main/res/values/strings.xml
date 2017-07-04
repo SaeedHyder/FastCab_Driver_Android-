@@ -168,6 +168,7 @@
     <string name="Contact_Us">Contact Us</string>
     <string name="are_you_sure_you_want_to_cancel_ride">Are you sure you want to cancel ride?</string>
     <string name="are_you_sure_you_want_to_logout">Are you sure you want to logout?</string>
+    <string name="are_you_sure_you_want_to_endtrip">Are you sure you want to end trip?</string>
     <string name="logout">Logout</string>
     <string name="request_for_cancellation">Request For Cancellation</string>
     <string name="rides">Rides</string>
@@ -222,5 +223,20 @@
     <string name="full_name">Full Name</string>
     <string name="Completed_Rides">Completed Rides</string>
     <string name="Pending_Requests">Pending Requests</string>
+    <string name="ride_with_fastcab">Ride with FastCab</string>
+    <string name="End_Trip">End Trip</string>
+    <string name="rate_user">Rate User</string>
+    <string name="submit_feedback">submit feedback</string>
+    <string name="Completed_Trips">Completed Trips</string>
+    <string name="reject">Reject</string>
+    <string name="accept">Accept</string>
+    <string name="Pending_Rides">Pending Rides</string>
+    <string name="time_date">Time/Date</string>
+    <string name="fare_received">Fare Received</string>
+    <string name="new_ride_request">New Ride Request</string>
+    <string name="username">Username</string>
+    <string name="user_rating">User Rating</string>
+    <string name="order_id">Order ID</string>
+    <string name="Destination_Location">Destination Location</string>
 
 </resources>

@@ -22,6 +22,7 @@ import com.app.fastcab.helpers.ScreenHelper;
 import com.app.fastcab.helpers.UIHelper;
 import com.app.fastcab.residemenu.ResideMenu;
 import com.app.fastcab.ui.views.TitleBar;
+import com.facebook.FacebookSdk;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,6 +52,7 @@ public class MainActivity extends DockActivity implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dock);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         ButterKnife.bind(this);
         titleBar = header_main;
         // setBehindContentView(R.layout.fragment_frame);

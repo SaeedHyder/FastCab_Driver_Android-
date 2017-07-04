@@ -45,5 +45,7 @@
     <color name="progress_end">#797B79</color>
     <color name="blue_chat">#4896CA</color>
     <color name="sidemenu">#62A6D8</color>
+    <color name="colorPrimaryDark">#0c3644</color>
+    <color name="grayButton">#656565</color>
 
 </resources>
