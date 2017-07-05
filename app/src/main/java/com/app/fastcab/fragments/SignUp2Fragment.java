@@ -126,7 +126,7 @@ public class SignUp2Fragment extends BaseFragment implements View.OnClickListene
         super.setTitleBar(titleBar);
         titleBar.hideButtons();
         titleBar.showBackButton();
-        titleBar.setSubHeading(getString(R.string.verification_code));
+        titleBar.setSubHeading(getString(R.string.sign_up));
     }
 
 

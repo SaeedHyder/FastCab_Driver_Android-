@@ -44,6 +44,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @BindView(R.id.newRideRequest)
     Button newRideRequest;
     Unbinder unbinder;
+    @BindView(R.id.rateUsRequest)
+    Button rateUsRequest;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -84,6 +86,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         pendingTrips.setOnClickListener(this);
         pendingDetailTrips.setOnClickListener(this);
         newRideRequest.setOnClickListener(this);
+        rateUsRequest.setOnClickListener(this);
     }
 
     @Override
@@ -170,6 +173,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 newRide.setCancelable(false);
                 newRide.showDialog();
 
+                break;
+            case R.id.rateUsRequest:
+                getDockActivity().replaceDockableFragment(RateUserFragment.newInstance(), "RateUserFragment");
                 break;
 
         }

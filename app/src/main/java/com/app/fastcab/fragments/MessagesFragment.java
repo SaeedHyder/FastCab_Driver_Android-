@@ -103,6 +103,7 @@ public class MessagesFragment extends BaseFragment implements View.OnClickListen
         super.setTitleBar(titleBar);
         titleBar.hideButtons();
         titleBar.showBackButton();
+        titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
         titleBar.setSubHeading(getString(R.string.Messages));
     }
 

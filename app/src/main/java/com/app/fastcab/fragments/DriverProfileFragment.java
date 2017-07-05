@@ -54,6 +54,7 @@ public class DriverProfileFragment extends BaseFragment implements View.OnClickL
     public void setTitleBar(TitleBar titleBar) {
         super.setTitleBar(titleBar);
         titleBar.hideButtons();
+        titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
         titleBar.showEditButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

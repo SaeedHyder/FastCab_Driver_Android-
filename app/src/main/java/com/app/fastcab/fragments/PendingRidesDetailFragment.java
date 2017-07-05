@@ -93,7 +93,8 @@ public class PendingRidesDetailFragment extends BaseFragment implements View.OnC
     public void setTitleBar(TitleBar titleBar) {
         super.setTitleBar(titleBar);
         titleBar.hideButtons();
-        titleBar.showBackButton();
+        titleBar.showMenuButton();
+        titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
         titleBar.setSubHeading(getString(R.string.Pending_Rides));
     }
 

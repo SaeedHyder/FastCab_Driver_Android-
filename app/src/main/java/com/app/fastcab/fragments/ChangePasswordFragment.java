@@ -106,6 +106,7 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
         super.setTitleBar(titleBar);
         titleBar.hideButtons();
         titleBar.showBackButton();
+        titleBar.setBackgroundColor(getResources().getColor(R.color.transparent));
         titleBar.setSubHeading(getString(R.string.Change_Password));
     }
 

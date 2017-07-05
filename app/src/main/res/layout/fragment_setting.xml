@@ -26,7 +26,7 @@
         <ToggleButton
             android:id="@+id/toggle_notifications"
             android:layout_width="@dimen/x50"
-            android:layout_height="@dimen/x25"
+            android:layout_height="@dimen/x35"
             android:background="@drawable/selector_toggle"
             android:checked="true"
             android:gravity="right|center_vertical"

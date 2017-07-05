@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
 
     <Button
         android:id="@+id/Message"
@@ -106,20 +116,34 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x10"
         android:layout_marginRight="@dimen/x10"
-        android:layout_marginBottom="@dimen/x2"
+        android:layout_marginBottom="@dimen/x5"
         android:text="Pending Trips Detail Fragment"
         android:textColor="@color/white"
         android:background="@color/button_color"/>
     <Button
-        android:id="@+id/newRideRequest"
+    android:id="@+id/newRideRequest"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/x10"
+    android:layout_marginRight="@dimen/x10"
+    android:layout_marginBottom="@dimen/x5"
+    android:text="NewRide Dialog"
+    android:textColor="@color/white"
+    android:background="@color/button_color"/>
+
+    <Button
+        android:id="@+id/rateUsRequest"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x10"
         android:layout_marginRight="@dimen/x10"
         android:layout_marginBottom="@dimen/x5"
-        android:text="NewRide Dialog"
+        android:text="Rate User Dialog"
         android:textColor="@color/white"
         android:background="@color/button_color"/>
 
 
+
 </LinearLayout>
+
+    </ScrollView>

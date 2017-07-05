@@ -117,7 +117,8 @@ public class CompletedRidesFragment extends BaseFragment implements View.OnClick
     public void setTitleBar(TitleBar titleBar) {
         super.setTitleBar(titleBar);
         titleBar.hideButtons();
-        titleBar.showBackButton();
+        titleBar.showMenuButton();
+        titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
         titleBar.setSubHeading(getString(R.string.Completed_Trips));
     }
 
