@@ -73,7 +73,11 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
 
     private boolean isvalidate()
     {
-    if (editNewPassword.getText() == null || (editNewPassword.getText().toString().isEmpty())) {
+        if (edtcurrentPassword.getText() == null || (edtcurrentPassword.getText().toString().isEmpty())) {
+            edtcurrentPassword.setError(getString(R.string.enter_password));
+            return false;
+        }
+        else if (editNewPassword.getText() == null || (editNewPassword.getText().toString().isEmpty())) {
         editNewPassword.setError(getString(R.string.enter_password));
         return false;
     } else if (editNewPassword.getText().toString().length() < 6) {
