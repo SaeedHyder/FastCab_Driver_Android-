@@ -80,11 +80,11 @@ public class PendingRidesDetailFragment extends BaseFragment implements View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_accept:
-                getDockActivity().replaceDockableFragment(HomeFragment.newInstance(), HomeFragment.class.getSimpleName());
+                getDockActivity().replaceDockableFragment(CompletedRidesFragment.newInstance(), CompletedRidesFragment.class.getSimpleName());
                 break;
 
             case R.id.btn_reject:
-                getDockActivity().replaceDockableFragment(PendingRidesDetailFragment.newInstance(), PendingRidesDetailFragment.class.getSimpleName());
+                getDockActivity().replaceDockableFragment(PendingRidesFragment.newInstance(), PendingRidesFragment.class.getSimpleName());
                 break;
         }
     }

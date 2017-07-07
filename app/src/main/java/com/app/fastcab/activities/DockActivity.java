@@ -96,7 +96,9 @@ public abstract class DockActivity extends AppCompatActivity implements
 
 
     }
-
+    protected DockActivity getDockActivity(){
+        return (DockActivity)this;
+    }
     public void replaceDockableFragment(BaseFragment frag, boolean isAnimate) {
 
         android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager()

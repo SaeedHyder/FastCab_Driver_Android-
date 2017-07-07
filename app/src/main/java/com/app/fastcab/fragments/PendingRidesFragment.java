@@ -79,8 +79,6 @@ public class PendingRidesFragment extends BaseFragment implements View.OnClickLi
 
         userCollection = new ArrayList<>();
         userCollection.add(new PendingTripsEnt("eat 09:10 PM","Dunkin Donut","Publix Super Marker"));
-        userCollection.add(new PendingTripsEnt("eat 09:10 PM","Dunkin Donut","Publix Super Marker"));
-        userCollection.add(new PendingTripsEnt("eat 09:10 PM","Dunkin Donut","Publix Super Marker"));
         bindData(userCollection);
 
     }

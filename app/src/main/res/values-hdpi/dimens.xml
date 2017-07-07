@@ -44,7 +44,7 @@
     <dimen name="x38_">-38dp</dimen>
     <dimen name="x39_">-39dp</dimen>
     <dimen name="x40_">-40dp</dimen>
-
+    <dimen name="x50_">-50dp</dimen>
 
     <dimen name="x1">1dp</dimen>
     <dimen name="x2">2dp</dimen>

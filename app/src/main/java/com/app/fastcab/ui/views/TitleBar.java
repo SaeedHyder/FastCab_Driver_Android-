@@ -95,13 +95,13 @@ public class TitleBar extends RelativeLayout {
     }
 
     public void showCallButton(OnClickListener callbtnlistener) {
-        btnright1.setImageResource(R.drawable.tick);
+        btnright1.setImageResource(R.drawable.call);
         btnright1.setVisibility(View.VISIBLE);
         btnright1.setOnClickListener(callbtnlistener);
     }
 
     public void showMessageButton(OnClickListener addBtnListener) {
-        btnRight.setImageResource(R.drawable.tick);
+        btnRight.setImageResource(R.drawable.msg);
         btnRight.setVisibility(View.VISIBLE);
         btnRight.setOnClickListener(addBtnListener);
 
@@ -137,6 +137,7 @@ public class TitleBar extends RelativeLayout {
     }
 
     public void hideTitleBar() {
+
         this.setVisibility(View.GONE);
     }
 

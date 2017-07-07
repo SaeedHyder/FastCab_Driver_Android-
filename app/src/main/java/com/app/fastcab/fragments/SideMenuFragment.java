@@ -119,7 +119,7 @@ public class SideMenuFragment extends BaseFragment {
 
             @Override
             public void onClick(View widget) {
-                UIHelper.showShortToastInCenter(getDockActivity(), "Clicked Event");
+                UIHelper.showShortToastInCenter(getDockActivity(), "will be implemented in Beta version");
             }
         });
 
@@ -137,34 +137,39 @@ public class SideMenuFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (navigationEnts.get(position).getTitle().equals(getString(R.string.home))) {
                     getMainActivity().getResideMenu().closeMenu();
+
                 }
                 else if (navigationEnts.get(position).getTitle().equals(getString(R.string.Pending_Requests))) {
                     getMainActivity().getResideMenu().closeMenu();
+                    getDockActivity().popBackStackTillEntry(0);
                     getDockActivity().replaceDockableFragment(PendingRidesFragment.newInstance(), PendingRidesFragment.class.getSimpleName());
                 }
                 else if (navigationEnts.get(position).getTitle().equals(getString(R.string.Completed_Rides))) {
                     getMainActivity().getResideMenu().closeMenu();
+                    getDockActivity().popBackStackTillEntry(0);
                     getDockActivity().replaceDockableFragment(CompletedRidesFragment.newInstance(), CompletedRidesFragment.class.getSimpleName());
 
                 }else if (navigationEnts.get(position).getTitle().equals(getResources().getString(R.string.profile))) {
                     getMainActivity().getResideMenu().closeMenu();
+                    getDockActivity().popBackStackTillEntry(0);
                     getDockActivity().replaceDockableFragment(DriverProfileFragment.newInstance(), DriverProfileFragment.class.getSimpleName());
                 }
                 else if (navigationEnts.get(position).getTitle().equals(getResources().getString(R.string.settings))) {
                     getMainActivity().getResideMenu().closeMenu();
+                    getDockActivity().popBackStackTillEntry(0);
                     getDockActivity().replaceDockableFragment(SettingFragment.newInstance(), SettingFragment.class.getSimpleName());
                 }
                 else if (navigationEnts.get(position).getTitle().equals(getResources().getString(R.string.arabic_english))) {
-                    getMainActivity().getResideMenu().closeMenu();
-                    getDockActivity().replaceDockableFragment(SettingFragment.newInstance(), SettingFragment.class.getSimpleName());
+                    UIHelper.showShortToastInCenter(getDockActivity(),"Will be Implemented in Beta Version");
                 }
 
                 else if (navigationEnts.get(position).getTitle().equals(getString(R.string.logoout))) {
-                    getMainActivity().getResideMenu().closeMenu();
                     final DialogHelper logoutdialog = new DialogHelper(getDockActivity());
-                    logoutdialog.logout(R.layout.logout_dialog, new View.OnClickListener() {
+                    logoutdialog.initlogout(R.layout.logout_dialog, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            logoutdialog.hideDialog();
+                            getMainActivity().getResideMenu().closeMenu();
                             prefHelper.setLoginStatus(false);
                             getDockActivity().popBackStackTillEntry(0);
                             getDockActivity().replaceDockableFragment(LoginFragment.newInstance(), LoginFragment.class.getSimpleName());
@@ -172,6 +177,7 @@ public class SideMenuFragment extends BaseFragment {
                     }, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            getMainActivity().getResideMenu().closeMenu();
                             logoutdialog.hideDialog();
                         }
                     });

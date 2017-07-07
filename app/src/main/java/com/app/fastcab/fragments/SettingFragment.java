@@ -51,14 +51,14 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void setListners() {
-        txtChangePassword.setOnClickListener(this);
+        llChangePassword.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.txt_changePassword:
-               // getDockActivity().replaceDockableFragment(ChangePasswordFragment.newInstance(),ChangePasswordFragment.class.getSimpleName());
+            case R.id.ll_ChangePassword:
+               getDockActivity().replaceDockableFragment(ChangePasswordFragment.newInstance(),ChangePasswordFragment.class.getSimpleName());
 
                 break;
         }

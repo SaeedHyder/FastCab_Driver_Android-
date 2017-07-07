@@ -2,6 +2,7 @@ package com.app.fastcab.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
 import com.app.fastcab.R;
@@ -46,9 +47,14 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void launchTimerAndTask() {
-
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showMainActivity();
+            }
+        }, MIN_TIME_INTERVAL_FOR_SPLASH);
         // Launch timer to test image changing and background threads work
-        checkWorkTimer = new Timer();
+      /*  checkWorkTimer = new Timer();
         checkWorkTimer.scheduleAtFixedRate(new TimerTask() {
 
             @Override
@@ -60,7 +66,7 @@ public class SplashActivity extends AppCompatActivity {
 
         }, MIN_TIME_INTERVAL_FOR_SPLASH, TIME_INTERVAL_TO_CHECK);
 
-        new Thread(backgroundWork).start();
+        new Thread(backgroundWork).start();*/
     }
 
     private void initNextActivity() {
