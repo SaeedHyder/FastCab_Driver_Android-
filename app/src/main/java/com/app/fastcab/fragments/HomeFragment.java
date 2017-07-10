@@ -521,6 +521,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
         titlebar.hideButtons();
         titlebar.showMenuButton();
         titlebar.setSubHeading(getResources().getString(R.string.rate));
+
         final BottomSheetDialogHelper ratingDialog =
                 new BottomSheetDialogHelper(getDockActivity(), MainFrame, R.layout.fragment_rate_user);
         ratingDialog.initRatingDialog(new View.OnClickListener() {
