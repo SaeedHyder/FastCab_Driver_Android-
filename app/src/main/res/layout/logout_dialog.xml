@@ -43,7 +43,7 @@
             android:text="@string/are_you_sure_you_want_to_logout"
             android:textColor="@color/black"
             android:textSize="@dimen/x17"
-            android:alpha="0.7"
+            android:alpha="0.5"
             app:typeface="Roboto-Regular.ttf" />
 
 

@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.app.fastcab.R;
 import com.app.fastcab.fragments.HomeFragment;
@@ -31,6 +32,7 @@ import com.app.fastcab.global.SideMenuChooser;
 import com.app.fastcab.global.SideMenuDirection;
 import com.app.fastcab.helpers.ScreenHelper;
 import com.app.fastcab.helpers.UIHelper;
+import com.app.fastcab.interfaces.ImageSetter;
 import com.app.fastcab.interfaces.OnSettingActivateListener;
 import com.app.fastcab.residemenu.ResideMenu;
 import com.app.fastcab.ui.views.TitleBar;
@@ -46,12 +48,17 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.kbeanie.imagechooser.api.ChooserType;
+import com.kbeanie.imagechooser.api.ChosenImage;
+import com.kbeanie.imagechooser.api.ChosenImages;
+import com.kbeanie.imagechooser.api.ImageChooserListener;
+import com.kbeanie.imagechooser.api.ImageChooserManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class MainActivity extends DockActivity implements OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends DockActivity implements OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,ImageChooserListener {
     public final int LocationResultCode = 1;
     public final int WifiResultCode = 2;
     public TitleBar titleBar;
@@ -71,6 +78,15 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
     private String sideMenuType;
     private String sideMenuDirection;
     private OnSettingActivateListener settingActivateListener;
+    private ImageChooserManager imageChooserManager;
+    private int chooserType;
+    private String filePath;
+    private String originalFilePath;
+    private String thumbnailFilePath;
+    private String thumbnailSmallFilePath;
+    private boolean isActivityResultOver = false;
+    private final static String TAG = "ICA";
+    ImageSetter imageSetter;
 
     public void setSettingActivateListener(OnSettingActivateListener settingActivateListener) {
         this.settingActivateListener = settingActivateListener;
@@ -270,6 +286,32 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        Log.i(TAG, "OnActivityResult");
+        Log.i(TAG, "File Path : " + filePath);
+        Log.i(TAG, "Chooser Type: " + chooserType);
+
+
+        if (resultCode == RESULT_OK
+                && (requestCode == ChooserType.REQUEST_PICK_PICTURE || requestCode == ChooserType.REQUEST_CAPTURE_PICTURE)) {
+            if (imageChooserManager == null) {
+                reinitializeImageChooser();
+            }
+            imageChooserManager.submit(requestCode, data);
+        } else {
+            // progressBar.setVisibility(View.GONE);
+        }
+
+
+        BaseFragment fragment = (BaseFragment) getSupportFragmentManager().findFragmentById(getDockFrameLayoutId());
+
+        if (fragment != null) {
+            try {
+                fragment.onActivityResult(requestCode, resultCode, data);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         if (requestCode == LocationResultCode) {
             settingActivateListener.onLocationActivateListener();
         }
@@ -456,6 +498,109 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    public void setImageSetter(ImageSetter imageSetter) {
+        this.imageSetter = imageSetter;
+    }
+
+    private void reinitializeImageChooser() {
+        imageChooserManager = new ImageChooserManager(this, chooserType, true);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        imageChooserManager.setExtras(bundle);
+        imageChooserManager.setImageChooserListener(this);
+        imageChooserManager.reinitialize(filePath);
+    }
+
+    public void chooseImage() {
+        chooserType = ChooserType.REQUEST_PICK_PICTURE;
+        imageChooserManager = new ImageChooserManager(this,
+                ChooserType.REQUEST_PICK_PICTURE, true);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        imageChooserManager.setExtras(bundle);
+        imageChooserManager.setImageChooserListener(this);
+        imageChooserManager.clearOldFiles();
+        try {
+            //pbar.setVisibility(View.VISIBLE);
+            filePath = imageChooserManager.choose();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void takePicture() {
+        chooserType = ChooserType.REQUEST_CAPTURE_PICTURE;
+        imageChooserManager = new ImageChooserManager(this,
+                ChooserType.REQUEST_CAPTURE_PICTURE, true);
+        imageChooserManager.setImageChooserListener(this);
+        try {
+            //pbar.setVisibility(View.VISIBLE);
+            filePath = imageChooserManager.choose();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onImageChosen(final ChosenImage image) {
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                Log.i(TAG, "Chosen Image: O - " + image.getFilePathOriginal());
+                Log.i(TAG, "Chosen Image: T - " + image.getFileThumbnail());
+                Log.i(TAG, "Chosen Image: Ts - " + image.getFileThumbnailSmall());
+                isActivityResultOver = true;
+                originalFilePath = image.getFilePathOriginal();
+                thumbnailFilePath = image.getFileThumbnail();
+                thumbnailSmallFilePath = image.getFileThumbnailSmall();
+                //pbar.setVisibility(View.GONE);
+                if (image != null) {
+                    Log.i(TAG, "Chosen Image: Is not null");
+
+                    // Toast.makeText(getApplication(),thumbnailFilePath,Toast.LENGTH_LONG).show();
+                    imageSetter.setImage(originalFilePath);
+
+                    //loadImage(imageViewThumbnail, image.getFileThumbnail());
+                } else {
+                    Log.i(TAG, "Chosen Image: Is null");
+                }
+
+            }
+        });
+
+    }
+
+    @Override
+    public void onError(final String reason) {
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                Log.i(TAG, "OnError: " + reason);
+                // pbar.setVisibility(View.GONE);
+                Toast.makeText(MainActivity.this, reason,
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    @Override
+    public void onImagesChosen(final ChosenImages images) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.i(TAG, "On Images Chosen: " + images.size());
+                onImageChosen(images.getImage(0));
+            }
+        });
 
     }
 }

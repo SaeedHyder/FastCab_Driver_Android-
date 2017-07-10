@@ -218,6 +218,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         super.setTitleBar(titleBar);
         titleBar.hideButtons();
         titleBar.showBackButton();
+        titleBar.setBackgroundColor(getResources().getColor(R.color.transparent));
         titleBar.showTickButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

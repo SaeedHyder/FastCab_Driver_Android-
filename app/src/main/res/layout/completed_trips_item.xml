@@ -28,9 +28,8 @@
             android:orientation="horizontal">
 
             <com.app.fastcab.ui.views.AnyTextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.05"
                 android:alpha="0.5"
                 android:text="Ride"
                 android:textColor="@color/black"
@@ -38,30 +37,29 @@
 
             <com.app.fastcab.ui.views.AnyTextView
                 android:id="@+id/txt_RideNo"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.2"
                 android:text="055082595"
+                android:layout_marginLeft="@dimen/x3"
                 android:textColor="@color/black"
                 app:typeface="Roboto-Regular.ttf" />
 
             <com.app.fastcab.ui.views.AnyTextView
+                android:id="@+id/anyTextView3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/x10"
                 android:layout_weight="0.1"
                 android:alpha="0.5"
                 android:gravity="right"
-                android:paddingRight="@dimen/x3"
-                android:text="Fare"
+                android:text="@string/fare"
                 android:textColor="@color/black"
                 app:typeface="Roboto-Regular.ttf" />
 
             <com.app.fastcab.ui.views.AnyTextView
                 android:id="@+id/txt_fare"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.1"
+                android:layout_marginLeft="@dimen/x3"
                 android:text="AED 15.00"
                 android:textColor="@color/black"
                 app:typeface="Roboto-Regular.ttf" />
@@ -76,9 +74,8 @@
             android:orientation="horizontal">
 
             <com.app.fastcab.ui.views.AnyTextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.12"
                 android:alpha="0.5"
                 android:text="Time/Date"
                 android:textColor="@color/black"
@@ -86,9 +83,9 @@
 
             <com.app.fastcab.ui.views.AnyTextView
                 android:id="@+id/txt_time_date"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.2"
+                android:layout_marginLeft="@dimen/x3"
                 android:text="13-06-17  1:36PM"
                 android:textColor="@color/black"
                 app:typeface="Roboto-Regular.ttf" />
@@ -96,20 +93,19 @@
             <com.app.fastcab.ui.views.AnyTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/x10"
                 android:layout_weight="0.1"
                 android:alpha="0.5"
                 android:gravity="right"
-                android:paddingRight="@dimen/x3"
-                android:text="Tip"
+                android:text="@string/tip"
                 android:textColor="@color/black"
                 app:typeface="Roboto-Regular.ttf" />
 
             <com.app.fastcab.ui.views.AnyTextView
                 android:id="@+id/txt_tip"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.12"
+                android:layout_marginLeft="@dimen/x3"
+                android:gravity="left"
                 android:text="AED 2.00"
                 android:textColor="@color/black"
                 app:typeface="Roboto-Regular.ttf" />

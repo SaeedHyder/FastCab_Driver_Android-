@@ -21,23 +21,34 @@
             android:orientation="vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/CircularImageSharePop"
-                android:layout_width="@dimen/x120"
+                android:id="@+id/CircularImageSharePop1"
+                android:layout_width="@dimen/x100"
                 android:layout_height="@dimen/x100"
                 android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
                 android:layout_gravity="center"
-                android:src="@drawable/picture" />
+                android:background="@drawable/picture" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/CircularImageSharePop"
+                android:layout_width="@dimen/x95"
+                android:layout_height="@dimen/x95"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                />
 
             <ImageView
                 android:id="@+id/iv_camera"
-                android:layout_width="@dimen/x20"
-                android:layout_height="@dimen/x20"
-                android:layout_marginBottom="@dimen/x5"
-                android:layout_marginEnd="@dimen/x10"
+                android:layout_width="@dimen/x25"
+                android:layout_height="@dimen/x24"
+                android:layout_marginEnd="@dimen/x1"
                 android:src="@drawable/camera"
-                android:background="@drawable/picture"
-                android:layout_alignParentBottom="true"
+                android:background="@drawable/circle_blue"
+                android:layout_marginTop="@dimen/x69"
+                android:layout_marginLeft="@dimen/x5"
                 android:layout_alignEnd="@+id/CircularImageSharePop" />
+
 
 
         </RelativeLayout>

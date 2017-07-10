@@ -47,5 +47,6 @@
     <color name="sidemenu">#62A6D8</color>
     <color name="colorPrimaryDark">#0c3644</color>
     <color name="grayButton">#656565</color>
+    <color name="button_dark_color">#0c3644</color>
 
 </resources>
