@@ -126,6 +126,7 @@ public class SignUp2Fragment extends BaseFragment implements View.OnClickListene
         super.setTitleBar(titleBar);
         titleBar.hideButtons();
         titleBar.showBackButton();
+        titleBar.setBackgroundColor(getResources().getColor(R.color.transparent));
         titleBar.setSubHeading(getString(R.string.sign_up));
     }
 

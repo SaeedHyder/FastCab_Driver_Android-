@@ -163,15 +163,17 @@
         <RelativeLayout
             android:id="@+id/rl_detail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/x80"
             android:layout_alignParentBottom="true"
             android:background="@color/white"
             android:paddingBottom="@dimen/x10">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/circleImageView"
-                android:layout_width="@dimen/x50"
-                android:layout_height="@dimen/x40"
+                android:layout_width="@dimen/x55"
+                android:layout_height="@dimen/x45"
+                android:layout_marginLeft="@dimen/x5"
+                android:layout_centerVertical="true"
                 android:layout_marginTop="@dimen/x10"
                 android:src="@drawable/image_holder" />
 
@@ -185,7 +187,7 @@
                 android:layout_toEndOf="@+id/txt_driver_name"
                 android:isIndicator="true"
                 android:visibility="visible"
-                app:maxStars="5"
+                app:maxStars="4"
                 app:starOff="@drawable/star_unfilled"
                 app:starOn="@drawable/star_filled"
                 app:starPadding="@dimen/x2"
@@ -194,7 +196,7 @@
             <Button
                 android:id="@+id/btn_online_status"
                 android:layout_width="@dimen/x95"
-                android:layout_height="@dimen/x35"
+                android:layout_height="@dimen/x30"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/x10"
@@ -210,71 +212,91 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/circleImageView"
-                android:layout_marginBottom="@dimen/x5"
+                android:layout_marginBottom="@dimen/x1"
+                android:layout_marginLeft="@dimen/x5"
                 android:layout_toEndOf="@+id/circleImageView"
                 android:text="Charlie"
                 android:textColor="@color/button_color"
-                android:textSize="@dimen/x18"
+                android:textSize="@dimen/x16"
                 app:typeface="Roboto-Regular.ttf" />
 
-            <ImageView
-                android:id="@+id/mercedes"
-                android:layout_width="@dimen/x10"
-                android:layout_height="@dimen/x10"
+            <LinearLayout
+                android:id="@+id/ll_car"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/txt_driver_name"
-                android:layout_marginBottom="@dimen/x3"
                 android:layout_toEndOf="@+id/circleImageView"
-                android:src="@drawable/mercedes" />
+                android:orientation="horizontal">
 
-            <com.app.fastcab.ui.views.AnyTextView
-                android:id="@+id/txt_driver_car"
+                <ImageView
+                    android:id="@+id/mercedes"
+                    android:layout_width="@dimen/x10"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/x2"
+                    android:src="@drawable/mercedes" />
+
+                <com.app.fastcab.ui.views.AnyTextView
+                    android:id="@+id/txt_driver_car"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/license"
+                    android:paddingLeft="@dimen/x5"
+                    android:text="Mercedes Benz"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x10"
+                    app:typeface="Roboto-Regular.ttf" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/license"
-                android:layout_marginBottom="@dimen/x3"
-                android:layout_toEndOf="@+id/mercedes"
-                android:paddingLeft="@dimen/x5"
-                android:text="Mercedes Benz"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x10"
-                app:typeface="Roboto-Regular.ttf" />
-
-            <ImageView
-                android:id="@+id/license"
-                android:layout_width="@dimen/x10"
-                android:layout_height="@dimen/x10"
-                android:layout_below="@+id/mercedes"
-                android:layout_marginBottom="@dimen/x8"
                 android:layout_toEndOf="@+id/circleImageView"
-                android:src="@drawable/license" />
+                android:orientation="horizontal"
+                android:layout_below="@+id/ll_car"
+                android:layout_alignEnd="@+id/ll_car">
 
-            <com.app.fastcab.ui.views.AnyTextView
-                android:id="@+id/txt_driver_car_plate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_driver_car"
-                android:layout_toEndOf="@+id/mercedes"
-                android:paddingLeft="@dimen/x5"
-                android:text="ABC-1234"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x10"
-                app:typeface="Roboto-Regular.ttf" />
+                <ImageView
+                    android:id="@+id/license"
+                    android:layout_width="@dimen/x10"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/x2"
+                    android:src="@drawable/license" />
+
+                <com.app.fastcab.ui.views.AnyTextView
+                    android:id="@+id/txt_driver_car_plate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/license"
+                    android:paddingLeft="@dimen/x5"
+                    android:text="ABC-1234"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x10"
+                    app:typeface="Roboto-Regular.ttf" />
+
+            </LinearLayout>
+
+
+
+
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/rl_trip"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_height="@dimen/x80"
             android:background="@color/white"
             android:visibility="gone"
             android:paddingBottom="@dimen/x12"
-            android:paddingTop="@dimen/x12">
+            android:paddingTop="@dimen/x12"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/circledriverView"
-                android:layout_width="@dimen/x50"
-                android:layout_height="@dimen/x40"
+                android:layout_width="@dimen/x55"
+                android:layout_height="@dimen/x45"
+                android:layout_marginLeft="@dimen/x5"
                 android:layout_centerVertical="true"
                 android:src="@drawable/image_holder" />
 
@@ -282,25 +304,26 @@
                 android:id="@+id/rbAddRating_trip"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/x20"
-                android:layout_alignBottom="@+id/btn_trip_status"
+                android:paddingTop="@dimen/x10"
                 android:layout_gravity="top|center_horizontal"
                 android:layout_marginLeft="@dimen/x5"
-                android:layout_toEndOf="@+id/circledriverView"
                 android:isIndicator="true"
                 android:visibility="visible"
-                app:maxStars="5"
+                app:maxStars="4"
                 app:starOff="@drawable/star_unfilled"
                 app:starOn="@drawable/star_filled"
                 app:starPadding="@dimen/x2"
-                app:stars="5" />
+                app:stars="5"
+                android:layout_alignBottom="@+id/btn_trip_status"
+                android:layout_toEndOf="@+id/circledriverView" />
 
             <Button
                 android:id="@+id/btn_trip_status"
                 android:layout_width="@dimen/x95"
-                android:layout_height="@dimen/x35"
+                android:layout_height="@dimen/x30"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x10"
+                android:layout_marginRight="@dimen/x15"
                 android:layout_marginTop="@dimen/x10"
                 android:background="@drawable/button_background"
                 android:gravity="center_horizontal|center_vertical"
@@ -312,15 +335,14 @@
                 android:id="@+id/txt_driver_name_trip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/rbAddRating_trip"
-                android:layout_alignTop="@+id/circledriverView"
                 android:text="James Camaron"
                 android:maxLines="1"
                 android:maxLength="25"
                 android:textColor="@color/black"
-                android:textSize="@dimen/x18"
+                android:textSize="@dimen/x16"
                 app:typeface="Roboto-Regular.ttf"
-                android:layout_toStartOf="@+id/btn_trip_status" />
+                android:layout_alignTop="@+id/btn_trip_status"
+                android:layout_alignStart="@+id/rbAddRating_trip" />
 
         </RelativeLayout>
 
@@ -328,8 +350,8 @@
         <RelativeLayout
             android:id="@+id/online_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:alpha="0.9"
+            android:layout_height="match_parent"
+            android:alpha="0.95"
             android:background="@color/black"
             android:visibility="gone">
 
@@ -337,7 +359,7 @@
                 android:id="@+id/_online_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/circle" />

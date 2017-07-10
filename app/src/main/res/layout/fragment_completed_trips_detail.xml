@@ -303,6 +303,11 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x139"
+        android:src="@drawable/trip"/>
+
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/CircularImageSharePop"
@@ -313,6 +318,8 @@
         android:layout_marginTop="70dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
+
 
 
 

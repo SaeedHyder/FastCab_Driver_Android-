@@ -243,5 +243,7 @@
     <string name="start_trip">start trip</string>
     <string name="end_trip">End Trip</string>
     <string name="date_after_error">Selected Date is After Current Date</string>
+    <string name="fare">Fare</string>
+    <string name="tip">Tip</string>
 
 </resources>

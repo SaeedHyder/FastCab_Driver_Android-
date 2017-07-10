@@ -42,6 +42,7 @@ import com.app.fastcab.ui.views.TitleBar;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -50,6 +51,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -116,6 +118,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
     private List<Polyline> polylinePaths = new ArrayList<>();
     private boolean isRideinSession = false;
     private TitleBar titlebar;
+    private boolean isTitleBarChange;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -154,7 +157,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
     @Override
     public void onViewCreated(View view, @android.support.annotation.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (prefHelper.isOnline()) {
+        if (prefHelper.isOnline()&&!isRideinSession) {
             btnOnlineStatus.setText(R.string.go_offline);
             btnLocation.setVisibility(View.VISIBLE);
             new Handler().postDelayed(new Runnable() {
@@ -216,10 +219,14 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
     public void setTitleBar(TitleBar titleBar) {
         super.setTitleBar(titleBar);
         this.titlebar = titleBar;
-        titleBar.hideButtons();
-        titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-        titleBar.showMenuButton();
-        titleBar.setSubHeading(getResources().getString(R.string.home));
+        if (isTitleBarChange){
+            adjustTitleBar();
+        }else {
+            titleBar.hideButtons();
+            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+            titleBar.showMenuButton();
+            titleBar.setSubHeading(getResources().getString(R.string.home));
+        }
     }
 
 
@@ -376,16 +383,26 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
 
     private void setupRideScreens() {
         if (origin == null)
-            getCurrentLocation();
+           origin = new LocationEnt("Unnamed Address",new LatLng(0,0));
 
         LocationDetail.setVisibility(View.VISIBLE);
         DetailContainer.setVisibility(View.GONE);
         TripContainer.setVisibility(View.VISIBLE);
         isRideinSession = true;
 
-        LatLng des = translateCoordinates(2000, origin.getLatlng(), 90);
+        LatLng des = translateCoordinates(8000, origin.getLatlng(), 90);
         destination = new LocationEnt(getCurrentAddress(des.latitude, des.longitude), des);
         setRoute();
+        isTitleBarChange = true;
+        adjustTitleBar();
+
+    }
+
+    private void adjustTitleBar() {
+        titlebar.hideButtons();
+        titlebar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+        titlebar.showMenuButton();
+        titlebar.setSubHeading(getResources().getString(R.string.home));
         titlebar.showMessageButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -400,7 +417,6 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
                 startActivity(intent);
             }
         });
-
     }
 
     public LatLng translateCoordinates(final double distance, final LatLng origpoint, final double angle) {
@@ -436,8 +452,8 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
 
     @Override
     public void onLocationActivateListener() {
-       /* if (origin == null || origin.getLatlng().equals(new LatLng(0, 0)))
-            getCurrentLocation();*/
+        if (origin == null || origin.getLatlng().equals(new LatLng(0, 0)))
+            getCurrentLocation();
     }
 
     @Override
@@ -454,10 +470,10 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
                 if (btnOnlineStatus.getText().toString().equals(getResources().getString(R.string.go_online))) {
                     onlineContainer.setVisibility(View.VISIBLE);
                     titlebar.hideTitleBar();
-                    ((ViewGroup) viewParent.getParent()).setPadding(0, (int) getResources().getDimension(R.dimen.x50_), 0, 0);
+                   ((ViewGroup) viewParent.getParent()).setPadding(0, (int) getResources().getDimension(R.dimen.x50_), 0, 0);
                 } else {
                     btnOnlineStatus.setText(R.string.go_online);
-                    btnLocation.setVisibility(View.GONE);
+                    btnLocation.setVisibility(View.VISIBLE);
                     prefHelper.setUserStatus(false);
                 }
                 break;
@@ -468,12 +484,13 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
                 prefHelper.setUserStatus(true);
                 ((ViewGroup) viewParent.getParent()).setPadding(0, (int) getResources().getDimension(R.dimen.x50), 0, 0);
                 titlebar.showTitleBar();
+                if(!isRideinSession){
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         setupNewRideDialog();
                     }
-                }, 5000);
+                }, 5000);}
                 break;
             case R.id.btn_location:
                 if (getMainActivity().statusCheck())
@@ -495,7 +512,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
         endride.initendtrip(R.layout.endtrip_dialog, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                isTitleBarChange = false;
                 destination = null;
                 googleMap.clear();
                 getCurrentLocation();
@@ -562,11 +579,11 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
         polylinePaths = new ArrayList<>();
         originMarkers = new ArrayList<>();
         destinationMarkers = new ArrayList<>();
-        googleMap.addMarker(new MarkerOptions().position(destination.getLatlng())
+      /*  googleMap.addMarker(new MarkerOptions().position(destination.getLatlng())
                 .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.set_pickup_location_trip,
                         "14 min", R.color.black))));
         BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.car);
-        googleMap.addMarker(new MarkerOptions().position(origin.getLatlng()).icon(icon));
+        googleMap.addMarker(new MarkerOptions().position(origin.getLatlng()).icon(icon));*/
       //  movemap(origin.getLatlng());
         for (Route routesingle : route) {
             PolylineOptions polylineOptions = new PolylineOptions().
@@ -574,12 +591,40 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
                     color(Color.BLACK).
                     width(15);
 
+            googleMap.addMarker(new MarkerOptions().position(destination.getLatlng())
+                    .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.set_pickup_location_trip,
+                            routesingle.duration.text, R.color.black))));
+            BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.car);
+            googleMap.addMarker(new MarkerOptions().position(origin.getLatlng()).icon(icon));
+
             for (int i = 0; i < routesingle.points.size(); i++)
                 polylineOptions.add(routesingle.points.get(i));
             //moveMap(null);
+            moveRouteMap();
             polylinePaths.add(googleMap.addPolyline(polylineOptions));
 
         }
+    }
+
+    private void moveRouteMap() {
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        builder.include(origin.getLatlng());
+        builder.include(destination.getLatlng());
+        LatLngBounds bounds = builder.build();
+
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 50);
+        googleMap.animateCamera(cu, new GoogleMap.CancelableCallback() {
+            @Override
+            public void onFinish() {
+                CameraUpdate zout = CameraUpdateFactory.zoomBy(-0.5f);
+                googleMap.animateCamera(zout);
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        });
     }
 
     private Bitmap getMarkerBitmapFromView(@DrawableRes int resId, String title, int ColorID) {

@@ -138,7 +138,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x20"
             android:layout_marginRight="@dimen/x20"
-            android:layout_marginTop="@dimen/x50"
+            android:layout_marginTop="@dimen/x40"
+            android:layout_marginBottom="@dimen/x10"
             android:orientation="horizontal">
 
             <ImageView
@@ -163,13 +164,22 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x2"
+            android:layout_marginTop="@dimen/x7"
+            android:alpha="0.3"
+            android:layout_below="@+id/txt_Notification"
+            android:background="@drawable/line" />
+
         <LinearLayout
             android:id="@+id/ll_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x20"
             android:layout_marginRight="@dimen/x20"
-            android:layout_marginTop="@dimen/x25"
+            android:layout_marginTop="@dimen/x10"
+            android:layout_marginBottom="@dimen/x10"
             android:orientation="horizontal">
 
             <ImageView
@@ -194,13 +204,21 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x2"
+            android:layout_marginTop="@dimen/x7"
+            android:alpha="0.3"
+            android:layout_below="@+id/txt_Notification"
+            android:background="@drawable/line" />
+
         <LinearLayout
             android:id="@+id/ll_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x20"
             android:layout_marginRight="@dimen/x20"
-            android:layout_marginTop="@dimen/x25"
+            android:layout_marginTop="@dimen/x10"
             android:orientation="horizontal">
 
             <ImageView

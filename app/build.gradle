@@ -76,5 +76,9 @@ dependencies {
 
     //Merlin
     compile 'com.novoda:merlin:1.0.0'
+    //image Chooser library
+    compile 'com.kbeanie:image-chooser-library:1.5.8@aar'
+    //picasso
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
 }
