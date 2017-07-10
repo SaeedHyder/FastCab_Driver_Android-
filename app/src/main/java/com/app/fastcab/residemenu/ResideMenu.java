@@ -6,14 +6,22 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Rect;
+import android.os.Build;
+import android.os.IBinder;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowInsets;
+import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -25,6 +33,8 @@ import com.app.fastcab.activities.DockActivity;
 import com.app.fastcab.global.SideMenuDirection;
 import com.nineoldandroids.view.ViewHelper;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,9 +140,96 @@ public class ResideMenu extends FrameLayout {
 
 
     }
-
+    @Override
+    protected boolean fitSystemWindows(Rect insets) {
+        setMyPadding(insets);
+        return true;
+    }
 
     @Override
+    public WindowInsets onApplyWindowInsets(WindowInsets insets) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+            Rect rect = new Rect(
+                    insets.getSystemWindowInsetLeft(),
+                    insets.getSystemWindowInsetTop(),
+                    insets.getSystemWindowInsetRight(),
+                    insets.getSystemWindowInsetBottom()
+            );
+            setMyPadding(rect);
+            return insets.consumeSystemWindowInsets();
+        }
+        return super.onApplyWindowInsets(insets);
+    }
+
+    private void setMyPadding(Rect rect) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (hasNavBar()) {
+                WindowManager manager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+                switch (manager.getDefaultDisplay().getRotation()) {
+                    case Surface.ROTATION_90:
+                        rect.right += viewActivity.getPaddingRight() + getNavBarWidth();
+                        break;
+                    case Surface.ROTATION_180:
+                        rect.top += viewActivity.getPaddingTop() + getNavBarHeight();
+                        break;
+                    case Surface.ROTATION_270:
+                        rect.left += viewActivity.getPaddingLeft() + getNavBarWidth();
+                        break;
+                    default:
+                        rect.bottom += viewActivity.getPaddingBottom() + getNavBarHeight();
+                }
+            }
+        }
+        setPadding(rect.left, rect.top, rect.right, rect.bottom);
+    }
+
+    private int getNavBarWidth() {
+        return getNavBarDimen("navigation_bar_width");
+    }
+
+    private int getNavBarHeight() {
+        return getNavBarDimen("navigation_bar_height");
+    }
+
+    private int getNavBarDimen(String resourceString) {
+        Resources r = getResources();
+        int id = r.getIdentifier(resourceString, "dimen", "android");
+        if (id > 0) {
+            return r.getDimensionPixelSize(id);
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * check is system has navigation bar or not* http://stackoverflow.com/a/29120269/3758898
+     *
+     * @return true if navigation bar is present or false
+     */
+    boolean hasNavBar() {
+        try {
+            // check for emulator
+            Class<?> serviceManager = Class.forName("android.os.ServiceManager");
+            IBinder serviceBinder = (IBinder) serviceManager.getMethod("getService", String.class).invoke(serviceManager, "window");
+            Class<?> stub = Class.forName("android.view.IWindowManager$Stub");
+            Object windowManagerService = stub.getMethod("asInterface", IBinder.class).invoke(stub, serviceBinder);
+            Method hasNavigationBar = windowManagerService.getClass().getMethod("hasNavigationBar");
+            return (boolean) hasNavigationBar.invoke(windowManagerService);
+        } catch (ClassNotFoundException
+                | ClassCastException
+                | NoSuchMethodException
+                | SecurityException
+                | IllegalAccessException
+                | IllegalArgumentException
+                | InvocationTargetException e) {
+
+            boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
+            boolean hasHomeKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_HOME);
+            return !hasHomeKey && !hasBackKey;
+        }}
+
+
+   /* @Override
     protected boolean fitSystemWindows(Rect insets) {
         // Applies the content insets to the view's padding, consuming that
         // content (modifying the insets to be 0),
@@ -154,7 +251,8 @@ public class ResideMenu extends FrameLayout {
                 0);
         insets.left = insets.top = insets.right = insets.bottom = 0;
         return true;
-    }
+    }*/
+
 
     private int getNavigationBarHeight() {
         Resources resources = getResources();
@@ -713,6 +811,14 @@ public class ResideMenu extends FrameLayout {
 
     public void setUse3D(boolean use3D) {
         mUse3D = use3D;
+    }
+
+    public View getLeftMenu() {
+        return leftMenuView;
+    }
+
+    public View getRightMenu() {
+        return rightMenuView;
     }
 
     public interface OnMenuListener {

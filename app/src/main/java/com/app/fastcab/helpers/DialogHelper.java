@@ -43,7 +43,7 @@ public class DialogHelper {
         textView.setText(Text);
     }
 
-    public Dialog initJobRefusalDialog(int layoutID, View.OnClickListener onclicklistener) {
+    /*public Dialog initJobRefusalDialog(int layoutID, View.OnClickListener onclicklistener) {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         this.dialog.setContentView(layoutID);
@@ -60,36 +60,36 @@ public class DialogHelper {
         closeButton.setOnClickListener(onclicklistener);
         return this.dialog;
     }
-
-    public Dialog logout(int layoutID, View.OnClickListener onokclicklistener, View.OnClickListener oncancelclicklistener) {
+*/
+    public Dialog initlogout(int layoutID, View.OnClickListener onokclicklistener, View.OnClickListener oncancelclicklistener) {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         this.dialog.setContentView(layoutID);
-        Button okbutton = (Button) dialog.findViewById(R.id.btn_No);
+        Button okbutton = (Button) dialog.findViewById(R.id.btn_yes);
         okbutton.setOnClickListener(onokclicklistener);
-        Button cancelbutton = (Button) dialog.findViewById(R.id.btn_yes);
+        Button cancelbutton = (Button) dialog.findViewById(R.id.btn_No);
         cancelbutton.setOnClickListener(oncancelclicklistener);
         return this.dialog;
     }
 
-    public Dialog NewRide(int layoutID, View.OnClickListener onokclicklistener, View.OnClickListener oncancelclicklistener) {
+    public Dialog initNewRide(int layoutID, View.OnClickListener onokclicklistener, View.OnClickListener oncancelclicklistener) {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         this.dialog.setContentView(layoutID);
-        Button okbutton = (Button) dialog.findViewById(R.id.btnReject);
+        Button okbutton = (Button) dialog.findViewById(R.id.btn_accept);
         okbutton.setOnClickListener(onokclicklistener);
-        Button cancelbutton = (Button) dialog.findViewById(R.id.btn_accept);
+        Button cancelbutton = (Button) dialog.findViewById(R.id.btnReject);
         cancelbutton.setOnClickListener(oncancelclicklistener);
         return this.dialog;
     }
 
-    public Dialog endtrip(int layoutID, View.OnClickListener onokclicklistener, View.OnClickListener oncancelclicklistener) {
+    public Dialog initendtrip(int layoutID, View.OnClickListener onokclicklistener, View.OnClickListener oncancelclicklistener) {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         this.dialog.setContentView(layoutID);
-        Button okbutton = (Button) dialog.findViewById(R.id.btn_No);
+        Button okbutton = (Button) dialog.findViewById(R.id.btn_yes);
         okbutton.setOnClickListener(onokclicklistener);
-        Button cancelbutton = (Button) dialog.findViewById(R.id.btn_yes);
+        Button cancelbutton = (Button) dialog.findViewById(R.id.btn_No);
         cancelbutton.setOnClickListener(oncancelclicklistener);
         return this.dialog;
     }

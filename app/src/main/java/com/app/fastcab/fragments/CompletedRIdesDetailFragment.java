@@ -93,7 +93,7 @@ public class CompletedRIdesDetailFragment extends BaseFragment implements View.O
         titleBar.hideButtons();
         titleBar.showBackButton();
         titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-        titleBar.setSubHeading("Ride No");
+        titleBar.setSubHeading("Ride 055052");
     }
 
 

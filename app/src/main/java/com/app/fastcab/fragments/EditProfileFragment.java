@@ -1,18 +1,23 @@
 package com.app.fastcab.fragments;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.app.fastcab.R;
 import com.app.fastcab.fragments.abstracts.BaseFragment;
+import com.app.fastcab.helpers.DatePickerHelper;
+import com.app.fastcab.helpers.UIHelper;
 import com.app.fastcab.ui.views.AnyEditTextView;
 import com.app.fastcab.ui.views.AnyTextView;
 import com.app.fastcab.ui.views.CustomRatingBar;
@@ -80,6 +85,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
     Calendar calendar;
     int Year, Month, Day;
+    private Date DateSelected;
 
     public static EditProfileFragment newInstance() {
         return new EditProfileFragment();
@@ -114,7 +120,40 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         Day = calendar.get(Calendar.DAY_OF_MONTH);
     }
 
+    private void initDatePicker(final TextView textView) {
+        Calendar calendar = Calendar.getInstance();
+        final DatePickerHelper datePickerHelper = new DatePickerHelper();
+        datePickerHelper.initDateDialog(
+                getDockActivity(),
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+                , new android.app.DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        Date date = new Date();
+                        Calendar c = Calendar.getInstance();
+                        c.set(Calendar.YEAR, year);
+                        c.set(Calendar.MONTH, month);
+                        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
+// and get that as a Date
+                        Date dateSpecified = c.getTime();
+                        if (dateSpecified.after(date)) {
+                            UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.date_after_error));
+                        } else {
+                            DateSelected = dateSpecified;
+                            String predate = new SimpleDateFormat("EEE,MMM d").format(c.getTime());
+
+                            textView.setText(predate);
+                            textView.setPaintFlags(Typeface.BOLD);
+                        }
+
+                    }
+                }, "PreferredDate",1);
+
+        datePickerHelper.showDate();
+    }
     void ShowDateDialog(final AnyTextView txtView) {
 
 
@@ -196,7 +235,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         switch (v.getId()) {
 
             case R.id.edtDateOfBirth:
-                ShowDateDialog(edtDateOfBirth);
+                initDatePicker(edtDateOfBirth);
                 break;
 
         }

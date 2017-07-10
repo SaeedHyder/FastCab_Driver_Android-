@@ -1,9 +1,20 @@
 package com.app.fastcab.activities;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentSender;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -20,33 +31,50 @@ import com.app.fastcab.global.SideMenuChooser;
 import com.app.fastcab.global.SideMenuDirection;
 import com.app.fastcab.helpers.ScreenHelper;
 import com.app.fastcab.helpers.UIHelper;
+import com.app.fastcab.interfaces.OnSettingActivateListener;
 import com.app.fastcab.residemenu.ResideMenu;
 import com.app.fastcab.ui.views.TitleBar;
 import com.facebook.FacebookSdk;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStates;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class MainActivity extends DockActivity implements OnClickListener {
+public class MainActivity extends DockActivity implements OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+    public final int LocationResultCode = 1;
+    public final int WifiResultCode = 2;
     public TitleBar titleBar;
+    @BindView(R.id.sideMneuFragmentContainer)
+    public FrameLayout sideMneuFragmentContainer;
     @BindView(R.id.header_main)
     TitleBar header_main;
     @BindView(R.id.mainFrameLayout)
     FrameLayout mainFrameLayout;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
-    @BindView(R.id.sideMneuFragmentContainer)
-    public FrameLayout sideMneuFragmentContainer;
+    AlertDialog alert;
     private MainActivity mContext;
     private boolean loading;
-
     private ResideMenu resideMenu;
-
     private float lastTranslate = 0.0f;
-
     private String sideMenuType;
     private String sideMenuDirection;
+    private OnSettingActivateListener settingActivateListener;
+
+    public void setSettingActivateListener(OnSettingActivateListener settingActivateListener) {
+        this.settingActivateListener = settingActivateListener;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,6 +83,7 @@ public class MainActivity extends DockActivity implements OnClickListener {
         FacebookSdk.sdkInitialize(getApplicationContext());
         ButterKnife.bind(this);
         titleBar = header_main;
+
         // setBehindContentView(R.layout.fragment_frame);
         mContext = this;
         Log.i("Screen Density", ScreenHelper.getDensity(this) + "");
@@ -69,10 +98,9 @@ public class MainActivity extends DockActivity implements OnClickListener {
             @Override
             public void onClick(View v) {
                 if (getDrawerLayout() != null) {
-                    if(sideMenuDirection.equals(SideMenuDirection.LEFT.getValue())) {
+                    if (sideMenuDirection.equals(SideMenuDirection.LEFT.getValue())) {
                         drawerLayout.openDrawer(Gravity.LEFT);
-                    }
-                    else{
+                    } else {
                         drawerLayout.openDrawer(Gravity.RIGHT);
                     }
                 } else {
@@ -98,7 +126,6 @@ public class MainActivity extends DockActivity implements OnClickListener {
                 }
             }
         });
-
         if (savedInstanceState == null)
             initFragment();
 
@@ -110,6 +137,159 @@ public class MainActivity extends DockActivity implements OnClickListener {
 
     public View getDrawerView() {
         return getLayoutInflater().inflate(getSideMenuFrameLayoutId(), null);
+    }
+
+    public boolean statusCheck() {
+        if (isConnected(getApplicationContext())) {
+            final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                turnLocationOn(null);
+                // buildAlertMessageNoGps(R.string.gps_question, Settings.ACTION_LOCATION_SOURCE_SETTINGS, LocationResultCode);
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isConnected(Context context) {
+
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netinfo = cm.getActiveNetworkInfo();
+
+        if (netinfo != null && netinfo.isConnectedOrConnecting()) {
+            android.net.NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            android.net.NetworkInfo mobile = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+            if ((mobile != null && mobile.isConnectedOrConnecting()) || (wifi != null && wifi.isConnectedOrConnecting()))
+                return true;
+            else {
+
+                return false;
+            }
+        } else {
+            buildAlertMessageNoGps(R.string.wifi_question, Settings.ACTION_WIFI_SETTINGS, WifiResultCode);
+            return false;
+        }
+    }
+
+    private void buildAlertMessageNoGps(final int StringResourceID, final String IntentType, final int requestCode) {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getDockActivity());
+        builder
+                .setMessage(getString(StringResourceID))
+                .setCancelable(false)
+                .setPositiveButton(getResources().getString(R.string.gps_yes), new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        if (StringResourceID == R.string.gps_question) {
+                            dialog.cancel();
+                            turnLocationOn(null);
+                            dialog.dismiss();
+                        } else {
+                            dialog.cancel();
+                            startImpIntent(dialog, IntentType, requestCode);
+                            dialog.dismiss();
+                        }
+
+                        // startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS),LocationResultCode);
+                    }
+                })
+                .setNegativeButton(getResources().getString(R.string.gps_no), new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.dismiss();
+                        dialog.cancel();
+
+                    }
+                });
+        if (alert == null) {
+            alert = builder.create();
+
+        }
+
+        if (!alert.isShowing())
+            alert.show();
+
+    }
+
+    public void turnLocationOn(GoogleApiClient apiClient) {
+        if (apiClient == null) {
+            apiClient = new GoogleApiClient.Builder(getApplicationContext())
+                    .addApi(LocationServices.API)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this).build();
+            apiClient.connect();
+
+            LocationRequest locationRequest = LocationRequest.create();
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            locationRequest.setInterval(30 * 1000);
+            locationRequest.setFastestInterval(5 * 1000);
+            LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                    .addLocationRequest(locationRequest);
+
+            //**************************
+            builder.setAlwaysShow(true); //this is the key ingredient
+            //**************************
+
+            PendingResult<LocationSettingsResult> result =
+                    LocationServices.SettingsApi.checkLocationSettings(apiClient, builder.build());
+            result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+                @Override
+                public void onResult(LocationSettingsResult result) {
+                    final Status status = result.getStatus();
+                    final LocationSettingsStates state = result.getLocationSettingsStates();
+                    switch (status.getStatusCode()) {
+                        case LocationSettingsStatusCodes.SUCCESS:
+                            settingActivateListener.onLocationActivateListener();
+                            // All location settings are satisfied. The client can initialize location
+                            // requests here.
+                            break;
+                        case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                            // Location settings are not satisfied. But could be fixed by showing the user
+                            // a dialog.
+                            try {
+                                // Show the dialog by calling startResolutionForResult(),
+                                // and check the result in onActivityResult().
+                                status.startResolutionForResult(
+                                        getDockActivity(), 1000);
+                            } catch (IntentSender.SendIntentException e) {
+                                // Ignore the error.
+                            }
+                            break;
+                        case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                            // Location settings are not satisfied. However, we have no way to fix the
+                            // settings so we won't show the dialog.
+                            break;
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == LocationResultCode) {
+            settingActivateListener.onLocationActivateListener();
+        }
+
+        if (requestCode == WifiResultCode) {
+            settingActivateListener.onNetworkActivateListener();
+
+        }
+        if (requestCode == 1000){
+            settingActivateListener.onLocationActivateListener();
+        }
+
+
+    }
+
+    private void startImpIntent(DialogInterface dialog, String IntentType, int requestCode) {
+        dialog.dismiss();
+        Intent i = new Intent(IntentType);
+        i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivityForResult(i, requestCode);
     }
 
     private void settingSideMenu(String type, String direction) {
@@ -175,6 +355,7 @@ public class MainActivity extends DockActivity implements OnClickListener {
             replaceDockableFragment(LoginFragment.newInstance(), "LoginFragment");
         }
     }
+
     private FragmentManager.OnBackStackChangedListener getListener() {
         FragmentManager.OnBackStackChangedListener result = new FragmentManager.OnBackStackChangedListener() {
             public void onBackStackChanged() {
@@ -263,4 +444,18 @@ public class MainActivity extends DockActivity implements OnClickListener {
         UIHelper.showLongToastInCenter(this, "Coming Soon");
     }
 
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
 }

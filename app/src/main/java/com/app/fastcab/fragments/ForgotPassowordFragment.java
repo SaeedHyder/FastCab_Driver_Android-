@@ -69,6 +69,7 @@ public class ForgotPassowordFragment extends BaseFragment {
     public void setTitleBar(TitleBar titleBar) {
         super.setTitleBar(titleBar);
         titleBar.hideButtons();
+        titleBar.setBackgroundColor(getResources().getColor(R.color.transparent));
         titleBar.showBackButton();
         titleBar.setSubHeading(getResources().getString(R.string.forgot_password_heading));
     }
