@@ -52,31 +52,29 @@ import butterknife.ButterKnife;
 
 
 public class MainActivity extends DockActivity implements OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+    public final int LocationResultCode = 1;
+    public final int WifiResultCode = 2;
     public TitleBar titleBar;
+    @BindView(R.id.sideMneuFragmentContainer)
+    public FrameLayout sideMneuFragmentContainer;
     @BindView(R.id.header_main)
     TitleBar header_main;
     @BindView(R.id.mainFrameLayout)
     FrameLayout mainFrameLayout;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
-    @BindView(R.id.sideMneuFragmentContainer)
-    public FrameLayout sideMneuFragmentContainer;
+    AlertDialog alert;
     private MainActivity mContext;
     private boolean loading;
-    public final int LocationResultCode = 1;
-    public final int WifiResultCode = 2;
     private ResideMenu resideMenu;
-
     private float lastTranslate = 0.0f;
-
     private String sideMenuType;
     private String sideMenuDirection;
+    private OnSettingActivateListener settingActivateListener;
 
     public void setSettingActivateListener(OnSettingActivateListener settingActivateListener) {
         this.settingActivateListener = settingActivateListener;
     }
-
-    private OnSettingActivateListener settingActivateListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,6 +83,7 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
         FacebookSdk.sdkInitialize(getApplicationContext());
         ButterKnife.bind(this);
         titleBar = header_main;
+
         // setBehindContentView(R.layout.fragment_frame);
         mContext = this;
         Log.i("Screen Density", ScreenHelper.getDensity(this) + "");
@@ -99,10 +98,9 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
             @Override
             public void onClick(View v) {
                 if (getDrawerLayout() != null) {
-                    if(sideMenuDirection.equals(SideMenuDirection.LEFT.getValue())) {
+                    if (sideMenuDirection.equals(SideMenuDirection.LEFT.getValue())) {
                         drawerLayout.openDrawer(Gravity.LEFT);
-                    }
-                    else{
+                    } else {
                         drawerLayout.openDrawer(Gravity.RIGHT);
                     }
                 } else {
@@ -128,7 +126,6 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
                 }
             }
         });
-
         if (savedInstanceState == null)
             initFragment();
 
@@ -141,6 +138,7 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
     public View getDrawerView() {
         return getLayoutInflater().inflate(getSideMenuFrameLayoutId(), null);
     }
+
     public boolean statusCheck() {
         if (isConnected(getApplicationContext())) {
             final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -154,6 +152,7 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
         }
         return false;
     }
+
     public boolean isConnected(Context context) {
 
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -174,23 +173,20 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
             return false;
         }
     }
+
     private void buildAlertMessageNoGps(final int StringResourceID, final String IntentType, final int requestCode) {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getDockActivity());
-        AlertDialog alert = builder.create();
-        final AlertDialog finalAlert = alert;
         builder
                 .setMessage(getString(StringResourceID))
                 .setCancelable(false)
                 .setPositiveButton(getResources().getString(R.string.gps_yes), new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
                         if (StringResourceID == R.string.gps_question) {
-                            finalAlert.dismiss();
                             dialog.cancel();
                             turnLocationOn(null);
                             dialog.dismiss();
                         } else {
-                            finalAlert.dismiss();
                             dialog.cancel();
                             startImpIntent(dialog, IntentType, requestCode);
                             dialog.dismiss();
@@ -201,15 +197,21 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
                 })
                 .setNegativeButton(getResources().getString(R.string.gps_no), new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
-                        finalAlert.dismiss();
+                        dialog.dismiss();
                         dialog.cancel();
-                        finalAlert.dismiss();
+
                     }
                 });
-        alert = builder.create();
-        alert.show();
+        if (alert == null) {
+            alert = builder.create();
+
+        }
+
+        if (!alert.isShowing())
+            alert.show();
 
     }
+
     public void turnLocationOn(GoogleApiClient apiClient) {
         if (apiClient == null) {
             apiClient = new GoogleApiClient.Builder(getApplicationContext())
@@ -263,6 +265,7 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
             });
         }
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -272,19 +275,23 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
         }
 
         if (requestCode == WifiResultCode) {
-
             settingActivateListener.onNetworkActivateListener();
 
+        }
+        if (requestCode == 1000){
+            settingActivateListener.onLocationActivateListener();
         }
 
 
     }
+
     private void startImpIntent(DialogInterface dialog, String IntentType, int requestCode) {
         dialog.dismiss();
         Intent i = new Intent(IntentType);
         i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivityForResult(i, requestCode);
     }
+
     private void settingSideMenu(String type, String direction) {
 
         if (type.equals(SideMenuChooser.DRAWER.getValue())) {
@@ -348,6 +355,7 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
             replaceDockableFragment(LoginFragment.newInstance(), "LoginFragment");
         }
     }
+
     private FragmentManager.OnBackStackChangedListener getListener() {
         FragmentManager.OnBackStackChangedListener result = new FragmentManager.OnBackStackChangedListener() {
             public void onBackStackChanged() {

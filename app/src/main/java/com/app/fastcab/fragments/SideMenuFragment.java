@@ -137,6 +137,8 @@ public class SideMenuFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (navigationEnts.get(position).getTitle().equals(getString(R.string.home))) {
                     getMainActivity().getResideMenu().closeMenu();
+                    getDockActivity().popBackStackTillEntry(0);
+                    getDockActivity().replaceDockableFragment(HomeFragment.newInstance(),HomeFragment.class.getSimpleName());
 
                 }
                 else if (navigationEnts.get(position).getTitle().equals(getString(R.string.Pending_Requests))) {

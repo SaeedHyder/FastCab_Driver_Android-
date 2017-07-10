@@ -32,6 +32,7 @@ import android.widget.TextView;
 import com.app.fastcab.R;
 import com.app.fastcab.entities.LocationEnt;
 import com.app.fastcab.fragments.abstracts.BaseFragment;
+import com.app.fastcab.helpers.BottomSheetDialogHelper;
 import com.app.fastcab.helpers.DialogHelper;
 import com.app.fastcab.helpers.UIHelper;
 import com.app.fastcab.interfaces.OnSettingActivateListener;
@@ -104,6 +105,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
     Button btnTripStatus;
     @BindView(R.id.ll_locationdetail)
     LinearLayout LocationDetail;
+
     private View viewParent;
     private LocationEnt origin;
     private LocationEnt destination;
@@ -274,10 +276,9 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
         super.onResume();
         UIHelper.hideSoftKeyboard(getDockActivity(), getMainActivity()
                 .getWindow().getDecorView());
-        if (origin == null) {
+        if (origin == null||origin.getLatlng().equals(new LatLng(0,0))) {
             getMainActivity().statusCheck();
             getCurrentLocation();
-
         }
     }
 
@@ -321,6 +322,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
 
     @Override
     public void onConnected(@android.support.annotation.Nullable Bundle bundle) {
+
         if (origin == null || origin.getLatlng().equals(new LatLng(0, 0)))
             getCurrentLocation();
     }
@@ -373,11 +375,15 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
     }
 
     private void setupRideScreens() {
+        if (origin == null)
+            getCurrentLocation();
+
         LocationDetail.setVisibility(View.VISIBLE);
         DetailContainer.setVisibility(View.GONE);
         TripContainer.setVisibility(View.VISIBLE);
         isRideinSession = true;
-        LatLng des = translateCoordinates(20000, origin.getLatlng(), 180);
+
+        LatLng des = translateCoordinates(2000, origin.getLatlng(), 90);
         destination = new LocationEnt(getCurrentAddress(des.latitude, des.longitude), des);
         setRoute();
         titlebar.showMessageButton(new View.OnClickListener() {
@@ -394,6 +400,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
                 startActivity(intent);
             }
         });
+
     }
 
     public LatLng translateCoordinates(final double distance, final LatLng origpoint, final double angle) {
@@ -429,14 +436,14 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
 
     @Override
     public void onLocationActivateListener() {
-        if (origin == null || origin.getLatlng().equals(new LatLng(0, 0)))
-            getCurrentLocation();
+       /* if (origin == null || origin.getLatlng().equals(new LatLng(0, 0)))
+            getCurrentLocation();*/
     }
 
     @Override
     public void onNetworkActivateListener() {
-        if (origin == null || origin.getLatlng().equals(new LatLng(0, 0)))
-            getCurrentLocation();
+      /*  if (origin == null || origin.getLatlng().equals(new LatLng(0, 0)))
+            getCurrentLocation();*/
     }
 
 
@@ -475,6 +482,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
             case R.id.btn_trip_status:
                 if (btnTripStatus.getText().toString().equals(getResources().getString(R.string.start_trip))) {
                     btnTripStatus.setText(R.string.end_trip);
+                    LocationDetail.setVisibility(View.GONE);
                 } else {
                     setupEndRideDialog();
                 }
@@ -496,9 +504,8 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
                 TripContainer.setVisibility(View.GONE);
                 endride.hideDialog();
                 DetailContainer.setVisibility(View.VISIBLE);
-                titlebar.hideButtons();
-                titlebar.showMenuButton();
-                titlebar.setSubHeading(getResources().getString(R.string.home));
+                btnTripStatus.setText(getResources().getString(R.string.start_trip));
+                showRatingDialog();
             }
         }, new View.OnClickListener() {
             @Override
@@ -508,6 +515,24 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
         });
         endride.setCancelable(false);
         endride.showDialog();
+    }
+
+    private void showRatingDialog() {
+        titlebar.hideButtons();
+        titlebar.showMenuButton();
+        titlebar.setSubHeading(getResources().getString(R.string.rate));
+        final BottomSheetDialogHelper ratingDialog =
+                new BottomSheetDialogHelper(getDockActivity(), MainFrame, R.layout.fragment_rate_user);
+        ratingDialog.initRatingDialog(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ratingDialog.hideDialog();
+                titlebar.hideButtons();
+                titlebar.setSubHeading(getResources().getString(R.string.home));
+                titlebar.showMenuButton();
+            }
+        });
+        ratingDialog.showDialog();
     }
 
     @Override
@@ -542,7 +567,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
                         "14 min", R.color.black))));
         BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.car);
         googleMap.addMarker(new MarkerOptions().position(origin.getLatlng()).icon(icon));
-        movemap(origin.getLatlng());
+      //  movemap(origin.getLatlng());
         for (Route routesingle : route) {
             PolylineOptions polylineOptions = new PolylineOptions().
                     geodesic(true).
