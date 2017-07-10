@@ -32,10 +32,14 @@ allprojects {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.google.guava:guava:20.0'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
-    compile 'com.google.android.gms:play-services:4.2.42'
+
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.google.guava:guava:20.0'
+    compile 'com.google.android.gms:play-services-maps:10.2.6'
+    compile 'com.google.android.gms:play-services-base:10.2.6'
+    compile 'com.google.android.gms:play-services-location:10.2.6'
     compile('com.andreabaccega:android-form-edittext:1.2.1@aar') {
         exclude module: 'design'
     }
@@ -56,7 +60,6 @@ dependencies {
     //For retorfit
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.okhttp3:logging-interceptor:3.0.1'
-    compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile project(':nineoldandroids-library-2.4.0')
     compile 'org.jetbrains:annotations-java5:15.0'

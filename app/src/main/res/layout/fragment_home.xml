@@ -6,144 +6,144 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-
-
-    <Button
-        android:id="@+id/Message"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/x5"
-        android:layout_marginLeft="@dimen/x10"
-        android:layout_marginRight="@dimen/x10"
-        android:layout_marginTop="@dimen/x2"
-        android:background="@color/button_color"
-        android:text="Message Fragment"
-        android:textColor="@color/white" />
-
-    <Button
-        android:id="@+id/goOnline"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x10"
-        android:layout_marginRight="@dimen/x10"
-        android:layout_marginBottom="@dimen/x5"
-        android:text="GoOnline Fragment"
-        android:textColor="@color/white"
-        android:background="@color/button_color"/>
-
-    <Button
-        android:id="@+id/endTip"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x10"
-        android:layout_marginRight="@dimen/x10"
-        android:layout_marginBottom="@dimen/x5"
-        android:text="endtip PopUp"
-        android:textColor="@color/white"
-        android:background="@color/button_color"/>
-
-    <Button
-        android:id="@+id/driverProfile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x10"
-        android:layout_marginRight="@dimen/x10"
-        android:layout_marginBottom="@dimen/x5"
-        android:text="DriverProfile Fragment"
-        android:textColor="@color/white"
-        android:background="@color/button_color"/>
-    <Button
-        android:id="@+id/EditdriverProfile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x10"
-        android:layout_marginRight="@dimen/x10"
-        android:layout_marginBottom="@dimen/x5"
-        android:text="EditProfile Fragment"
-        android:textColor="@color/white"
-        android:background="@color/button_color"/>
-    <Button
-        android:id="@+id/changePassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x10"
-        android:layout_marginRight="@dimen/x10"
-        android:layout_marginBottom="@dimen/x5"
-        android:text="ChangePassword Fragment"
-        android:textColor="@color/white"
-        android:background="@color/button_color"/>
-    <Button
-        android:id="@+id/completedTrips"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x10"
-        android:layout_marginRight="@dimen/x10"
-        android:layout_marginBottom="@dimen/x5"
-        android:text="completedTrips Fragment"
-        android:textColor="@color/white"
-        android:background="@color/button_color"/>
-
-    <Button
-        android:id="@+id/completedDetailTrips"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x10"
-        android:layout_marginRight="@dimen/x10"
-        android:layout_marginBottom="@dimen/x5"
-        android:text="completedTrips Detail Fragment"
-        android:textColor="@color/white"
-        android:background="@color/button_color"/>
-
-    <Button
-        android:id="@+id/pendingTrips"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x10"
-        android:layout_marginRight="@dimen/x10"
-        android:layout_marginBottom="@dimen/x5"
-        android:text="Pending Trips Fragment"
-        android:textColor="@color/white"
-        android:background="@color/button_color"/>
-
-    <Button
-        android:id="@+id/pendingDetailTrips"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x10"
-        android:layout_marginRight="@dimen/x10"
-        android:layout_marginBottom="@dimen/x5"
-        android:text="Pending Trips Detail Fragment"
-        android:textColor="@color/white"
-        android:background="@color/button_color"/>
-    <Button
-    android:id="@+id/newRideRequest"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/x10"
-    android:layout_marginRight="@dimen/x10"
-    android:layout_marginBottom="@dimen/x5"
-    android:text="NewRide Dialog"
-    android:textColor="@color/white"
-    android:background="@color/button_color"/>
-
-    <Button
-        android:id="@+id/rateUsRequest"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x10"
-        android:layout_marginRight="@dimen/x10"
-        android:layout_marginBottom="@dimen/x5"
-        android:text="Rate User Dialog"
-        android:textColor="@color/white"
-        android:background="@color/button_color"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
 
 
-</LinearLayout>
+        <Button
+            android:id="@+id/Message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/x5"
+            android:layout_marginLeft="@dimen/x10"
+            android:layout_marginRight="@dimen/x10"
+            android:layout_marginTop="@dimen/x2"
+            android:background="@color/button_color"
+            android:text="Message Fragment"
+            android:textColor="@color/white" />
 
-    </ScrollView>
+        <Button
+            android:id="@+id/goOnline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x10"
+            android:layout_marginRight="@dimen/x10"
+            android:layout_marginBottom="@dimen/x5"
+            android:text="GoOnline Fragment"
+            android:textColor="@color/white"
+            android:background="@color/button_color"/>
+
+        <Button
+            android:id="@+id/endTip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x10"
+            android:layout_marginRight="@dimen/x10"
+            android:layout_marginBottom="@dimen/x5"
+            android:text="endtip PopUp"
+            android:textColor="@color/white"
+            android:background="@color/button_color"/>
+
+        <Button
+            android:id="@+id/driverProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x10"
+            android:layout_marginRight="@dimen/x10"
+            android:layout_marginBottom="@dimen/x5"
+            android:text="DriverProfile Fragment"
+            android:textColor="@color/white"
+            android:background="@color/button_color"/>
+        <Button
+            android:id="@+id/EditdriverProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x10"
+            android:layout_marginRight="@dimen/x10"
+            android:layout_marginBottom="@dimen/x5"
+            android:text="EditProfile Fragment"
+            android:textColor="@color/white"
+            android:background="@color/button_color"/>
+        <Button
+            android:id="@+id/changePassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x10"
+            android:layout_marginRight="@dimen/x10"
+            android:layout_marginBottom="@dimen/x5"
+            android:text="ChangePassword Fragment"
+            android:textColor="@color/white"
+            android:background="@color/button_color"/>
+        <Button
+            android:id="@+id/completedTrips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x10"
+            android:layout_marginRight="@dimen/x10"
+            android:layout_marginBottom="@dimen/x5"
+            android:text="completedTrips Fragment"
+            android:textColor="@color/white"
+            android:background="@color/button_color"/>
+
+        <Button
+            android:id="@+id/completedDetailTrips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x10"
+            android:layout_marginRight="@dimen/x10"
+            android:layout_marginBottom="@dimen/x5"
+            android:text="completedTrips Detail Fragment"
+            android:textColor="@color/white"
+            android:background="@color/button_color"/>
+
+        <Button
+            android:id="@+id/pendingTrips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x10"
+            android:layout_marginRight="@dimen/x10"
+            android:layout_marginBottom="@dimen/x5"
+            android:text="Pending Trips Fragment"
+            android:textColor="@color/white"
+            android:background="@color/button_color"/>
+
+        <Button
+            android:id="@+id/pendingDetailTrips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x10"
+            android:layout_marginRight="@dimen/x10"
+            android:layout_marginBottom="@dimen/x5"
+            android:text="Pending Trips Detail Fragment"
+            android:textColor="@color/white"
+            android:background="@color/button_color"/>
+        <Button
+            android:id="@+id/newRideRequest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x10"
+            android:layout_marginRight="@dimen/x10"
+            android:layout_marginBottom="@dimen/x5"
+            android:text="NewRide Dialog"
+            android:textColor="@color/white"
+            android:background="@color/button_color"/>
+
+        <Button
+            android:id="@+id/rateUsRequest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x10"
+            android:layout_marginRight="@dimen/x10"
+            android:layout_marginBottom="@dimen/x5"
+            android:text="Rate User Dialog"
+            android:textColor="@color/white"
+            android:background="@color/button_color"/>
+
+
+
+    </LinearLayout>
+
+</ScrollView>
