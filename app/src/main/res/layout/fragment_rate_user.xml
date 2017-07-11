@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottom_sheet"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/transparent"
     android:clickable="false"
     android:orientation="vertical"
@@ -12,21 +12,20 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/ll_submitRating"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/x120"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/x100"
             android:background="@color/white"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.6"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <com.app.fastcab.ui.views.AnyTextView
@@ -55,9 +54,9 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
+android:layout_marginBottom="@dimen/x10"
 
-                    android:layout_weight="0.5"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:orientation="vertical">
@@ -188,13 +187,11 @@
                 <LinearLayout
                     android:id="@+id/ll_fare"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:layout_marginBottom="@dimen/x10"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_marginRight="@dimen/x20"
                     android:layout_marginTop="@dimen/x10"
-                    android:layout_weight="0.2"
                     android:orientation="vertical">
 
 
@@ -205,9 +202,9 @@
                         android:layout_marginLeft="@dimen/x20"
                         android:alpha="0.5"
                         android:gravity="center"
-                        android:text="Fare"
+                        android:text="Fare Recieved"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/x14"
+                        android:textSize="@dimen/x15"
                         app:typeface="Roboto-Regular.ttf" />
 
                     <com.app.fastcab.ui.views.AnyTextView
@@ -216,10 +213,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/x20"
                         android:layout_marginTop="@dimen/x3"
+                        android:layout_marginBottom="@dimen/x10"
                         android:gravity="center"
                         android:text="$48.98"
                         android:textColor="@color/button_color"
-                        android:textSize="@dimen/x20"
+                        android:textSize="@dimen/x21"
                         app:typeface="Roboto-Regular.ttf" />
 
                 </LinearLayout>
@@ -229,8 +227,7 @@
             <LinearLayout
                 android:id="@+id/ll_rateDriver"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.3"
+                android:layout_height="wrap_content"
                 android:background="#E8E8EA"
                 android:orientation="vertical">
 
@@ -239,24 +236,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/x20"
-                    android:layout_marginTop="@dimen/x10"
-                    android:layout_weight="0.1"
+                    android:layout_marginTop="@dimen/x15"
                     android:gravity="center"
                     android:text="@string/rate_user"
                     android:textColor="@color/button_color"
-                    android:textSize="@dimen/x15"
+                    android:textSize="@dimen/x16"
                     app:typeface="Roboto-Regular.ttf" />
 
                 <com.app.fastcab.ui.views.CustomRatingBar
                     android:id="@+id/rbAddRating"
                     android:layout_width="@dimen/x200"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="top|center_horizontal"
-                    android:layout_marginBottom="@dimen/x10"
-                    android:layout_weight="0.4"
+                    android:layout_marginBottom="@dimen/x15"
                     android:isIndicator="true"
                     android:visibility="visible"
                     app:maxStars="5"
+                    android:layout_marginTop="@dimen/x10"
                     app:starOff="@drawable/star_unfilled"
                     app:starOn="@drawable/star_filled"
                     app:starPadding="@dimen/x8"
@@ -289,7 +285,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="@dimen/x50"
             android:src="@drawable/image_holder" />
 
 

@@ -59,6 +59,7 @@
                 app:starOff="@drawable/star_unfilled"
                 app:starOn="@drawable/star_filled"
                 app:starPadding="@dimen/x2"
+                app:onlyForDisplay="true"
                 app:stars="3" />
 
                 <com.app.fastcab.ui.views.AnyTextView
@@ -155,8 +156,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x20"
                 android:text="Male"
-                android:textColor="@color/black"
-                android:alpha="0.6"
+                android:textColor="@color/light_grey"
+
                 android:textSize="@dimen/x18"
                 android:gravity="left"
                 app:typeface="Roboto-Regular.ttf"
@@ -195,8 +196,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x20"
                 android:text="+123-456-789"
-                android:textColor="@color/black"
-                android:alpha="0.6"
+                android:textColor="@color/light_grey"
+
                 android:textSize="@dimen/x18"
                 android:gravity="left"
                 app:typeface="Roboto-Regular.ttf"
@@ -234,8 +235,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x20"
                 android:text="Olaya St, Al Olaya,Riyadh 12214,\nSaudi Arabia"
-                android:textColor="@color/black"
-                android:alpha="0.6"
+                android:textColor="@color/light_grey"
                 android:textSize="@dimen/x18"
                 android:gravity="left"
                 app:typeface="Roboto-Regular.ttf"

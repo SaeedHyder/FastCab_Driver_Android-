@@ -64,6 +64,7 @@
                 app:starOff="@drawable/star_unfilled"
                 app:starOn="@drawable/star_filled"
                 app:starPadding="@dimen/x2"
+                app:onlyForDisplay="true"
                 app:stars="3" />
 
             <com.app.fastcab.ui.views.AnyTextView
@@ -209,7 +210,7 @@
                     android:background="@android:color/transparent"
                     android:imeOptions="actionNext"
                     android:inputType="number"
-                    android:maxLength="30"
+                    android:maxLength="16"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="@color/dark_grey"

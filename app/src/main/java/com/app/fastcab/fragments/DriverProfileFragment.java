@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
  * Created by saeedhyder on 6/23/2017.
  */
 
-public class DriverProfileFragment extends BaseFragment implements View.OnClickListener {
+public class DriverProfileFragment extends BaseFragment  {
 
     public static DriverProfileFragment newInstance() {
         return new DriverProfileFragment();
@@ -41,14 +41,7 @@ public class DriverProfileFragment extends BaseFragment implements View.OnClickL
 
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btn_submit:
-                getDockActivity().replaceDockableFragment(HomeFragment.newInstance(),HomeFragment.class.getSimpleName());
-                break;
-        }
-    }
+
 
     @Override
     public void setTitleBar(TitleBar titleBar) {

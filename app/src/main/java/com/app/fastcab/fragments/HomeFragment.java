@@ -41,6 +41,8 @@ import com.app.fastcab.ui.views.CustomRatingBar;
 import com.app.fastcab.ui.views.TitleBar;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -119,6 +121,8 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
     private boolean isRideinSession = false;
     private TitleBar titlebar;
     private boolean isTitleBarChange;
+    private Location Mylocation;
+
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -157,7 +161,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
     @Override
     public void onViewCreated(View view, @android.support.annotation.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (prefHelper.isOnline()&&!isRideinSession) {
+        if (prefHelper.isOnline() && !isRideinSession) {
             btnOnlineStatus.setText(R.string.go_offline);
             btnLocation.setVisibility(View.VISIBLE);
             new Handler().postDelayed(new Runnable() {
@@ -219,9 +223,9 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
     public void setTitleBar(TitleBar titleBar) {
         super.setTitleBar(titleBar);
         this.titlebar = titleBar;
-        if (isTitleBarChange){
+        if (isTitleBarChange) {
             adjustTitleBar();
-        }else {
+        } else {
             titleBar.hideButtons();
             titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             titleBar.showMenuButton();
@@ -283,9 +287,9 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
         super.onResume();
         UIHelper.hideSoftKeyboard(getDockActivity(), getMainActivity()
                 .getWindow().getDecorView());
-        if (origin == null||origin.getLatlng().equals(new LatLng(0,0))) {
+        if (origin == null || origin.getLatlng().equals(new LatLng(0, 0))) {
             getMainActivity().statusCheck();
-            getCurrentLocation();
+            //getCurrentLocation();
         }
     }
 
@@ -295,7 +299,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
         UIHelper.hideSoftKeyboard(getDockActivity(), getMainActivity()
                 .getWindow().getDecorView());
     }
-
+    private LocationListener listener;
     private void getCurrentLocation() {
 
         if (googleMap != null && !isRideinSession)
@@ -304,7 +308,51 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
 
             return;
         }
-        Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        if (Mylocation == null) {
+            locationRequest.setInterval(1000);
+        }
+        listener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location mlocation) {
+                if (mlocation != null) {
+                    Mylocation = mlocation;
+                    listener = null;
+                    if (Mylocation != null) {
+                        //Getting longitude and latitude
+                        longitude = Mylocation.getLongitude();
+                        latitude = Mylocation.getLatitude();
+                        // origin = new LatLng(latitude, longitude);
+                        String Address = getCurrentAddress(latitude, longitude);
+                        if (Address != null) {
+                            //  UIHelper.showShortToastInCenter(getDockActivity(),"Seems Like a problem Try Again");
+                            if (googleMap != null && !isRideinSession) {
+                                googleMap.clear();
+                            }
+                            origin = new LocationEnt(Address, new LatLng(latitude, longitude));
+                            BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.car);
+                            googleMap.addMarker(new MarkerOptions().position(origin.getLatlng()).icon(icon));
+                        } else {
+                            origin = new LocationEnt("Un Named Street", new LatLng(latitude, longitude));
+
+                        }
+
+                        movemap(origin.getLatlng());
+                        // moveMap(new LatLng(latitude, longitude));
+                    } else {
+                        UIHelper.showShortToastInCenter(getDockActivity(), "Can't get your Location Try getting using Location Button");
+                    }
+                }
+            }
+        };
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            {
+                LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, listener);
+            }
+
+      /*  Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
         if (location != null) {
             //Getting longitude and latitude
             longitude = location.getLongitude();
@@ -321,7 +369,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
 
             }
 
-            movemap(origin.getLatlng());
+            movemap(origin.getLatlng());*/
             // moveMap(new LatLng(latitude, longitude));
         }
 
@@ -383,7 +431,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
 
     private void setupRideScreens() {
         if (origin == null)
-           origin = new LocationEnt("Unnamed Address",new LatLng(0,0));
+            origin = new LocationEnt("Unnamed Address", new LatLng(0, 0));
 
         LocationDetail.setVisibility(View.VISIBLE);
         DetailContainer.setVisibility(View.GONE);
@@ -470,7 +518,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
                 if (btnOnlineStatus.getText().toString().equals(getResources().getString(R.string.go_online))) {
                     onlineContainer.setVisibility(View.VISIBLE);
                     titlebar.hideTitleBar();
-                   ((ViewGroup) viewParent.getParent()).setPadding(0, (int) getResources().getDimension(R.dimen.x50_), 0, 0);
+                    ((ViewGroup) viewParent.getParent()).setPadding(0, (int) getResources().getDimension(R.dimen.x50_), 0, 0);
                 } else {
                     btnOnlineStatus.setText(R.string.go_online);
                     btnLocation.setVisibility(View.VISIBLE);
@@ -484,13 +532,14 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
                 prefHelper.setUserStatus(true);
                 ((ViewGroup) viewParent.getParent()).setPadding(0, (int) getResources().getDimension(R.dimen.x50), 0, 0);
                 titlebar.showTitleBar();
-                if(!isRideinSession){
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        setupNewRideDialog();
-                    }
-                }, 5000);}
+                if (!isRideinSession) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            setupNewRideDialog();
+                        }
+                    }, 5000);
+                }
                 break;
             case R.id.btn_location:
                 if (getMainActivity().statusCheck())
@@ -585,7 +634,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
                         "14 min", R.color.black))));
         BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.car);
         googleMap.addMarker(new MarkerOptions().position(origin.getLatlng()).icon(icon));*/
-      //  movemap(origin.getLatlng());
+        //  movemap(origin.getLatlng());
         for (Route routesingle : route) {
             PolylineOptions polylineOptions = new PolylineOptions().
                     geodesic(true).

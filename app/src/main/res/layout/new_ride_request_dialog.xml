@@ -98,10 +98,11 @@
                     android:isIndicator="true"
                     android:visibility="visible"
                     app:maxStars="4"
+                    app:onlyForDisplay="true"
                     app:starOff="@drawable/star_unfilled"
                     app:starOn="@drawable/star_filled"
                     app:starPadding="@dimen/x3"
-                    app:stars="0" />
+                    app:stars="5" />
 
 
             </LinearLayout>

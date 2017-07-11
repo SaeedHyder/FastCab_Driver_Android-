@@ -165,7 +165,7 @@
                     android:background="@android:color/transparent"
                     android:imeOptions="actionNext"
                     android:inputType="number"
-                    android:maxLength="30"
+                    android:maxLength="16"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="@color/dark_grey"
