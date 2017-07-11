@@ -290,6 +290,7 @@
                         app:starOff="@drawable/star_unfilled"
                         app:starOn="@drawable/star_filled"
                         app:starPadding="@dimen/x5"
+                        app:onlyForDisplay="true"
                         app:stars="0" />
                 </LinearLayout>
 
