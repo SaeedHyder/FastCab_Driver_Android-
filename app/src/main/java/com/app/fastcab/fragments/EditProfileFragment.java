@@ -143,7 +143,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                             UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.date_after_error));
                         } else {
                             DateSelected = dateSpecified;
-                            String predate = new SimpleDateFormat("EEE,MMM d").format(c.getTime());
+                            String predate = new SimpleDateFormat("dd MMM yyyy").format(c.getTime());
 
                             textView.setText(predate);
                             textView.setPaintFlags(Typeface.BOLD);

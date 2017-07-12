@@ -179,7 +179,7 @@ public class SideMenuFragment extends BaseFragment {
                     }, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            //getMainActivity().getResideMenu().closeMenu();
+                            getMainActivity().getResideMenu().closeMenu();
                             logoutdialog.hideDialog();
                         }
                     });
