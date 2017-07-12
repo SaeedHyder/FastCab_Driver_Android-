@@ -228,6 +228,7 @@
     <string name="rate_user">Rate User</string>
     <string name="submit_feedback">submit feedback</string>
     <string name="Completed_Trips">Completed Trips</string>
+
     <string name="reject">Reject</string>
     <string name="accept">Accept</string>
     <string name="Pending_Rides">Pending Rides</string>
