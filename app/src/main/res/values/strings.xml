@@ -96,7 +96,7 @@
     <string name="enter_License">Enter License Number</string>
     <string name="enter_valid_number_error">Enter Valid Number</string>
     <string name="create_account">Create Account</string>
-    <string name="enter_e_mail_address_which_you_used_at_the_time_of_signup">Enter E-Mail Address which you used at the time of Signup</string>
+    <string name="enter_e_mail_address_which_you_used_at_the_time_of_signup">Enter E-mail Address which you used at the time of Signup</string>
     <string name="submit">Submit</string>
     <string name="forgot_password_heading">Forgot Password</string>
     <string name="enter_valid_email">Enter Valid Email</string>
