@@ -157,7 +157,6 @@
                 android:layout_marginLeft="@dimen/x20"
                 android:text="06 May 1972"
                 android:textColor="@color/light_grey"
-
                 android:textSize="@dimen/x18"
                 android:gravity="left"
                 app:typeface="Roboto-Regular.ttf"

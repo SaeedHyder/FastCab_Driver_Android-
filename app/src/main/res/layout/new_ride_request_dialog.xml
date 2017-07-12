@@ -25,13 +25,20 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/x20"
             android:layout_marginRight="@dimen/x20"
-            android:layout_marginBottom="@dimen/x15"
+            android:layout_marginBottom="@dimen/x10"
             android:alpha="0.7"
             android:gravity="center"
             android:text="@string/new_ride_request"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:typeface="Roboto-Regular.ttf" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x1"
+           android:layout_marginBottom="@dimen/x5"
+            android:alpha="0.2"
+            android:background="@drawable/text"/>
 
 
         <LinearLayout
@@ -234,6 +241,13 @@
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x1"
+
+        android:alpha="0.2"
+        android:background="@drawable/text"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -254,6 +268,12 @@
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/x16" />
+
+        <View
+            android:layout_width="@dimen/x1"
+            android:layout_height="fill_parent"
+            android:alpha="0.1"
+            android:background="@drawable/text" />
 
         <Button
             android:id="@+id/btn_accept"

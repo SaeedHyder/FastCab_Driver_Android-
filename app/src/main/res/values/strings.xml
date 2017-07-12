@@ -96,7 +96,7 @@
     <string name="enter_License">Enter License Number</string>
     <string name="enter_valid_number_error">Enter Valid Number</string>
     <string name="create_account">Create Account</string>
-    <string name="enter_e_mail_address_which_you_used_at_the_time_of_signup">Enter E-Mail Address which you used at the time of Signup</string>
+    <string name="enter_e_mail_address_which_you_used_at_the_time_of_signup">Enter E-mail Address which you used at the time of Signup</string>
     <string name="submit">Submit</string>
     <string name="forgot_password_heading">Forgot Password</string>
     <string name="enter_valid_email">Enter Valid Email</string>
@@ -227,7 +227,9 @@
     <string name="End_Trip">End Trip</string>
     <string name="rate_user">Rate User</string>
     <string name="submit_feedback">submit feedback</string>
+
     <string name="Completed_Trips">Completed Trips</string>
+
 
     <string name="reject">Reject</string>
     <string name="accept">Accept</string>
@@ -246,5 +248,7 @@
     <string name="date_after_error">Selected Date is After Current Date</string>
     <string name="fare">Fare</string>
     <string name="tip">Tip</string>
+    <string name="brief_introduction">Brief Introduction...</string>
+    <string name="previous_work_history">Previous Work History...</string>
 
 </resources>
