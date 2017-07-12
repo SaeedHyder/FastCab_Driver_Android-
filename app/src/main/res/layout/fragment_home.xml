@@ -361,7 +361,7 @@
                 android:layout_centerInParent="true"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/circle" />
+                android:src="@drawable/go_online" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -381,7 +381,8 @@
                 android:text="Go\nOnline"
                 android:textColor="@color/button_color"
                 android:textSize="@dimen/x38"
-                app:typeface="Roboto-Regular.ttf" />
+                app:typeface="Roboto-Regular.ttf"
+                android:visibility="gone"/>
 
         </RelativeLayout>
     </RelativeLayout>
