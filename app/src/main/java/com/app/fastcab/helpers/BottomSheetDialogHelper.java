@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 
 import com.app.fastcab.R;
 import com.app.fastcab.ui.views.AnyTextView;
+import com.app.fastcab.ui.views.ExpandedBottomSheetBehavior;
 
 import java.util.Date;
 import java.util.List;
@@ -23,18 +25,18 @@ import java.util.List;
 
 public class BottomSheetDialogHelper {
    // private BottomSheetDialog dialog;
-    private LinearLayout dialog;
+    private NestedScrollView dialog;
     private Context context;
-    BottomSheetBehavior bottomSheetBehavior;
+    ExpandedBottomSheetBehavior bottomSheetBehavior;
     private CoordinatorLayout mainParent;
     public BottomSheetDialogHelper(Context context, CoordinatorLayout mainParent, int LayoutID) {
         this.context = context;
         this.mainParent = mainParent;
         LayoutInflater inflater = LayoutInflater.from(context);
-        dialog = (LinearLayout) inflater.inflate(LayoutID, null, false);
+        dialog = (NestedScrollView) inflater.inflate(LayoutID, null, false);
         mainParent.addView(dialog);
-        CoordinatorLayout.LayoutParams params =(CoordinatorLayout.LayoutParams) dialog.getLayoutParams();
-        params.setBehavior(new BottomSheetBehavior());
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) dialog.getLayoutParams();
+        params.setBehavior(new ExpandedBottomSheetBehavior());
         dialog.requestLayout();
         dialog.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,20 +44,11 @@ public class BottomSheetDialogHelper {
 
             }
         });
-        // setupRideNowDialog();
-// init the bottom sheet behavior
-        bottomSheetBehavior = BottomSheetBehavior.from(dialog);
 
-// change the state of the bottom sheet
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-
-// set the peek height
-        bottomSheetBehavior.setPeekHeight((int)context.getResources().getDimension(R.dimen.x100));
-
-// set hideable or not
-        bottomSheetBehavior.setHideable(false);
+        bottomSheetBehavior = (ExpandedBottomSheetBehavior) ExpandedBottomSheetBehavior.from(dialog);
+        //  bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        bottomSheetBehavior.setAllowUserDragging(false);
+        bottomSheetBehavior.setPeekHeight(0);
     }
     public void initRatingDialog(View.OnClickListener onClickListener){
         bottomSheetBehavior.setPeekHeight((int)context.getResources().getDimension(R.dimen.x150));
@@ -76,7 +69,20 @@ public class BottomSheetDialogHelper {
     }
 
     public void showDialog(){
+        // setupRideNowDialog();
+// init the bottom sheet behavior
+
+
+// change the state of the bottom sheet
+        //  bottomSheetBehavior.setAllowUserDragging(true);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+// set the peek height
+        bottomSheetBehavior.setPeekHeight((int) context.getResources().getDimension(R.dimen.x100));
+
+// set hideable or not
+        bottomSheetBehavior.setHideable(false);
+
         //dialog.show();
     }
     public void setCancelable(boolean isCancelable){
