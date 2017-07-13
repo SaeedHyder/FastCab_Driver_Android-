@@ -250,5 +250,6 @@
     <string name="tip">Tip</string>
     <string name="brief_introduction">Brief Introduction...</string>
     <string name="previous_work_history">Previous Work History...</string>
+    <string name="confirm_new_password">Confirm New Password</string>
 
 </resources>
