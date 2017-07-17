@@ -247,6 +247,7 @@
     <string name="end_trip">End Trip</string>
     <string name="date_after_error">Selected Date is After Current Date</string>
     <string name="fare">Fare</string>
+    <string name="profile_pic_error">Please select profile picture</string>
     <string name="tip">Tip</string>
     <string name="brief_introduction">Brief Introduction...</string>
     <string name="previous_work_history">Previous Work History...</string>

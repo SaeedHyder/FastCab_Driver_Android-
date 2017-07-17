@@ -4,12 +4,10 @@ package com.app.fastcab.fragments;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
@@ -20,6 +18,7 @@ import android.widget.TextView;
 
 import com.app.fastcab.R;
 import com.app.fastcab.fragments.abstracts.BaseFragment;
+import com.app.fastcab.global.SignUpFormConstant;
 import com.app.fastcab.helpers.CameraHelper;
 import com.app.fastcab.helpers.DatePickerHelper;
 import com.app.fastcab.helpers.UIHelper;
@@ -28,15 +27,11 @@ import com.app.fastcab.ui.views.AnyEditTextView;
 import com.app.fastcab.ui.views.AnyTextView;
 import com.app.fastcab.ui.views.TitleBar;
 import com.squareup.picasso.Picasso;
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.io.File;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -181,7 +176,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     }
 
 
-    void ShowDateDialog(final AnyTextView txtView) {
+   /* void ShowDateDialog(final AnyTextView txtView) {
 
 
         DatePickerDialog dpd = DatePickerDialog.newInstance(
@@ -208,7 +203,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         dpd.show(getFragmentManager(), "Datepickerdialog");
 
 
-    }
+    }*/
 
 
     @Override
@@ -265,9 +260,23 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
             case R.id.btn_submuit:
                 if (isvalidate()) {
 
-                    getDockActivity().replaceDockableFragment(SignUp2Fragment.newInstance(), "SignUp2Fragment");
+                    if (profilePic == null) {
+                        UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.profile_pic_error));
+                    } else {
+
+                        SignUpFormConstant signupFormConstants = new SignUpFormConstant();
+                        signupFormConstants.setFullname(edtUserName.getText().toString());
+                        signupFormConstants.setDob(edtDateOfBirth.getText().toString());
+                        signupFormConstants.setMobileNo(edtMobileNumber.getText().toString());
+                        signupFormConstants.setHomeAddress(edtllCurrentAddress.getText().toString());
+                        signupFormConstants.setLicenseNo(edtLicenseeNumber.getText().toString());
+                        signupFormConstants.setProfileImage(profilePic);
+
+                        getDockActivity().replaceDockableFragment(SignUp2Fragment.newInstance(signupFormConstants), "SignUp2Fragment");
+                    }
                 }
                 break;
+
             case R.id.iv_camera:
                 CameraHelper.uploadPhotoDialog(getMainActivity());
                 break;

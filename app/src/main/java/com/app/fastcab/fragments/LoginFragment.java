@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +17,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.app.fastcab.R;
+import com.app.fastcab.entities.DriverEnt;
+import com.app.fastcab.entities.ResponseWrapper;
 import com.app.fastcab.fragments.abstracts.BaseFragment;
+import com.app.fastcab.global.AppConstants;
+import com.app.fastcab.global.WebServiceConstants;
 import com.app.fastcab.helpers.ClickableSpanHelper;
+import com.app.fastcab.helpers.InternetHelper;
+import com.app.fastcab.helpers.TokenUpdater;
 import com.app.fastcab.helpers.UIHelper;
 import com.app.fastcab.ui.views.AnyEditTextView;
 import com.app.fastcab.ui.views.AnyTextView;
@@ -26,6 +33,9 @@ import com.app.fastcab.ui.views.TitleBar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class LoginFragment extends BaseFragment implements OnClickListener {
@@ -103,14 +113,15 @@ public class LoginFragment extends BaseFragment implements OnClickListener {
         switch (view.getId()) {
             case R.id.loginButton:
                 if (isvalidated()) {
-                    prefHelper.setLoginStatus(true);
-                    //Intent intent=new Intent(getMainActivity(), MapsActivity.class);
-                    //startActivity(intent);
 
-                    getDockActivity().popBackStackTillEntry(0);
-                    // getDockActivity().replaceDockableFragment(HomeMapFragment.newInstance(), HomeMapFragment.class.getSimpleName());
-                    getDockActivity().replaceDockableFragment(HomeFragment.newInstance(), HomeFragment.class.getSimpleName());
+                    if (isvalidated()) {
+                      //  if (InternetHelper.CheckInternetConectivityandShowToast(getDockActivity())){
+                         //   MakeDriverLogin();}
+                        getDockActivity().popBackStackTillEntry(0);
+                        getDockActivity().replaceDockableFragment(HomeFragment.newInstance(), HomeFragment.class.getSimpleName());
 
+                    }
+                    break;
 
                 }
                 break;
@@ -121,6 +132,38 @@ public class LoginFragment extends BaseFragment implements OnClickListener {
                 UIHelper.showShortToastInCenter(getDockActivity(), "Will be implemented in Beta");
                 break;
         }
+    }
+
+    private void MakeDriverLogin() {
+        loadingStarted();
+        Call<ResponseWrapper<DriverEnt>> call = webService.loginDriver(edtEmail.getText().toString(), edtpassword.getText().toString());
+        call.enqueue(new Callback<ResponseWrapper<DriverEnt>>() {
+            @Override
+            public void onResponse(Call<ResponseWrapper<DriverEnt>> call, Response<ResponseWrapper<DriverEnt>> response) {
+                loadingFinished();
+                if (response.body().getResponse().equals(WebServiceConstants.SUCCESS_RESPONSE_CODE)) {
+                    prefHelper.putDriver(response.body().getResult());
+                    prefHelper.setDriverId(response.body().getResult().getId() + "");
+                    prefHelper.setLoginStatus(true);
+                    TokenUpdater.getInstance().UpdateToken(getDockActivity(),
+                            prefHelper.getDriverId(),
+                            AppConstants.Device_Type,
+                            prefHelper.getFirebase_TOKEN());
+                    getDockActivity().popBackStackTillEntry(0);
+                    getDockActivity().replaceDockableFragment(HomeFragment.newInstance(), HomeFragment.class.getSimpleName());
+
+                } else {
+                    UIHelper.showShortToastInCenter(getDockActivity(), response.body().getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseWrapper<DriverEnt>> call, Throwable t) {
+                loadingFinished();
+                Log.e(LoginFragment.class.getSimpleName(), t.toString());
+            }
+        });
+
     }
 
     private boolean isvalidated() {
