@@ -18,11 +18,13 @@ import com.andreabaccega.formedittextvalidator.Validator;
 import com.app.fastcab.R;
 import com.app.fastcab.activities.DockActivity;
 import com.app.fastcab.activities.MainActivity;
+import com.app.fastcab.global.WebServiceConstants;
 import com.app.fastcab.helpers.BasePreferenceHelper;
 import com.app.fastcab.helpers.GPSTracker;
 import com.app.fastcab.helpers.UIHelper;
 import com.app.fastcab.interfaces.LoadingListener;
 import com.app.fastcab.retrofit.WebService;
+import com.app.fastcab.retrofit.WebServiceFactory;
 import com.app.fastcab.ui.views.AnyEditTextView;
 import com.app.fastcab.ui.views.TitleBar;
 
@@ -51,7 +53,7 @@ public abstract class BaseFragment extends Fragment {
 		mGpsTracker = new GPSTracker(getDockActivity());
 
 		if (webService == null) {
-			//webService = WebServiceFactory.getWebServiceInstanceWithCustomInterceptor(getDockActivity(),"End Point");
+			webService = WebServiceFactory.getWebServiceInstanceWithCustomInterceptor(getDockActivity(), WebServiceConstants.SERVICE_URL);
 		}
 
 		myDockActivity = getDockActivity();

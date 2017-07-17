@@ -10,6 +10,7 @@ import java.io.IOException;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 public class OKHttpClientCreator {
 
@@ -18,13 +19,13 @@ public class OKHttpClientCreator {
 
     public static OkHttpClient createCustomInterceptorClient(Context context) {
 
-        OkHttpClient client = new OkHttpClient.Builder()
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        return new OkHttpClient.Builder()
                 .addNetworkInterceptor(new CustomInterceptor(progressListener))
+                .addInterceptor(interceptor)
                 .build();
-
-
-        return client;
-
 
     }
 
