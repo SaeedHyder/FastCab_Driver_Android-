@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.app.fastcab.R;
 import com.app.fastcab.entities.DriverEnt;
@@ -22,8 +23,6 @@ import com.app.fastcab.ui.views.AnyTextView;
 import com.app.fastcab.ui.views.CustomRatingBar;
 import com.app.fastcab.ui.views.TitleBar;
 import com.squareup.picasso.Picasso;
-
-import org.apache.commons.lang3.text.WordUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -78,6 +77,8 @@ public class DriverProfileFragment extends BaseFragment {
     AnyTextView txtdob;
     @BindView(R.id.ll_dob)
     LinearLayout llDob;
+    @BindView(R.id.mainFrame)
+    RelativeLayout mainFrame;
 
     public static DriverProfileFragment newInstance() {
         return new DriverProfileFragment();
@@ -95,6 +96,7 @@ public class DriverProfileFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mainFrame.setVisibility(View.GONE);
         if (InternetHelper.CheckInternetConectivityandShowToast(getDockActivity()))
             getDriverProfile();
         else {
@@ -109,6 +111,7 @@ public class DriverProfileFragment extends BaseFragment {
         call.enqueue(new Callback<ResponseWrapper<DriverEnt>>() {
             @Override
             public void onResponse(Call<ResponseWrapper<DriverEnt>> call, Response<ResponseWrapper<DriverEnt>> response) {
+                loadingFinished();
                 if (response.body().getResponse().equals(WebServiceConstants.SUCCESS_RESPONSE_CODE)) {
                     prefHelper.putDriver(response.body().getResult());
                     prefHelper.setDriverId(response.body().getResult().getId() + "");
@@ -134,17 +137,29 @@ public class DriverProfileFragment extends BaseFragment {
     }
 
     private void BindData(DriverEnt driver) {
-        Picasso.with(getDockActivity()).load(driver.getProfile_image()).into(CircularImageSharePop);
-        txtProfileName.setText(driver.getFull_name() + "");
-        rbAddRating.setScore(Float.parseFloat((driver.getAverage_rate())));
-        txtRides.setText(driver.getTotal_ride());
+        mainFrame.setVisibility(View.VISIBLE);
+        Picasso.with(getDockActivity()).load(driver.getProfileImage()).into(CircularImageSharePop);
+        txtProfileName.setText(driver.getFullName() + "");
+
+        if (driver.getAverageRate()==null) {
+            rbAddRating.setScore(0);
+
+        } else {rbAddRating.setScore((float) driver.getAverageRate());}
+
+        if(driver.getTotalRide()==null)
+        {
+            txtRides.setText("0");
+        }
+        else
+        {
+            txtRides.setText(driver.getTotalRide().toString());
+        }
+
         txtdob.setText(driver.getDob());
-        txtphone.setText(driver.getPhone_no() + "");
+        txtphone.setText(driver.getPhoneNo() + "");
         txtAddress.setText(driver.getAddress() + "");
 
     }
-
-
 
 
     @Override
@@ -161,6 +176,7 @@ public class DriverProfileFragment extends BaseFragment {
         titleBar.showMenuButton();
         titleBar.setSubHeading(getResources().getString(R.string.profile));
     }
+
 
 
 }

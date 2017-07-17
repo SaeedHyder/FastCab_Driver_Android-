@@ -3,6 +3,7 @@ package com.app.fastcab.fragments;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +16,18 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.app.fastcab.R;
+import com.app.fastcab.entities.DriverEnt;
+import com.app.fastcab.entities.ResponseWrapper;
 import com.app.fastcab.fragments.abstracts.BaseFragment;
+import com.app.fastcab.global.WebServiceConstants;
 import com.app.fastcab.helpers.DatePickerHelper;
+import com.app.fastcab.helpers.InternetHelper;
 import com.app.fastcab.helpers.UIHelper;
 import com.app.fastcab.ui.views.AnyEditTextView;
 import com.app.fastcab.ui.views.AnyTextView;
 import com.app.fastcab.ui.views.CustomRatingBar;
 import com.app.fastcab.ui.views.TitleBar;
+import com.squareup.picasso.Picasso;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.text.ParseException;
@@ -32,6 +38,9 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by saeedhyder on 7/4/2017.
@@ -103,8 +112,52 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ShowDriverData();
         setDatePickerVariables();
         setListners();
+
+    }
+
+
+    private void ShowDriverData() {
+        edtDateOfBirth.setText(prefHelper.getDriver().getDob());
+        edtMobileNumber.setText(prefHelper.getDriver().getPhoneNo());
+        edtllCurrentAddress.setText(prefHelper.getDriver().getAddress());
+
+        if (prefHelper.getDriver().getAverageRate()==null) {
+            rbAddRating.setScore(0);
+
+        } else {rbAddRating.setScore((float) prefHelper.getDriver().getAverageRate());}
+
+
+        txtRides.setText(prefHelper.getDriver().getTotalRide().toString());
+        Picasso.with(getDockActivity()).load(prefHelper.getDriver().getProfileImage()).into(CircularImageSharePop);
+    }
+
+    private void UpdateDriverProfile() {
+
+        loadingStarted();
+
+        Call<ResponseWrapper<DriverEnt>> call = webService.UpdateDriver(Integer.parseInt(prefHelper.getDriverId()),edtMobileNumber.getText().toString(),edtllCurrentAddress.getText().toString(),edtDateOfBirth.getText().toString());
+        call.enqueue(new Callback<ResponseWrapper<DriverEnt>>() {
+            @Override
+            public void onResponse(Call<ResponseWrapper<DriverEnt>> call, Response<ResponseWrapper<DriverEnt>> response) {
+                loadingFinished();
+                if (response.body().getResponse().equals(WebServiceConstants.SUCCESS_RESPONSE_CODE)) {
+                    prefHelper.putDriver(response.body().getResult());
+                    getDockActivity().replaceDockableFragment(DriverProfileFragment.newInstance(), DriverProfileFragment.class.getSimpleName());
+
+                }else {
+                    UIHelper.showShortToastInCenter(getDockActivity(), response.body().getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseWrapper<DriverEnt>> call, Throwable t) {
+                loadingFinished();
+                Log.e(EditProfileFragment.class.getSimpleName(), t.toString());
+            }
+        });
 
     }
 
@@ -143,7 +196,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                             UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.date_after_error));
                         } else {
                             DateSelected = dateSpecified;
-                            String predate = new SimpleDateFormat("dd MMM yyyy").format(c.getTime());
+                            String predate = new SimpleDateFormat("yyyy-MM-dd").format(c.getTime());
 
                             textView.setText(predate);
                             textView.setPaintFlags(Typeface.BOLD);
@@ -154,34 +207,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
         datePickerHelper.showDate();
     }
-    void ShowDateDialog(final AnyTextView txtView) {
 
-
-        DatePickerDialog dpd = DatePickerDialog.newInstance(
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                        Date todayDate = null;
-                        try {
-                            todayDate = sdf.parse(sdf.format(new Date()));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-
-                        calendar.set(Calendar.YEAR, year);
-                        calendar.set(Calendar.MONTH, monthOfYear);
-                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-                        txtView.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-
-                    }
-                }, Year, Month, Day
-        );
-        dpd.show(getFragmentManager(), "Datepickerdialog");
-
-
-    }
 
 
     private boolean isvalidate() {
@@ -222,9 +248,10 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         titleBar.showTickButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (InternetHelper.CheckInternetConectivityandShowToast(getDockActivity())){
                 if (isvalidate()) {
-                    getDockActivity().replaceDockableFragment(DriverProfileFragment.newInstance(), DriverProfileFragment.class.getSimpleName());
-                }
+                    UpdateDriverProfile();
+                    }}
             }
         });
         titleBar.setSubHeading(getString(R.string.profile));

@@ -176,34 +176,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     }
 
 
-   /* void ShowDateDialog(final AnyTextView txtView) {
 
-
-        DatePickerDialog dpd = DatePickerDialog.newInstance(
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                        Date todayDate = null;
-                        try {
-                            todayDate = sdf.parse(sdf.format(new Date()));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-
-                        calendar.set(Calendar.YEAR, year);
-                        calendar.set(Calendar.MONTH, monthOfYear);
-                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-                        txtView.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-
-                    }
-                }, Year, Month, Day
-        );
-        dpd.show(getFragmentManager(), "Datepickerdialog");
-
-
-    }*/
 
 
     @Override
@@ -238,7 +211,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                             UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.date_after_error));
                         } else {
                             DateSelected = dateSpecified;
-                            String predate = new SimpleDateFormat("dd MMM yyyy").format(c.getTime());
+                            String predate = new SimpleDateFormat("yyyy-MM-dd").format(c.getTime());
 
                             textView.setText(predate);
                             textView.setPaintFlags(Typeface.BOLD);

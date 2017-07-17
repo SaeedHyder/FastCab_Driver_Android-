@@ -2,7 +2,10 @@ package com.app.fastcab.retrofit;
 
 
 import com.app.fastcab.entities.DriverEnt;
+import com.app.fastcab.entities.DriverMsgesEnt;
 import com.app.fastcab.entities.ResponseWrapper;
+
+import java.util.ArrayList;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -47,6 +50,27 @@ public interface WebService {
     Call<ResponseWrapper<DriverEnt>> loginDriver(@Field("email") String email,
                                              @Field("password") String password
     );
+
+    @FormUrlEncoded
+    @POST("driver/update")
+    Call<ResponseWrapper<DriverEnt>> UpdateDriver(@Field("driver_id") int driver_id,
+                                                  @Field("phone_no") String phone_no,
+                                                  @Field("address") String address,
+                                                  @Field("dob") String dob
+    );
+
+
+    @GET("cms/drivermessage")
+    Call<ResponseWrapper<ArrayList<DriverMsgesEnt>>> DriverMsges();
+
+    @FormUrlEncoded
+    @POST("driver/changeavaibilitystatus")
+    Call<ResponseWrapper<DriverEnt>> GoOnline(@Field("driver_id") int driver_id,
+                                                  @Field("avaibility_status") String avaibility_status,
+                                                  @Field("latitude") String latitude,
+                                                  @Field("longitude") String longitude
+    );
+
 
 
 

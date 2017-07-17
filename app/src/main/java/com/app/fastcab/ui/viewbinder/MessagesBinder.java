@@ -7,7 +7,10 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.app.fastcab.R;
+import com.app.fastcab.entities.DriverMsgesEnt;
 import com.app.fastcab.entities.MessagesEnt;
+import com.app.fastcab.fragments.abstracts.BaseFragment;
+import com.app.fastcab.helpers.BasePreferenceHelper;
 import com.app.fastcab.ui.viewbinders.abstracts.ViewBinder;
 import com.app.fastcab.ui.views.AnyTextView;
 
@@ -20,10 +23,13 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * Created by saeedhyder on 6/22/2017.
  */
 
-public class MessagesBinder extends ViewBinder<MessagesEnt> {
+public class MessagesBinder extends ViewBinder<DriverMsgesEnt> {
 
-    public MessagesBinder() {
+    BasePreferenceHelper preferenceHelper;
+
+    public MessagesBinder(BasePreferenceHelper preferenceHelper) {
         super(R.layout.messages_item);
+        this.preferenceHelper=preferenceHelper;
     }
 
     @Override
@@ -32,16 +38,16 @@ public class MessagesBinder extends ViewBinder<MessagesEnt> {
     }
 
     @Override
-    public void bindView(final MessagesEnt entity, int position, int grpPosition, View view, Activity activity) {
+    public void bindView(final DriverMsgesEnt entity, int position, int grpPosition, View view, Activity activity) {
 
         MessagesBinder.ViewHolder viewHolder = (MessagesBinder.ViewHolder) view.getTag();
 
-        viewHolder.txtMessages.setText(entity.getMessagesTxt());
+        viewHolder.txtMessages.setText(entity.getTitle());
 
         viewHolder.btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendSMS(entity.getMobileNo(),entity.getMessagesTxt());
+                sendSMS(preferenceHelper.getDriver().getPhoneNo(),entity.getTitle());
             }
         });
 

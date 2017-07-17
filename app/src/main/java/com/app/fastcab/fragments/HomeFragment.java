@@ -556,6 +556,11 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
         }
     }
 
+    void DriverStatus(){
+
+
+    }
+
     private void setupEndRideDialog() {
         final DialogHelper endride = new DialogHelper(getDockActivity());
         endride.initendtrip(R.layout.endtrip_dialog, new View.OnClickListener() {

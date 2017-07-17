@@ -115,10 +115,8 @@ public class LoginFragment extends BaseFragment implements OnClickListener {
                 if (isvalidated()) {
 
                     if (isvalidated()) {
-                      //  if (InternetHelper.CheckInternetConectivityandShowToast(getDockActivity())){
-                         //   MakeDriverLogin();}
-                        getDockActivity().popBackStackTillEntry(0);
-                        getDockActivity().replaceDockableFragment(HomeFragment.newInstance(), HomeFragment.class.getSimpleName());
+                        if (InternetHelper.CheckInternetConectivityandShowToast(getDockActivity())){
+                            MakeDriverLogin();}
 
                     }
                     break;
@@ -136,7 +134,7 @@ public class LoginFragment extends BaseFragment implements OnClickListener {
 
     private void MakeDriverLogin() {
         loadingStarted();
-        Call<ResponseWrapper<DriverEnt>> call = webService.loginDriver(edtEmail.getText().toString(), edtpassword.getText().toString());
+        Call<ResponseWrapper<DriverEnt>> call = webService.loginDriver(edtEmail.getText().toString(),edtpassword.getText().toString());
         call.enqueue(new Callback<ResponseWrapper<DriverEnt>>() {
             @Override
             public void onResponse(Call<ResponseWrapper<DriverEnt>> call, Response<ResponseWrapper<DriverEnt>> response) {

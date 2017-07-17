@@ -1,51 +1,129 @@
 package com.app.fastcab.entities;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by saeedhyder on 7/17/2017.
  */
 
 public class DriverEnt {
 
-    int id;
-    String full_name;
-    String email;
-    String password;
-    String address;
-    String phone_no;
-    String zip_code;
-    String dob;
-    String gender;
-    String city;
-    int state;
-    int role_id;
-    int is_verified;
-    String code;
-    int social_media_id;
-    String social_media_platform;
-    int avaibility_status;
-    String latitude;
-    String longitude;
-    String invite_code;
-    String created_at;
-    String profile_image;
-    String average_rate;
-    int total_ride;
-    int total_distance;
 
-    public int getId() {
+    @SerializedName("promo_code")
+    @Expose
+    private String promoCode;
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+    @SerializedName("full_name")
+    @Expose
+    private String fullName;
+    @SerializedName("email")
+    @Expose
+    private String email;
+    @SerializedName("password")
+    @Expose
+    private String password;
+    @SerializedName("address")
+    @Expose
+    private String address;
+    @SerializedName("phone_no")
+    @Expose
+    private String phoneNo;
+    @SerializedName("zip_code")
+    @Expose
+    private String zipCode;
+    @SerializedName("dob")
+    @Expose
+    private String dob;
+    @SerializedName("gender")
+    @Expose
+    private String gender;
+    @SerializedName("city")
+    @Expose
+    private String city;
+    @SerializedName("state")
+    @Expose
+    private String state;
+    @SerializedName("push_status")
+    @Expose
+    private Integer pushStatus;
+    @SerializedName("device_token")
+    @Expose
+    private String deviceToken;
+    @SerializedName("device_type")
+    @Expose
+    private String deviceType;
+    @SerializedName("license_no")
+    @Expose
+    private String licenseNo;
+    @SerializedName("work_history")
+    @Expose
+    private String workHistory;
+    @SerializedName("brief_introduction")
+    @Expose
+    private String briefIntroduction;
+    @SerializedName("profile_picture")
+    @Expose
+    private String profilePicture;
+    @SerializedName("status")
+    @Expose
+    private Integer status;
+    @SerializedName("role_id")
+    @Expose
+    private Integer roleId;
+    @SerializedName("is_verified")
+    @Expose
+    private Integer isVerified;
+    @SerializedName("code")
+    @Expose
+    private String code;
+    @SerializedName("social_media_id")
+    @Expose
+    private Integer socialMediaId;
+    @SerializedName("social_media_platform")
+    @Expose
+    private String socialMediaPlatform;
+    @SerializedName("avaibility_status")
+    @Expose
+    private Integer avaibilityStatus;
+    @SerializedName("latitude")
+    @Expose
+    private String latitude;
+    @SerializedName("longitude")
+    @Expose
+    private String longitude;
+    @SerializedName("created_at")
+    @Expose
+    private String createdAt;
+    @SerializedName("profile_image")
+    @Expose
+    private String profileImage;
+    @SerializedName("average_rate")
+    @Expose
+    private Integer averageRate;
+    @SerializedName("total_ride")
+    @Expose
+    private Integer totalRide;
+    @SerializedName("total_distance")
+    @Expose
+    private Integer totalDistance;
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getFull_name() {
-        return full_name;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFull_name(String full_name) {
-        this.full_name = full_name;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getEmail() {
@@ -72,20 +150,20 @@ public class DriverEnt {
         this.address = address;
     }
 
-    public String getPhone_no() {
-        return phone_no;
+    public String getPhoneNo() {
+        return phoneNo;
     }
 
-    public void setPhone_no(String phone_no) {
-        this.phone_no = phone_no;
+    public void setPhoneNo(String phoneNo) {
+        this.phoneNo = phoneNo;
     }
 
-    public String getZip_code() {
-        return zip_code;
+    public String getZipCode() {
+        return zipCode;
     }
 
-    public void setZip_code(String zip_code) {
-        this.zip_code = zip_code;
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
     public String getDob() {
@@ -112,28 +190,92 @@ public class DriverEnt {
         this.city = city;
     }
 
-    public int getState() {
+    public String getState() {
         return state;
     }
 
-    public void setState(int state) {
+    public void setState(String state) {
         this.state = state;
     }
 
-    public int getRole_id() {
-        return role_id;
+    public Integer getPushStatus() {
+        return pushStatus;
     }
 
-    public void setRole_id(int role_id) {
-        this.role_id = role_id;
+    public void setPushStatus(Integer pushStatus) {
+        this.pushStatus = pushStatus;
     }
 
-    public int getIs_verified() {
-        return is_verified;
+    public String getDeviceToken() {
+        return deviceToken;
     }
 
-    public void setIs_verified(int is_verified) {
-        this.is_verified = is_verified;
+    public void setDeviceToken(String deviceToken) {
+        this.deviceToken = deviceToken;
+    }
+
+    public String getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
+    }
+
+    public String getLicenseNo() {
+        return licenseNo;
+    }
+
+    public void setLicenseNo(String licenseNo) {
+        this.licenseNo = licenseNo;
+    }
+
+    public String getWorkHistory() {
+        return workHistory;
+    }
+
+    public void setWorkHistory(String workHistory) {
+        this.workHistory = workHistory;
+    }
+
+    public String getBriefIntroduction() {
+        return briefIntroduction;
+    }
+
+    public void setBriefIntroduction(String briefIntroduction) {
+        this.briefIntroduction = briefIntroduction;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
+
+    public Integer getIsVerified() {
+        return isVerified;
+    }
+
+    public void setIsVerified(Integer isVerified) {
+        this.isVerified = isVerified;
     }
 
     public String getCode() {
@@ -144,28 +286,28 @@ public class DriverEnt {
         this.code = code;
     }
 
-    public int getSocial_media_id() {
-        return social_media_id;
+    public Integer getSocialMediaId() {
+        return socialMediaId;
     }
 
-    public void setSocial_media_id(int social_media_id) {
-        this.social_media_id = social_media_id;
+    public void setSocialMediaId(Integer socialMediaId) {
+        this.socialMediaId = socialMediaId;
     }
 
-    public String getSocial_media_platform() {
-        return social_media_platform;
+    public String getSocialMediaPlatform() {
+        return socialMediaPlatform;
     }
 
-    public void setSocial_media_platform(String social_media_platform) {
-        this.social_media_platform = social_media_platform;
+    public void setSocialMediaPlatform(String socialMediaPlatform) {
+        this.socialMediaPlatform = socialMediaPlatform;
     }
 
-    public int getAvaibility_status() {
-        return avaibility_status;
+    public Integer getAvaibilityStatus() {
+        return avaibilityStatus;
     }
 
-    public void setAvaibility_status(int avaibility_status) {
-        this.avaibility_status = avaibility_status;
+    public void setAvaibilityStatus(Integer avaibilityStatus) {
+        this.avaibilityStatus = avaibilityStatus;
     }
 
     public String getLatitude() {
@@ -184,51 +326,53 @@ public class DriverEnt {
         this.longitude = longitude;
     }
 
-    public String getInvite_code() {
-        return invite_code;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setInvite_code(String invite_code) {
-        this.invite_code = invite_code;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public String getCreated_at() {
-        return created_at;
+    public String getProfileImage() {
+        return profileImage;
     }
 
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 
-    public String getProfile_image() {
-        return profile_image;
+    public Integer getAverageRate() {
+        return averageRate;
     }
 
-    public void setProfile_image(String profile_image) {
-        this.profile_image = profile_image;
+    public void setAverageRate(Integer averageRate) {
+        this.averageRate = averageRate;
     }
 
-    public String getAverage_rate() {
-        return average_rate;
+    public Integer getTotalRide() {
+        return totalRide;
     }
 
-    public void setAverage_rate(String average_rate) {
-        this.average_rate = average_rate;
+    public void setTotalRide(Integer totalRide) {
+        this.totalRide = totalRide;
     }
 
-    public int getTotal_ride() {
-        return total_ride;
+    public Integer getTotalDistance() {
+        return totalDistance;
     }
 
-    public void setTotal_ride(int total_ride) {
-        this.total_ride = total_ride;
+    public void setTotalDistance(Integer totalDistance) {
+        this.totalDistance = totalDistance;
     }
 
-    public int getTotal_distance() {
-        return total_distance;
+    public String getPromoCode() {
+        return promoCode;
     }
 
-    public void setTotal_distance(int total_distance) {
-        this.total_distance = total_distance;
+    public void setPromoCode(String promoCode) {
+        this.promoCode = promoCode;
     }
+
+
 }
