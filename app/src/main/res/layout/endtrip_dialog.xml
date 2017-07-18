@@ -17,7 +17,7 @@
         android:orientation="vertical"
         >
 
-        <com.app.fastcab.ui.views.AnyTextView
+        <com.app.fastcabdriver.ui.views.AnyTextView
             android:id="@+id/txt_Endtrip"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -38,7 +38,7 @@
             android:background="@drawable/text"/>
 
 
-        <com.app.fastcab.ui.views.AnyTextView
+        <com.app.fastcabdriver.ui.views.AnyTextView
             android:id="@+id/txt_endtrip_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

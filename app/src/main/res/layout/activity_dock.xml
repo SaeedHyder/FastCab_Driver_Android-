@@ -23,7 +23,7 @@
             android:background="@drawable/bg">
         </FrameLayout>
 
-        <com.app.fastcab.ui.views.TitleBar
+        <com.app.fastcabdriver.ui.views.TitleBar
             android:id="@+id/header_main"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

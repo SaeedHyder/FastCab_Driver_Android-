@@ -79,7 +79,7 @@
                     android:contentDescription=""
                     android:src="@drawable/fullname" />
 
-                <com.app.fastcab.ui.views.AnyEditTextView
+                <com.app.fastcabdriver.ui.views.AnyEditTextView
                     android:id="@+id/edtUserName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -117,7 +117,7 @@
                     android:contentDescription=""
                     android:src="@drawable/birth" />
 
-                <com.app.fastcab.ui.views.AnyTextView
+                <com.app.fastcabdriver.ui.views.AnyTextView
                     android:id="@+id/edtDateOfBirth"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -154,7 +154,7 @@
                     android:contentDescription=""
                     android:src="@drawable/mobilenumber" />
 
-                <com.app.fastcab.ui.views.AnyEditTextView
+                <com.app.fastcabdriver.ui.views.AnyEditTextView
                     android:id="@+id/edtMobileNumber"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -194,7 +194,7 @@
                     android:contentDescription=""
                     android:src="@drawable/address1" />
 
-                <com.app.fastcab.ui.views.AnyEditTextView
+                <com.app.fastcabdriver.ui.views.AnyEditTextView
                     android:id="@+id/edtll_currentAddress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -232,7 +232,7 @@
                     android:contentDescription=""
                     android:src="@drawable/license" />
 
-                <com.app.fastcab.ui.views.AnyEditTextView
+                <com.app.fastcabdriver.ui.views.AnyEditTextView
                     android:id="@+id/edtLicenseeNumber"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

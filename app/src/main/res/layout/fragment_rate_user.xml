@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.app.fastcab.ui.views.AnyTextView
+                <com.app.fastcabdriver.ui.views.AnyTextView
                     android:id="@+id/txtDriverName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
                     android:textSize="@dimen/x18"
                     app:typeface="Roboto-Regular.ttf" />
 
-                <com.app.fastcab.ui.views.AnyTextView
+                <com.app.fastcabdriver.ui.views.AnyTextView
                     android:id="@+id/txtCarNo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -85,7 +85,7 @@ android:layout_marginBottom="@dimen/x10"
                             android:scaleType="centerInside"
                             android:src="@drawable/point_where_to" />
 
-                        <com.app.fastcab.ui.views.AnyTextView
+                        <com.app.fastcabdriver.ui.views.AnyTextView
                             android:id="@+id/txt_pickup"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -100,7 +100,7 @@ android:layout_marginBottom="@dimen/x10"
                             android:textSize="@dimen/x10"
                             app:typeface="Roboto-Regular.ttf" />
 
-                        <com.app.fastcab.ui.views.AnyTextView
+                        <com.app.fastcabdriver.ui.views.AnyTextView
                             android:id="@+id/txt_pick_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -163,7 +163,7 @@ android:layout_marginBottom="@dimen/x10"
                             android:scaleType="centerInside"
                             android:src="@drawable/destination" />
 
-                        <com.app.fastcab.ui.views.AnyTextView
+                        <com.app.fastcabdriver.ui.views.AnyTextView
                             android:id="@+id/txt_destination"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -178,7 +178,7 @@ android:layout_marginBottom="@dimen/x10"
                             android:textSize="@dimen/x10"
                             app:typeface="Roboto-Regular.ttf" />
 
-                        <com.app.fastcab.ui.views.AnyTextView
+                        <com.app.fastcabdriver.ui.views.AnyTextView
                             android:id="@+id/txt_destination_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -219,7 +219,7 @@ android:layout_marginBottom="@dimen/x10"
                     android:orientation="vertical">
 
 
-                    <com.app.fastcab.ui.views.AnyTextView
+                    <com.app.fastcabdriver.ui.views.AnyTextView
                         android:id="@+id/txtFare"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -231,7 +231,7 @@ android:layout_marginBottom="@dimen/x10"
                         android:textSize="@dimen/x15"
                         app:typeface="Roboto-Regular.ttf" />
 
-                    <com.app.fastcab.ui.views.AnyTextView
+                    <com.app.fastcabdriver.ui.views.AnyTextView
                         android:id="@+id/txtFareAmount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -255,7 +255,7 @@ android:layout_marginBottom="@dimen/x10"
                 android:background="#E8E8EA"
                 android:orientation="vertical">
 
-                <com.app.fastcab.ui.views.AnyTextView
+                <com.app.fastcabdriver.ui.views.AnyTextView
                     android:id="@+id/txtRateDriver"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -267,7 +267,7 @@ android:layout_marginBottom="@dimen/x10"
                     android:textSize="@dimen/x16"
                     app:typeface="Roboto-Regular.ttf" />
 
-                <com.app.fastcab.ui.views.CustomRatingBar
+                <com.app.fastcabdriver.ui.views.CustomRatingBar
                     android:id="@+id/rbAddRating"
                     android:layout_width="@dimen/x200"
                     android:layout_height="wrap_content"

@@ -49,7 +49,7 @@
             android:orientation="vertical">
 
 
-            <com.app.fastcab.ui.views.CustomRatingBar
+            <com.app.fastcabdriver.ui.views.CustomRatingBar
                 android:id="@+id/rbAddRating"
                 android:layout_width="@dimen/x110"
                 android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
                 app:onlyForDisplay="true"
                 app:stars="3" />
 
-            <com.app.fastcab.ui.views.AnyTextView
+            <com.app.fastcabdriver.ui.views.AnyTextView
                 android:id="@+id/txt_ratingName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <com.app.fastcab.ui.views.AnyTextView
+            <com.app.fastcabdriver.ui.views.AnyTextView
                 android:id="@+id/txt_rides"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
                 app:typeface="Roboto-Regular.ttf"
                 />
 
-            <com.app.fastcab.ui.views.AnyTextView
+            <com.app.fastcabdriver.ui.views.AnyTextView
                 android:id="@+id/txt_ridesName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -162,7 +162,7 @@
                     android:contentDescription=""
                     android:src="@drawable/birth" />
 
-                <com.app.fastcab.ui.views.AnyTextView
+                <com.app.fastcabdriver.ui.views.AnyTextView
                     android:id="@+id/edtDateOfBirth"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -199,7 +199,7 @@
                     android:contentDescription=""
                     android:src="@drawable/mobilenumber" />
 
-                <com.app.fastcab.ui.views.AnyEditTextView
+                <com.app.fastcabdriver.ui.views.AnyEditTextView
                     android:id="@+id/edtMobileNumber"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -237,7 +237,7 @@
                     android:contentDescription=""
                     android:src="@drawable/address1" />
 
-                <com.app.fastcab.ui.views.AnyEditTextView
+                <com.app.fastcabdriver.ui.views.AnyEditTextView
                     android:id="@+id/edtll_currentAddress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

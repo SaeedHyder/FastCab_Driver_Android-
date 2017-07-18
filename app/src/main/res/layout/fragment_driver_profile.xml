@@ -15,7 +15,7 @@
         android:orientation="vertical"
         android:background="@color/white">
 
-        <com.app.fastcab.ui.views.AnyTextView
+        <com.app.fastcabdriver.ui.views.AnyTextView
             android:id="@+id/txtProfileName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
                 android:orientation="vertical">
 
 
-            <com.app.fastcab.ui.views.CustomRatingBar
+            <com.app.fastcabdriver.ui.views.CustomRatingBar
                 android:id="@+id/rbAddRating"
                 android:layout_width="@dimen/x110"
                 android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
                 app:onlyForDisplay="true"
                 app:stars="3" />
 
-                <com.app.fastcab.ui.views.AnyTextView
+                <com.app.fastcabdriver.ui.views.AnyTextView
                     android:id="@+id/txt_ratingName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -93,7 +93,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <com.app.fastcab.ui.views.AnyTextView
+            <com.app.fastcabdriver.ui.views.AnyTextView
                 android:id="@+id/txt_rides"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
                 app:typeface="Roboto-Regular.ttf"
                 />
 
-            <com.app.fastcab.ui.views.AnyTextView
+            <com.app.fastcabdriver.ui.views.AnyTextView
                 android:id="@+id/txt_ridesName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
                 android:layout_marginLeft="@dimen/x10"
                 android:src="@drawable/birthday"/>
 
-            <com.app.fastcab.ui.views.AnyTextView
+            <com.app.fastcabdriver.ui.views.AnyTextView
                 android:id="@+id/txtdob"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -190,7 +190,7 @@
                 android:layout_marginLeft="@dimen/x10"
                 android:src="@drawable/phone"/>
 
-            <com.app.fastcab.ui.views.AnyTextView
+            <com.app.fastcabdriver.ui.views.AnyTextView
                 android:id="@+id/txtphone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -229,7 +229,7 @@
                 android:layout_marginLeft="@dimen/x10"
                 android:src="@drawable/address"/>
 
-            <com.app.fastcab.ui.views.AnyTextView
+            <com.app.fastcabdriver.ui.views.AnyTextView
                 android:id="@+id/txtAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

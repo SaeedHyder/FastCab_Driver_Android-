@@ -30,7 +30,7 @@
             android:layout_alignStart="@+id/imageView3"
             android:visibility="gone"/>
 
-        <com.app.fastcab.ui.views.AnyTextView
+        <com.app.fastcabdriver.ui.views.AnyTextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"

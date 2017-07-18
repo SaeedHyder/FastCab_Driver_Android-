@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
 
-    <com.app.fastcab.ui.views.AnyEditTextView
+    <com.app.fastcabdriver.ui.views.AnyEditTextView
         android:id="@+id/edtBriefIntro"
         android:layout_width="match_parent"
         android:layout_height="@dimen/x200"
@@ -31,7 +31,7 @@
         app:emptyAllowed="false"
         app:typeface="Roboto-Regular.ttf" />
 
-    <com.app.fastcab.ui.views.AnyEditTextView
+    <com.app.fastcabdriver.ui.views.AnyEditTextView
         android:id="@+id/edtPrevWorkIntro"
         android:layout_width="match_parent"
         android:layout_height="@dimen/x200"

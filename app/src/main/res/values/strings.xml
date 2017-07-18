@@ -120,7 +120,7 @@
     <string name="enter_HomeAddress">Enter Home Address</string>
     <string name="enter_zipCode">Enter Zip Code</string>
     <string name="enter_dob">Enter Date Of Birth</string>
-    <string name="passwordLength">Password should be more than 6</string>
+    <string name="passwordLength">Password should be more than 8</string>
 
     <string name="numberLength">Number should be more than 11</string>
 

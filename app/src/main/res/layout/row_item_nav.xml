@@ -28,7 +28,7 @@
           android:layout_height="wrap_content"
           android:layout_marginLeft="@dimen/x10">
 
-        <com.app.fastcab.ui.views.AnyTextView
+        <com.app.fastcabdriver.ui.views.AnyTextView
             android:id="@+id/txt_home"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

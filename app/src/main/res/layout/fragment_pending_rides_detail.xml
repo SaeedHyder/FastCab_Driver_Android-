@@ -26,18 +26,18 @@
             android:layout_marginBottom="@dimen/x10"
             android:orientation="horizontal">
 
-            <com.app.fastcab.ui.views.AnyTextView
+            <com.app.fastcabdriver.ui.views.AnyTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Pick-up Time"
                 app:typeface="Roboto-Regular.ttf"/>
 
-            <com.app.fastcab.ui.views.AnyTextView
+            <com.app.fastcabdriver.ui.views.AnyTextView
                 android:id="@+id/txt_pickpTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x8"
-                android:text="eta 13-06-17 1:36Pm"
+
                 android:textColor="@color/black"
                 app:typeface="Roboto-Regular.ttf"/>
 
@@ -51,18 +51,18 @@
             android:layout_marginBottom="@dimen/x10"
             android:orientation="horizontal">
 
-            <com.app.fastcab.ui.views.AnyTextView
+            <com.app.fastcabdriver.ui.views.AnyTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Pick-up"
                 app:typeface="Roboto-Regular.ttf"/>
 
-            <com.app.fastcab.ui.views.AnyTextView
+            <com.app.fastcabdriver.ui.views.AnyTextView
                 android:id="@+id/txt_pickup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x8"
-                android:text="Dunkin Donut"
+
                 android:textColor="@color/black"
                 app:typeface="Roboto-Regular.ttf"/>
 
@@ -76,19 +76,19 @@
             android:layout_marginBottom="@dimen/x10"
             android:orientation="horizontal">
 
-            <com.app.fastcab.ui.views.AnyTextView
+            <com.app.fastcabdriver.ui.views.AnyTextView
                 android:id="@+id/anyTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Drop-off"
                 app:typeface="Roboto-Regular.ttf"/>
 
-            <com.app.fastcab.ui.views.AnyTextView
+            <com.app.fastcabdriver.ui.views.AnyTextView
                 android:id="@+id/txt_dropOff"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x8"
-                android:text="Publix Super Market"
+
                 android:textColor="@color/black"
                 app:typeface="Roboto-Regular.ttf"/>
 
@@ -102,18 +102,18 @@
             android:layout_marginBottom="@dimen/x10"
             android:orientation="horizontal">
 
-            <com.app.fastcab.ui.views.AnyTextView
+            <com.app.fastcabdriver.ui.views.AnyTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Estimated Fare"
                 app:typeface="Roboto-Regular.ttf"/>
 
-            <com.app.fastcab.ui.views.AnyTextView
+            <com.app.fastcabdriver.ui.views.AnyTextView
                 android:id="@+id/txt_estimatedFare"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x8"
-                android:text="AED 15.00"
+
                 android:textColor="@color/black"
                 app:typeface="Roboto-Regular.ttf"/>
 

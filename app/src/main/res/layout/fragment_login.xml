@@ -37,7 +37,7 @@
             android:src="@drawable/email" />
 
 
-        <com.app.fastcab.ui.views.AnyEditTextView
+        <com.app.fastcabdriver.ui.views.AnyEditTextView
             android:id="@+id/edtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
             android:contentDescription="asd"
             android:src="@drawable/pwd" />
 
-        <com.app.fastcab.ui.views.AnyEditTextView
+        <com.app.fastcabdriver.ui.views.AnyEditTextView
             android:id="@+id/edtpassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
         android:text="@string/login"
         android:textColor="@color/white" />
 
-    <com.app.fastcab.ui.views.AnyTextView
+    <com.app.fastcabdriver.ui.views.AnyTextView
         android:id="@+id/txtResetPass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -133,7 +133,7 @@
         android:textSize="@dimen/x15"
         app:typeface="Roboto-Regular.ttf" />
 
-    <com.app.fastcab.ui.views.AnyTextView
+    <com.app.fastcabdriver.ui.views.AnyTextView
         android:id="@+id/txtSignup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -155,6 +155,7 @@
         android:layout_height="@dimen/x60"
         android:layout_alignParentBottom="true"
         android:background="@color/facebook_button_color"
+        android:visibility="invisible"
         android:orientation="horizontal">
 
         <ImageView
@@ -168,7 +169,7 @@
             android:src="@drawable/fb" />
 
 
-        <com.app.fastcab.ui.views.AnyTextView
+        <com.app.fastcabdriver.ui.views.AnyTextView
             android:id="@+id/txtFacebookLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.app.fastcab.ui.views.AnyTextView
+            <com.app.fastcabdriver.ui.views.AnyTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha="0.5"
@@ -35,7 +35,7 @@
                 android:textColor="@color/black"
                 app:typeface="Roboto-Regular.ttf" />
 
-            <com.app.fastcab.ui.views.AnyTextView
+            <com.app.fastcabdriver.ui.views.AnyTextView
                 android:id="@+id/txt_RideNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
                 android:textColor="@color/black"
                 app:typeface="Roboto-Regular.ttf" />
 
-            <com.app.fastcab.ui.views.AnyTextView
+            <com.app.fastcabdriver.ui.views.AnyTextView
                 android:id="@+id/anyTextView3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
                 android:textColor="@color/black"
                 app:typeface="Roboto-Regular.ttf" />
 
-            <com.app.fastcab.ui.views.AnyTextView
+            <com.app.fastcabdriver.ui.views.AnyTextView
                 android:id="@+id/txt_fare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
             android:layout_marginTop="@dimen/x10"
             android:orientation="horizontal">
 
-            <com.app.fastcab.ui.views.AnyTextView
+            <com.app.fastcabdriver.ui.views.AnyTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha="0.5"
@@ -81,7 +81,7 @@
                 android:textColor="@color/black"
                 app:typeface="Roboto-Regular.ttf" />
 
-            <com.app.fastcab.ui.views.AnyTextView
+            <com.app.fastcabdriver.ui.views.AnyTextView
                 android:id="@+id/txt_time_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
                 android:textColor="@color/black"
                 app:typeface="Roboto-Regular.ttf" />
 
-            <com.app.fastcab.ui.views.AnyTextView
+            <com.app.fastcabdriver.ui.views.AnyTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
@@ -100,7 +100,7 @@
                 android:textColor="@color/black"
                 app:typeface="Roboto-Regular.ttf" />
 
-            <com.app.fastcab.ui.views.AnyTextView
+            <com.app.fastcabdriver.ui.views.AnyTextView
                 android:id="@+id/txt_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
