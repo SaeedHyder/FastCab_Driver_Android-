@@ -30,6 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.app.fastcabdriver.R.id.rbAddRating;
 import static com.app.fastcabdriver.global.AppConstants.DRIVER;
 
 /**
@@ -38,22 +39,7 @@ import static com.app.fastcabdriver.global.AppConstants.DRIVER;
 
 public class RateUserFragment extends BaseFragment {
 
-    @BindView(R.id.txtDriverName)
-    AnyTextView txtDriverName;
-    @BindView(R.id.txtCarNo)
-    AnyTextView txtCarNo;
-    @BindView(R.id.txt_pick_text)
-    AnyTextView txtPickText;
-    @BindView(R.id.txt_destination_text)
-    AnyTextView txtDestinationText;
-    @BindView(R.id.txtFareAmount)
-    AnyTextView txtFareAmount;
-    @BindView(R.id.rbAddRating)
-    CustomRatingBar rbAddRating;
-    @BindView(R.id.SubmitButton)
-    Button SubmitButton;
-    @BindView(R.id.CircularImageSharePop)
-    CircleImageView CircularImageSharePop;
+
 
     public static RateUserFragment newInstance() {
         return new RateUserFragment();
@@ -78,33 +64,6 @@ public class RateUserFragment extends BaseFragment {
 
     }
 
-    void RateUser(int UserId, int rideId)
-    {
-        loadingStarted();
-        Call<ResponseWrapper<DriverFeedBackEnt>> call = webService.DriverFeedBack(UserId,12,rideId,(int)rbAddRating.getScore(),AppConstants.DRIVER);
-
-        call.enqueue(new Callback<ResponseWrapper<DriverFeedBackEnt>>() {
-            @Override
-            public void onResponse(Call<ResponseWrapper<DriverFeedBackEnt>> call, Response<ResponseWrapper<DriverFeedBackEnt>> response) {
-                loadingFinished();
-                if (response.body().getResponse().equals(WebServiceConstants.SUCCESS_RESPONSE_CODE)) {
-                    getMainActivity().replaceDockableFragment(HomeFragment.newInstance(),HomeFragment.class.getSimpleName());
-                }
-                else {
-                    UIHelper.showShortToastInCenter(getDockActivity(), response.body().getMessage());
-                }
-                }
-
-            @Override
-            public void onFailure(Call<ResponseWrapper<DriverFeedBackEnt>> call, Throwable t) {
-                loadingFinished();
-                Log.e(SettingFragment.class.getSimpleName(), t.toString());
-
-            }
-        });
-
-    }
-
 
     @Override
     public void setTitleBar(TitleBar titleBar) {
@@ -116,11 +75,4 @@ public class RateUserFragment extends BaseFragment {
     }
 
 
-
-    @OnClick(R.id.SubmitButton)
-    public void onViewClicked() {
-        getDockActivity().popBackStackTillEntry(0);
-        RateUser(12,16);
-
-    }
 }

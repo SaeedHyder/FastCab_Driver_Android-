@@ -54,7 +54,7 @@ public class CompletedRidesFragment extends BaseFragment implements View.OnClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        adapter = new ArrayListAdapter<AssignRideEnt>(getDockActivity(), new CompletedTripBinder());
+        adapter = new ArrayListAdapter<AssignRideEnt>(getDockActivity(), new CompletedTripBinder(getDockActivity()));
     }
 
     @Override

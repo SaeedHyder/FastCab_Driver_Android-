@@ -1,7 +1,13 @@
 package DirectionModule;
 
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
+import android.view.View;
 
+import com.app.fastcabdriver.entities.AssignRideEnt;
+import com.app.fastcabdriver.fragments.abstracts.BaseFragment;
+import com.app.fastcabdriver.interfaces.RouteJson;
+import com.app.fastcabdriver.ui.viewbinder.CompletedTripBinder;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -19,21 +25,38 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.attr.data;
+
 /**
  * Created by Mai Thanh Hiep on 4/3/2016.
  */
-public class DirectionFinder {
+public class DirectionFinder  {
     private static final String DIRECTION_URL_API = "https://maps.googleapis.com/maps/api/directions/json?";
     private static final String GOOGLE_API_KEY = "AIzaSyBwD4E_JR99kKFXGaIRzq5p5caDw_KJvRU";
     private DirectionFinderListener listener;
     private String origin;
     private String destination;
+    CompletedTripBinder.ViewHolder viewHolder;
+    View view;
+    AssignRideEnt entity;
 
-    public DirectionFinder(DirectionFinderListener listener, String origin, String destination) {
+
+
+
+
+    public DirectionFinder(DirectionFinderListener listener, String origin, String destination, CompletedTripBinder.ViewHolder viewHolder, View view, AssignRideEnt entity) {
         this.listener = listener;
         this.origin = origin;
         this.destination = destination;
+        this.viewHolder=viewHolder;
+        this.view=view;
+        this.entity=entity;
     }
+
+
+
+
+
 
     public void execute() throws UnsupportedEncodingException {
         listener.onDirectionFinderStart();
@@ -43,11 +66,13 @@ public class DirectionFinder {
     private String createUrl() throws UnsupportedEncodingException {
         String urlOrigin = URLEncoder.encode(origin, "utf-8");
         String urlDestination = URLEncoder.encode(destination, "utf-8");
-
         return DIRECTION_URL_API + "origin=" + urlOrigin + "&destination=" + urlDestination + "&key=" + GOOGLE_API_KEY;
     }
 
+
+
     private class DownloadRawData extends AsyncTask<String, Void, String> {
+
 
         @Override
         protected String doInBackground(String... params) {
@@ -77,6 +102,7 @@ public class DirectionFinder {
         protected void onPostExecute(String res) {
             try {
                 parseJSon(res);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -113,8 +139,10 @@ public class DirectionFinder {
             routes.add(route);
         }
 
-        listener.onDirectionFinderSuccess(routes);
+        listener.onDirectionFinderSuccess(routes,data,view,viewHolder,origin,destination,entity);
     }
+
+
 
     private List<LatLng> decodePolyLine(final String poly) {
         int len = poly.length();

@@ -5,12 +5,29 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.NestedScrollView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
 import com.app.fastcabdriver.R;
+import com.app.fastcabdriver.activities.DockActivity;
+import com.app.fastcabdriver.entities.DriverFeedBackEnt;
+import com.app.fastcabdriver.entities.ResponseWrapper;
+import com.app.fastcabdriver.fragments.HomeFragment;
+import com.app.fastcabdriver.fragments.SettingFragment;
+import com.app.fastcabdriver.global.AppConstants;
+import com.app.fastcabdriver.global.WebServiceConstants;
+import com.app.fastcabdriver.retrofit.WebService;
+import com.app.fastcabdriver.ui.views.CustomRatingBar;
 import com.app.fastcabdriver.ui.views.ExpandedBottomSheetBehavior;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static android.R.attr.id;
+import static com.app.fastcabdriver.R.id.rbAddRating;
 
 
 /**
@@ -20,12 +37,16 @@ import com.app.fastcabdriver.ui.views.ExpandedBottomSheetBehavior;
 public class BottomSheetDialogHelper {
    // private BottomSheetDialog dialog;
     private NestedScrollView dialog;
-    private Context context;
+    private DockActivity context;
     ExpandedBottomSheetBehavior bottomSheetBehavior;
+    private WebService webService;
+    BasePreferenceHelper prefHelper;
     private CoordinatorLayout mainParent;
-    public BottomSheetDialogHelper(Context context, CoordinatorLayout mainParent, int LayoutID) {
+    public BottomSheetDialogHelper(DockActivity context, CoordinatorLayout mainParent, int LayoutID,WebService webService,BasePreferenceHelper prefHelper) {
         this.context = context;
         this.mainParent = mainParent;
+        this.webService=webService;
+        this.prefHelper=prefHelper;
         LayoutInflater inflater = LayoutInflater.from(context);
         dialog = (NestedScrollView) inflater.inflate(LayoutID, null, false);
         mainParent.addView(dialog);
@@ -48,6 +69,7 @@ public class BottomSheetDialogHelper {
         bottomSheetBehavior.setPeekHeight((int)context.getResources().getDimension(R.dimen.x150));
         Button submit = (Button)dialog.findViewById(R.id.SubmitButton);
         submit.setOnClickListener(onClickListener);
+
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -60,6 +82,39 @@ public class BottomSheetDialogHelper {
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
             }
         });
+    }
+
+    private int getRating(){
+        CustomRatingBar customRatingBar = (CustomRatingBar)dialog.findViewById(R.id.rbAddRating);
+        return (int)customRatingBar.getScore();
+
+    }
+
+    public void RateUser(int UserId, int rideId)
+    {
+        context.onLoadingStarted();
+        Call<ResponseWrapper<DriverFeedBackEnt>> call = webService.DriverFeedBack(UserId,Integer.parseInt(prefHelper.getDriverId()),rideId,getRating(), AppConstants.DRIVER);
+
+        call.enqueue(new Callback<ResponseWrapper<DriverFeedBackEnt>>() {
+            @Override
+            public void onResponse(Call<ResponseWrapper<DriverFeedBackEnt>> call, Response<ResponseWrapper<DriverFeedBackEnt>> response) {
+                context.onLoadingFinished();
+                if (response.body().getResponse().equals(WebServiceConstants.SUCCESS_RESPONSE_CODE)) {
+                    context.replaceDockableFragment(HomeFragment.newInstance(),HomeFragment.class.getSimpleName());
+                }
+                else {
+                    UIHelper.showShortToastInCenter(context, response.body().getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseWrapper<DriverFeedBackEnt>> call, Throwable t) {
+                context.onLoadingFinished();
+                Log.e(SettingFragment.class.getSimpleName(), t.toString());
+
+            }
+        });
+
     }
 
     public void showDialog(){

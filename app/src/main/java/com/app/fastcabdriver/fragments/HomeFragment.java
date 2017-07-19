@@ -42,6 +42,7 @@ import com.app.fastcabdriver.helpers.BottomSheetDialogHelper;
 import com.app.fastcabdriver.helpers.DialogHelper;
 import com.app.fastcabdriver.helpers.UIHelper;
 import com.app.fastcabdriver.interfaces.OnSettingActivateListener;
+import com.app.fastcabdriver.ui.viewbinder.CompletedTripBinder;
 import com.app.fastcabdriver.ui.views.AnyTextView;
 import com.app.fastcabdriver.ui.views.CustomRatingBar;
 import com.app.fastcabdriver.ui.views.TitleBar;
@@ -426,14 +427,14 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
             @Override
             public void onClick(View v) {
                 newRide.hideDialog();
-                AssignRideService(16,AppConstants.ACCEPT,AppConstants.DEFUALT);
+                AssignRideService(22,AppConstants.ACCEPT,AppConstants.DEFUALT);
 
             }
         }, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 newRide.hideDialog();
-                AssignRideService(16,AppConstants.REJECT,AppConstants.DEFUALT);
+                AssignRideService(22,AppConstants.REJECT,AppConstants.DEFUALT);
 
             }
         });
@@ -443,7 +444,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
 
     private void AssignRideService(int rideId, final int rideStatus, final int tripStatus) {
         loadingStarted();
-        Call<ResponseWrapper<AssignRideEnt>> call = webService.AssignStatus(12,rideId,rideStatus,tripStatus);
+        Call<ResponseWrapper<AssignRideEnt>> call = webService.AssignStatus(Integer.parseInt(prefHelper.getDriverId()),rideId,rideStatus,tripStatus);
 
         call.enqueue(new Callback<ResponseWrapper<AssignRideEnt>>() {
             @Override
@@ -538,7 +539,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
 
     private void sendRequest(String origin, String destination) {
         try {
-            new DirectionFinder(this, origin, destination).execute();
+            new DirectionFinder(this, origin, destination, null, null, null).execute();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -607,7 +608,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
                 break;
             case R.id.btn_trip_status:
                 if (btnTripStatus.getText().toString().equals(getResources().getString(R.string.start_trip))) {
-                    AssignRideService(16,AppConstants.DEFUALT,AppConstants.START);
+                    AssignRideService(22,AppConstants.DEFUALT,AppConstants.START);
                    // btnTripStatus.setText(R.string.end_trip);
                     LocationDetail.setVisibility(View.GONE);
                 } else {
@@ -651,7 +652,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
             @Override
             public void onClick(View v) {
                 endride.hideDialog();
-                AssignRideService(16,AppConstants.DEFUALT,AppConstants.END);
+                AssignRideService(22,AppConstants.DEFUALT,AppConstants.END);
 
                /* isTitleBarChange = false;
                 destination = null;
@@ -681,10 +682,11 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
         titlebar.setSubHeading(getResources().getString(R.string.rate));
 
         final BottomSheetDialogHelper ratingDialog =
-                new BottomSheetDialogHelper(getDockActivity(), MainFrame, R.layout.fragment_rate_user);
+                new BottomSheetDialogHelper(getDockActivity(), MainFrame, R.layout.fragment_rate_user,webService,prefHelper);
         ratingDialog.initRatingDialog(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ratingDialog.RateUser(10,22);
                 ratingDialog.hideDialog();
                 titlebar.hideButtons();
                 titlebar.setSubHeading(getResources().getString(R.string.home));
@@ -717,7 +719,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
     }
 
     @Override
-    public void onDirectionFinderSuccess(List<Route> route) {
+    public void onDirectionFinderSuccess(List<Route> route, String data, View view, CompletedTripBinder.ViewHolder viewHolder, String origin, String destination, AssignRideEnt entity) {
         polylinePaths = new ArrayList<>();
         originMarkers = new ArrayList<>();
         destinationMarkers = new ArrayList<>();
@@ -733,11 +735,11 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
                     color(Color.BLACK).
                     width(15);
 
-            googleMap.addMarker(new MarkerOptions().position(destination.getLatlng())
+            googleMap.addMarker(new MarkerOptions().position(this.destination.getLatlng())
                     .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.set_pickup_location_trip,
                             routesingle.duration.text, R.color.black))));
             BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.car);
-            googleMap.addMarker(new MarkerOptions().position(origin.getLatlng()).icon(icon));
+            googleMap.addMarker(new MarkerOptions().position(this.origin.getLatlng()).icon(icon));
 
             for (int i = 0; i < routesingle.points.size(); i++)
                 polylineOptions.add(routesingle.points.get(i));

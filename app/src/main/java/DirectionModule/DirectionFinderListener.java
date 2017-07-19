@@ -1,5 +1,10 @@
 package DirectionModule;
 
+import android.view.View;
+
+import com.app.fastcabdriver.entities.AssignRideEnt;
+import com.app.fastcabdriver.ui.viewbinder.CompletedTripBinder;
+
 import java.util.List;
 
 /**
@@ -7,5 +12,5 @@ import java.util.List;
  */
 public interface DirectionFinderListener {
     void onDirectionFinderStart();
-    void onDirectionFinderSuccess(List<Route> route);
+    void onDirectionFinderSuccess(List<Route> route, String data, View view, CompletedTripBinder.ViewHolder viewHolder, String origin, String destination, AssignRideEnt entity);
 }
