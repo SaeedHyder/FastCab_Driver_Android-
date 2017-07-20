@@ -36,21 +36,30 @@ public class DirectionFinder  {
     private DirectionFinderListener listener;
     private String origin;
     private String destination;
-    CompletedTripBinder.ViewHolder viewHolder;
     View view;
-    AssignRideEnt entity;
+    Object object;
+    String customMarkerOrigin;
+    String customMarkerDestination;
 
 
-
-
-
-    public DirectionFinder(DirectionFinderListener listener, String origin, String destination, CompletedTripBinder.ViewHolder viewHolder, View view, AssignRideEnt entity) {
+    public DirectionFinder(DirectionFinderListener listener, String origin, String destination) {
         this.listener = listener;
         this.origin = origin;
         this.destination = destination;
-        this.viewHolder=viewHolder;
+
+    }
+
+
+
+
+    public DirectionFinder(DirectionFinderListener listener, String origin, String destination, View view, Object object, String customMarkerOrigin, String customMarkerDestination) {
+        this.listener = listener;
+        this.origin = origin;
+        this.destination = destination;
         this.view=view;
-        this.entity=entity;
+        this.object=object;
+        this.customMarkerOrigin=customMarkerOrigin;
+        this.customMarkerDestination=customMarkerDestination;
     }
 
 
@@ -139,7 +148,7 @@ public class DirectionFinder  {
             routes.add(route);
         }
 
-        listener.onDirectionFinderSuccess(routes,data,view,viewHolder,origin,destination,entity);
+        listener.onDirectionFinderSuccess(routes,view,origin,destination,object,customMarkerOrigin,customMarkerDestination);
     }
 
 

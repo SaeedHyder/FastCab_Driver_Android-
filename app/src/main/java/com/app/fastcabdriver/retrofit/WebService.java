@@ -2,6 +2,7 @@ package com.app.fastcabdriver.retrofit;
 
 
 import com.app.fastcabdriver.entities.AssignRideEnt;
+import com.app.fastcabdriver.entities.CompleteRideDataEnt;
 import com.app.fastcabdriver.entities.DriverEnt;
 import com.app.fastcabdriver.entities.DriverFeedBackEnt;
 import com.app.fastcabdriver.entities.DriverMsgesEnt;
@@ -111,5 +112,10 @@ public interface WebService {
                                                             @Field("rate") int rate,
                                                             @Field("type") String type
     );
+
+
+    @GET("ride/completeridedetail")
+    Call<ResponseWrapper<CompleteRideDataEnt>> CompleteRideUserDetail(@Query("ride_id") int ride_id);
+
 
 }

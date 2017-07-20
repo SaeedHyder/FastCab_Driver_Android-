@@ -12,5 +12,5 @@ import java.util.List;
  */
 public interface DirectionFinderListener {
     void onDirectionFinderStart();
-    void onDirectionFinderSuccess(List<Route> route, String data, View view, CompletedTripBinder.ViewHolder viewHolder, String origin, String destination, AssignRideEnt entity);
+    void onDirectionFinderSuccess(List<Route> route, View view, String origin, String destination, Object object,String customMarkerOrigin,String customMarkerDestination);
 }

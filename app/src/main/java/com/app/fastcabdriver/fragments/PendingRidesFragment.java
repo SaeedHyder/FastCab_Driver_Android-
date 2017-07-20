@@ -75,7 +75,7 @@ public class PendingRidesFragment extends BaseFragment implements View.OnClickLi
     private void getPendingTripsData() {
 
         loadingStarted();
-        Call<ResponseWrapper<ArrayList<AssignRideEnt>>> call = webService.InProgressRides(Integer.parseInt(prefHelper.getDriverId()));
+        Call<ResponseWrapper<ArrayList<AssignRideEnt>>> call = webService.InProgressRides(12);
 
         call.enqueue(new Callback<ResponseWrapper<ArrayList<AssignRideEnt>>>() {
             @Override
@@ -102,7 +102,7 @@ public class PendingRidesFragment extends BaseFragment implements View.OnClickLi
 
     private void setPendingRidesData(ArrayList<AssignRideEnt> result) {
 
-         if(result.size()<0)
+         if(result.size()<=0)
         {
             txtNoData.setVisibility(View.VISIBLE);
             PendingRidesListView.setVisibility(View.GONE);

@@ -42,7 +42,6 @@ import com.app.fastcabdriver.helpers.BottomSheetDialogHelper;
 import com.app.fastcabdriver.helpers.DialogHelper;
 import com.app.fastcabdriver.helpers.UIHelper;
 import com.app.fastcabdriver.interfaces.OnSettingActivateListener;
-import com.app.fastcabdriver.ui.viewbinder.CompletedTripBinder;
 import com.app.fastcabdriver.ui.views.AnyTextView;
 import com.app.fastcabdriver.ui.views.CustomRatingBar;
 import com.app.fastcabdriver.ui.views.TitleBar;
@@ -65,6 +64,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -91,6 +91,12 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
 
     @BindView(R.id.rbAddRating)
     CustomRatingBar rbAddRating;
+    @BindView(R.id.rbAddRating_trip)
+    CustomRatingBar rbAddRating_trip;
+    @BindView(R.id.txt_driver_name_trip)
+    AnyTextView txt_driver_name_trip;
+
+
     @BindView(R.id.btn_online_status)
     Button btnOnlineStatus;
     @BindView(R.id.txt_driver_name)
@@ -119,6 +125,11 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
     Button btnTripStatus;
     @BindView(R.id.ll_locationdetail)
     LinearLayout LocationDetail;
+    @BindView(R.id.circleImageView)
+    CircleImageView circleImageView;
+    @BindView(R.id.circledriverView)
+    CircleImageView circledriverView;
+
 
     private View viewParent;
     private LocationEnt origin;
@@ -183,7 +194,9 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
         } else {
             btnOnlineStatus.setText(R.string.go_online);
             btnLocation.setVisibility(View.GONE);
+
         }
+        setDriverData(prefHelper.getDriver());
         setlistner();
 
         if (map == null)
@@ -273,7 +286,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
         try {
             Geocoder geocoder;
             List<Address> addresses;
-            geocoder = new Geocoder(getMainActivity(), Locale.getDefault());
+            geocoder = new Geocoder(getContext());
             addresses = geocoder.getFromLocation(lat, lng, 1);
             if (addresses.size() > 0) {
                 String address = addresses.get(0).getAddressLine(0);
@@ -309,7 +322,9 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
         UIHelper.hideSoftKeyboard(getDockActivity(), getMainActivity()
                 .getWindow().getDecorView());
     }
+
     private LocationListener listener;
+
     private void getCurrentLocation() {
 
         if (googleMap != null && !isRideinSession)
@@ -344,6 +359,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
                             origin = new LocationEnt(Address, new LatLng(latitude, longitude));
                             BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.car);
                             googleMap.addMarker(new MarkerOptions().position(origin.getLatlng()).icon(icon));
+
                         } else {
                             origin = new LocationEnt("Un Named Street", new LatLng(latitude, longitude));
 
@@ -427,14 +443,14 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
             @Override
             public void onClick(View v) {
                 newRide.hideDialog();
-                AssignRideService(22,AppConstants.ACCEPT,AppConstants.DEFUALT);
+                AssignRideService(22, AppConstants.ACCEPT, AppConstants.DEFUALT);
 
             }
         }, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 newRide.hideDialog();
-                AssignRideService(22,AppConstants.REJECT,AppConstants.DEFUALT);
+                AssignRideService(22, AppConstants.REJECT, AppConstants.DEFUALT);
 
             }
         });
@@ -444,22 +460,18 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
 
     private void AssignRideService(int rideId, final int rideStatus, final int tripStatus) {
         loadingStarted();
-        Call<ResponseWrapper<AssignRideEnt>> call = webService.AssignStatus(Integer.parseInt(prefHelper.getDriverId()),rideId,rideStatus,tripStatus);
+        Call<ResponseWrapper<AssignRideEnt>> call = webService.AssignStatus(Integer.parseInt(prefHelper.getDriverId()), rideId, rideStatus, tripStatus);
 
         call.enqueue(new Callback<ResponseWrapper<AssignRideEnt>>() {
             @Override
             public void onResponse(Call<ResponseWrapper<AssignRideEnt>> call, Response<ResponseWrapper<AssignRideEnt>> response) {
                 loadingFinished();
                 if (response.body().getResponse().equals(WebServiceConstants.SUCCESS_RESPONSE_CODE)) {
-                    if(rideStatus==AppConstants.ACCEPT){
+                    if (rideStatus == AppConstants.ACCEPT) {
                         setupRideScreens();
-                    }
-                    else if(tripStatus==AppConstants.START)
-                    {
+                    } else if (tripStatus == AppConstants.START) {
                         btnTripStatus.setText(R.string.end_trip);
-                    }
-                    else if(tripStatus==AppConstants.END)
-                    {
+                    } else if (tripStatus == AppConstants.END) {
                         isTitleBarChange = false;
                         destination = null;
                         googleMap.clear();
@@ -471,11 +483,10 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
                         btnTripStatus.setText(getResources().getString(R.string.start_trip));
                         showRatingDialog();
                     }
-                }
-                else {
+                } else {
                     UIHelper.showShortToastInCenter(getDockActivity(), response.body().getMessage());
                 }
-                }
+            }
 
             @Override
             public void onFailure(Call<ResponseWrapper<AssignRideEnt>> call, Throwable t) {
@@ -539,7 +550,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
 
     private void sendRequest(String origin, String destination) {
         try {
-            new DirectionFinder(this, origin, destination, null, null, null).execute();
+            new DirectionFinder(this, origin, destination).execute();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -608,8 +619,8 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
                 break;
             case R.id.btn_trip_status:
                 if (btnTripStatus.getText().toString().equals(getResources().getString(R.string.start_trip))) {
-                    AssignRideService(22,AppConstants.DEFUALT,AppConstants.START);
-                   // btnTripStatus.setText(R.string.end_trip);
+                    AssignRideService(22, AppConstants.DEFUALT, AppConstants.START);
+                    // btnTripStatus.setText(R.string.end_trip);
                     LocationDetail.setVisibility(View.GONE);
                 } else {
                     setupEndRideDialog();
@@ -618,11 +629,11 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
         }
     }
 
-    void DriverStatus(int status){
+    void DriverStatus(int status) {
 
         loadingStarted();
 
-        Call<ResponseWrapper<DriverEnt>> call = webService.GoOnline(Integer.parseInt(prefHelper.getDriverId()),String.valueOf(status),String.valueOf(origin.getLatlng().longitude),String.valueOf(origin.getLatlng().longitude));
+        Call<ResponseWrapper<DriverEnt>> call = webService.GoOnline(Integer.parseInt(prefHelper.getDriverId()), String.valueOf(status), String.valueOf(origin.getLatlng().longitude), String.valueOf(origin.getLatlng().longitude));
 
         call.enqueue(new Callback<ResponseWrapper<DriverEnt>>() {
             @Override
@@ -630,11 +641,11 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
                 loadingFinished();
                 if (response.body().getResponse().equals(WebServiceConstants.SUCCESS_RESPONSE_CODE)) {
 
-                }
-                else {
+                    setDriverData(response.body().getResult());
+                } else {
                     UIHelper.showShortToastInCenter(getDockActivity(), response.body().getMessage());
                 }
-                }
+            }
 
             @Override
             public void onFailure(Call<ResponseWrapper<DriverEnt>> call, Throwable t) {
@@ -646,13 +657,35 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
 
     }
 
+    private void setDriverData(DriverEnt result) {
+
+        Picasso.with(getDockActivity()).load(result.getProfileImage()).into(circleImageView);
+        txtDriverName.setText(result.getFullName() + "");
+
+        Picasso.with(getDockActivity()).load(result.getProfileImage()).into(circledriverView);
+        txt_driver_name_trip.setText(result.getFullName() + "");
+
+        if (result.getAverageRate() != null) {
+            rbAddRating.setScore(result.getAverageRate());
+        } else {
+            rbAddRating.setScore(0);
+        }
+
+        if (result.getAverageRate() != null) {
+            rbAddRating_trip.setScore(result.getAverageRate());
+        } else {
+            rbAddRating_trip.setScore(0);
+        }
+
+    }
+
     private void setupEndRideDialog() {
         final DialogHelper endride = new DialogHelper(getDockActivity());
         endride.initendtrip(R.layout.endtrip_dialog, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 endride.hideDialog();
-                AssignRideService(22,AppConstants.DEFUALT,AppConstants.END);
+                AssignRideService(22, AppConstants.DEFUALT, AppConstants.END);
 
                /* isTitleBarChange = false;
                 destination = null;
@@ -682,11 +715,11 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
         titlebar.setSubHeading(getResources().getString(R.string.rate));
 
         final BottomSheetDialogHelper ratingDialog =
-                new BottomSheetDialogHelper(getDockActivity(), MainFrame, R.layout.fragment_rate_user,webService,prefHelper);
+                new BottomSheetDialogHelper(getDockActivity(), MainFrame, R.layout.fragment_rate_user, webService, prefHelper);
         ratingDialog.initRatingDialog(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ratingDialog.RateUser(10,22);
+                ratingDialog.RateUser(10, 22);
                 ratingDialog.hideDialog();
                 titlebar.hideButtons();
                 titlebar.setSubHeading(getResources().getString(R.string.home));
@@ -719,7 +752,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
     }
 
     @Override
-    public void onDirectionFinderSuccess(List<Route> route, String data, View view, CompletedTripBinder.ViewHolder viewHolder, String origin, String destination, AssignRideEnt entity) {
+    public void onDirectionFinderSuccess(List<Route> route, View view, String origin, String destination, Object entity, String customMarkerOrigin, String customMarkerDestination) {
         polylinePaths = new ArrayList<>();
         originMarkers = new ArrayList<>();
         destinationMarkers = new ArrayList<>();

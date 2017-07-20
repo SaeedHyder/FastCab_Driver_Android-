@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:id="@+id/mainFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -10,7 +11,7 @@
         android:id="@+id/ll_submitRating"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/x120"
+        android:layout_marginTop="@dimen/x160"
         android:orientation="vertical"
         android:background="@color/white">
 
@@ -21,48 +22,45 @@
             android:orientation="vertical">
 
             <com.app.fastcabdriver.ui.views.AnyTextView
-                android:id="@+id/txtDriverName"
+                android:id="@+id/txtUserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/x55"
+                android:gravity="center"
                 android:text="James Cameron"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x18"
-                android:gravity="center"
-                app:typeface="Roboto-Regular.ttf"
-                />
+                app:typeface="Roboto-Regular.ttf" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-            <com.app.fastcabdriver.ui.views.AnyTextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginTop="@dimen/x5"
-                android:layout_marginRight="@dimen/x8"
-                android:text="@string/time_date"
-                android:alpha="0.6"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x13"
-                android:gravity="right"
-                app:typeface="Roboto-Regular.ttf"
-                />
+                <com.app.fastcabdriver.ui.views.AnyTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/x8"
+                    android:layout_marginTop="@dimen/x5"
+                    android:layout_weight="0.85"
+                    android:alpha="0.6"
+                    android:gravity="right"
+                    android:text="@string/time_date"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x13"
+                    app:typeface="Roboto-Regular.ttf" />
 
                 <com.app.fastcabdriver.ui.views.AnyTextView
                     android:id="@+id/txt_date_time"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginTop="@dimen/x5"
+                    android:layout_weight="1"
+                    android:gravity="left"
                     android:text="13-06-17 1:36PM"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x13"
-                    android:gravity="left"
-                    app:typeface="Roboto-Regular.ttf"
-                    />
+                    app:typeface="Roboto-Regular.ttf" />
 
             </LinearLayout>
 
@@ -71,7 +69,7 @@
                 android:layout_height="@dimen/x1"
                 android:layout_marginTop="@dimen/x10"
                 android:alpha="0.2"
-                android:background="@drawable/text"/>
+                android:background="@drawable/text" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -104,11 +102,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
-                        android:padding="@dimen/x3"
                         android:layout_marginTop="@dimen/x10"
                         android:layout_toEndOf="@+id/imageView"
                         android:alpha="0.5"
                         android:gravity="start"
+                        android:padding="@dimen/x3"
                         android:text="@string/pickup_location"
                         android:textColor="@color/black"
                         android:textSize="@dimen/x10"
@@ -117,13 +115,12 @@
                     <com.app.fastcabdriver.ui.views.AnyTextView
                         android:id="@+id/txt_pick_text"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_below="@+id/txt_pickup"
                         android:layout_gravity="start"
-                        android:layout_marginTop="@dimen/x5"
                         android:layout_toEndOf="@+id/imageView"
                         android:alpha="0.8"
-                        android:gravity="start"
+                        android:gravity="center_vertical"
                         android:scrollbars="horizontal"
                         android:singleLine="true"
                         android:text="Al Masaken Al iqtisadeyah,Qesm Masaken Al iqti.."
@@ -140,6 +137,15 @@
                         android:layout_marginLeft="@dimen/x24"
                         android:src="@drawable/line" />
                 </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/x1"
+                    android:layout_marginTop="@dimen/x10"
+                    android:layout_marginLeft="@dimen/x45"
+                    android:layout_marginRight="@dimen/x15"
+                    android:alpha="0.2"
+                    android:background="@drawable/text" />
 
 
                 <RelativeLayout
@@ -176,8 +182,8 @@
                         android:layout_marginTop="@dimen/x10"
                         android:layout_toEndOf="@+id/imageView_destination"
                         android:alpha="0.5"
-                        android:padding="@dimen/x3"
                         android:gravity="start"
+                        android:padding="@dimen/x3"
                         android:text="Destination Location"
                         android:textColor="@color/black"
                         android:textSize="@dimen/x10"
@@ -186,13 +192,12 @@
                     <com.app.fastcabdriver.ui.views.AnyTextView
                         android:id="@+id/txt_destination_text"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_below="@+id/txt_destination"
                         android:layout_gravity="start"
-                        android:layout_marginTop="@dimen/x5"
                         android:layout_toEndOf="@+id/imageView_destination"
                         android:alpha="0.8"
-                        android:gravity="start"
+                        android:gravity="center_vertical"
                         android:scrollbars="horizontal"
                         android:singleLine="true"
                         android:text="Halwan Ash Sharqeyah ,Qesm Helwan..."
@@ -202,27 +207,25 @@
                 </RelativeLayout>
 
 
-
-
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/x1"
                 android:alpha="0.2"
-                android:background="@drawable/text"/>
+                android:background="@drawable/text" />
 
 
             <LinearLayout
                 android:id="@+id/ll_fare"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="@dimen/x10"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_marginRight="@dimen/x20"
                 android:layout_marginTop="@dimen/x10"
-                android:layout_marginBottom="@dimen/x10"
                 android:layout_weight="0.2"
-                android:layout_gravity="bottom"
                 android:orientation="vertical">
 
 
@@ -231,35 +234,34 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/x20"
+                    android:alpha="0.5"
+                    android:gravity="center"
                     android:text="@string/fare_received"
                     android:textColor="@color/black"
-                    android:alpha="0.5"
                     android:textSize="@dimen/x14"
-                    android:gravity="center"
-                    app:typeface="Roboto-Regular.ttf"
-                    />
+                    app:typeface="Roboto-Regular.ttf" />
+
                 <com.app.fastcabdriver.ui.views.AnyTextView
                     android:id="@+id/txtFareAmount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_marginTop="@dimen/x3"
+                    android:gravity="center"
                     android:text="$48.98"
                     android:textColor="@color/button_color"
                     android:textSize="@dimen/x20"
-                    android:gravity="center"
-                    app:typeface="Roboto-Regular.ttf"
-                    />
+                    app:typeface="Roboto-Regular.ttf" />
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/x1"
-                android:alpha="0.2"
-                android:layout_marginTop="@dimen/x10"
                 android:layout_marginBottom="@dimen/x10"
-                android:background="@drawable/text"/>
+                android:layout_marginTop="@dimen/x10"
+                android:alpha="0.2"
+                android:background="@drawable/text" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -271,28 +273,25 @@
 
                 <com.app.fastcabdriver.ui.views.AnyTextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/x5"
+                    android:layout_height="match_parent"
                     android:layout_marginRight="@dimen/x5"
-                    android:text="You Rated"
                     android:alpha="0.6"
+                    android:gravity="center_vertical"
+                    android:text="You Rated"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x13"
-                    android:gravity="left"
-                    app:typeface="Roboto-Regular.ttf"
-                    />
+                    app:typeface="Roboto-Regular.ttf" />
 
                 <com.app.fastcabdriver.ui.views.AnyTextView
                     android:id="@+id/txt_Name"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/x5"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
                     android:text="James Cameron"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x13"
-                    android:gravity="left"
-                    app:typeface="Roboto-Regular.ttf"
-                    />
+                    app:typeface="Roboto-Regular.ttf" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -303,13 +302,13 @@
                         android:id="@+id/rbAddRating"
                         android:layout_width="@dimen/x100"
                         android:layout_height="match_parent"
+                        android:isIndicator="true"
                         android:visibility="visible"
                         app:maxStars="4"
-                        android:isIndicator="true"
+                        app:onlyForDisplay="true"
                         app:starOff="@drawable/star_unfilled"
                         app:starOn="@drawable/star_filled"
                         app:starPadding="@dimen/x5"
-                        app:onlyForDisplay="true"
                         app:stars="0" />
                 </LinearLayout>
 
@@ -319,14 +318,14 @@
         </LinearLayout>
 
 
-
-
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/iv_staticmap"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/trip"/>
+        android:layout_height="@dimen/x160"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
 
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -335,7 +334,7 @@
         android:layout_height="@dimen/x100"
         android:layout_gravity="center"
         android:src="@drawable/image_holder"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="108dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 

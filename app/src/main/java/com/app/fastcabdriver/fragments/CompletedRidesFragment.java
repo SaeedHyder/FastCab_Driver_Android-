@@ -107,7 +107,7 @@ public class CompletedRidesFragment extends BaseFragment implements View.OnClick
 
     private void setCompleteRidesData(ArrayList<AssignRideEnt> result) {
 
-      if(result.size()<0)
+      if(result.size()<=0)
         {
             txtNoData.setVisibility(View.VISIBLE);
             CompletedTripsListView.setVisibility(View.GONE);
@@ -139,12 +139,11 @@ public class CompletedRidesFragment extends BaseFragment implements View.OnClick
 
     private void setListners() {
 
-        CompletedTripsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      /*  CompletedTripsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                getDockActivity().replaceDockableFragment(CompletedRIdesDetailFragment.newInstance(userCollection.get(position)),CompletedRIdesDetailFragment.class.getSimpleName());
-            }
-        });
+             }
+        });*/
 
     }
 

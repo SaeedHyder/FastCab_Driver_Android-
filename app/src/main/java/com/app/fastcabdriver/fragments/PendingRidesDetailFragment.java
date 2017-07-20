@@ -12,21 +12,25 @@ import android.widget.LinearLayout;
 import com.app.fastcabdriver.R;
 import com.app.fastcabdriver.entities.AssignRideEnt;
 import com.app.fastcabdriver.fragments.abstracts.BaseFragment;
-import com.app.fastcabdriver.global.SignUpFormConstant;
 import com.app.fastcabdriver.ui.views.AnyTextView;
 import com.app.fastcabdriver.ui.views.TitleBar;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+
+import DirectionModule.DirectionFinder;
+import DirectionModule.DirectionFinderListener;
+import DirectionModule.Route;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.app.fastcabdriver.fragments.SignUp2Fragment.SIGNUP_MODEL;
 
 /**
  * Created by saeedhyder on 7/4/2017.
  */
 
-public class PendingRidesDetailFragment extends BaseFragment implements View.OnClickListener {
+public class PendingRidesDetailFragment extends BaseFragment implements View.OnClickListener, DirectionFinderListener {
 
     @BindView(R.id.iv_pendingRides)
     ImageView ivPendingRides;
@@ -57,6 +61,8 @@ public class PendingRidesDetailFragment extends BaseFragment implements View.OnC
 
     public static String PENDING_RIDES_DETAIL = "pending_rides_detail";
     public AssignRideEnt entity;
+    @BindView(R.id.mainframe)
+    LinearLayout mainframe;
 
     public static PendingRidesDetailFragment newInstance(AssignRideEnt entity) {
 
@@ -88,16 +94,63 @@ public class PendingRidesDetailFragment extends BaseFragment implements View.OnC
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        mainframe.setVisibility(View.GONE);
         setListners();
-        setPendingRideDetailData();
+        setStaticMapData(view, entity);
+
     }
 
     private void setPendingRideDetailData() {
-        txtPickpTime.setText(entity.getRideDetail().getDate()+" "+entity.getRideDetail().getTime());
-        txtPickup.setText(entity.getRideDetail().getPickupPlace());
-        txtDropOff.setText(entity.getRideDetail().getDestinationPlace());
-        txtEstimatedFare.setText("AED "+entity.getRideDetail().getEstimateFare());
+        mainframe.setVisibility(View.VISIBLE);
+        txtPickpTime.setText(entity.getRideDetail().getDate() + " " + entity.getRideDetail().getTime());
+        txtPickup.setText(entity.getRideDetail().getPickupPlace()+"");
+        txtDropOff.setText(entity.getRideDetail().getDestinationPlace()+"");
+        txtEstimatedFare.setText("AED " + entity.getRideDetail().getEstimateFare()+"");
+    }
+
+    private void setStaticMapData(View view, AssignRideEnt entity) {
+        // String origin = "24.839611,67.082231";
+        // String destination = "24.829428,67.073822";
+        String origin = entity.getRideDetail().getPickupLatitude() + "," + entity.getRideDetail().getPickupLongitude();
+        String destination = entity.getRideDetail().getDestinationLatitude() + "," + entity.getRideDetail().getDestinationLongitude();
+
+        String CustomMarkerOrigin = "http://35.160.175.165/portfolio/fast_cab/public/images/profile_images/pickup.png";
+        String CustomMarkerDestination = "http://35.160.175.165/portfolio/fast_cab/public/images/profile_images/destination.png";
+
+        try {
+            new DirectionFinder(this, origin, destination, view, entity, CustomMarkerOrigin, CustomMarkerDestination).execute();
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onDirectionFinderSuccess(List<Route> route, View view, String origin, String destination, Object object, String customMarkerOrigin, String customMarkerDestination) {
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (Route routesingle : route) {
+            for (int i = 0; i < routesingle.points.size(); i++) {
+                stringBuilder.append(routesingle.points.get(i) + "|");
+            }
+        }
+        AssignRideEnt entity = (AssignRideEnt) object;
+        String routesList = stringBuilder.toString();
+        routesList = routesList.replaceAll("[^\\d.|,]", "");
+        routesList = routesList.substring(0, routesList.length() - 1);
+
+        Picasso.with(view.getContext()).load(getStaticMapURL(origin, destination, routesList, customMarkerOrigin, customMarkerDestination, getResources().getString(R.string.API_KEY)))
+                .fit().into(ivPendingRides);
+        setPendingRideDetailData();
+
+
+    }
+
+    private String getStaticMapURL(String origin, String destination, String routelist, String customMarkerOrigin, String customMarkerDestination, String APIKEY) {
+        return "https://maps.googleapis.com/maps/api/staticmap?visible=" + routelist + "&scale=2&size=300x150&maptype=roadmap" +
+                "&markers=icon:" + customMarkerOrigin + "|" + origin + "&markers=icon:" + customMarkerDestination + "|" + destination +
+                "&path=color:0x070707FF|weight:5|" + routelist + "&key=" + APIKEY;
     }
 
     private void setListners() {
@@ -128,6 +181,13 @@ public class PendingRidesDetailFragment extends BaseFragment implements View.OnC
         titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
         titleBar.setSubHeading(getString(R.string.Pending_Rides));
     }
+
+
+    @Override
+    public void onDirectionFinderStart() {
+
+    }
+
 
 
 }

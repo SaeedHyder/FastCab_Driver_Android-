@@ -10,9 +10,7 @@
         android:id="@+id/iv_completedTrips"
         android:layout_width="match_parent"
         android:layout_height="@dimen/x150"
-        android:scaleType="centerInside"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/trip"/>
+       />
 
     <LinearLayout
         android:id="@+id/ll_completeTripDetail"
@@ -93,25 +91,7 @@
                 android:textColor="@color/black"
                 app:typeface="Roboto-Regular.ttf" />
 
-            <com.app.fastcabdriver.ui.views.AnyTextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.1"
-                android:alpha="0.5"
-                android:gravity="right"
-                android:text="@string/tip"
-                android:textColor="@color/black"
-                app:typeface="Roboto-Regular.ttf" />
 
-            <com.app.fastcabdriver.ui.views.AnyTextView
-                android:id="@+id/txt_tip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/x3"
-                android:gravity="left"
-                android:text="AED 2.00"
-                android:textColor="@color/black"
-                app:typeface="Roboto-Regular.ttf" />
 
 
         </LinearLayout>
