@@ -124,7 +124,7 @@ public class CompletedRIdesDetailFragment extends BaseFragment implements View.O
 
     private void getCompleteRideData() {
         loadingStarted();
-        Call<ResponseWrapper<CompleteRideDataEnt>> call = webService.CompleteRideUserDetail(entity.getRideId());
+        Call<ResponseWrapper<CompleteRideDataEnt>> call = webService.CompleteRideUserDetail(entity.getRideId(),entity.getRideDetail().getUserId(), Integer.parseInt(prefHelper.getDriverId()));
 
         call.enqueue(new Callback<ResponseWrapper<CompleteRideDataEnt>>() {
             @Override
@@ -149,15 +149,24 @@ public class CompletedRIdesDetailFragment extends BaseFragment implements View.O
 
     private void setCompleteRideData(CompleteRideDataEnt result) {
 
+        mainFrame.setVisibility(View.VISIBLE);
         Picasso.with(getDockActivity()).load(StaticMapString).fit().into(iv_staticmap);
         Picasso.with(getDockActivity()).load(result.getUserDetail().getProfileImage()).into(CircularImageSharePop);
         txtUserName.setText(result.getUserDetail().getFullName() + "");
         txtDateTime.setText(result.getDate() + " " + result.getTime());
         txtPickText.setText(result.getPickupPlace() + " " + result.getPickupAddress());
         txtDestinationText.setText(result.getDestinationPlace() + " " + result.getDestinationAddress());
-        txtFareAmount.setText("AED " + result.getTotalAmount() + "");
         txtName.setText(result.getUserDetail().getFullName() + "");
-        mainFrame.setVisibility(View.VISIBLE);
+        if(result.getRateUser()!=null) {
+            rbAddRating.setScore(result.getRateUser());
+        }else{
+            rbAddRating.setScore(0);
+        }
+        if(!result.getTotalAmount().equals("")){
+            txtFareAmount.setText("AED " + result.getTotalAmount());}
+        else{
+            txtFareAmount.setText("AED 0");
+        }
 
 
     }

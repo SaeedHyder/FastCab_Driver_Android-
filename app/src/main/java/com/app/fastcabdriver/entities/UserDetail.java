@@ -107,7 +107,7 @@ public class UserDetail {
     private Integer totalRide;
     @SerializedName("total_distance")
     @Expose
-    private Integer totalDistance;
+    private String totalDistance;
 
     public Integer getId() {
         return id;
@@ -365,11 +365,11 @@ public class UserDetail {
         this.totalRide = totalRide;
     }
 
-    public Integer getTotalDistance() {
+    public String getTotalDistance() {
         return totalDistance;
     }
 
-    public void setTotalDistance(Integer totalDistance) {
+    public void setTotalDistance(String totalDistance) {
         this.totalDistance = totalDistance;
     }
 }

@@ -72,7 +72,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import DirectionModule.DirectionFinder;
 import DirectionModule.DirectionFinderListener;
@@ -658,12 +657,16 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
     }
 
     private void setDriverData(DriverEnt result) {
-
         Picasso.with(getDockActivity()).load(result.getProfileImage()).into(circleImageView);
         txtDriverName.setText(result.getFullName() + "");
 
         Picasso.with(getDockActivity()).load(result.getProfileImage()).into(circledriverView);
         txt_driver_name_trip.setText(result.getFullName() + "");
+
+        if(result.getVehicleDetail()!=null){
+        txtDriverCar.setText(result.getVehicleDetail().getVehicleName() + "");
+        txtDriverCarPlate.setText(result.getVehicleDetail().getVehicleNumber()+"");}
+
 
         if (result.getAverageRate() != null) {
             rbAddRating.setScore(result.getAverageRate());

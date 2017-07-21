@@ -115,7 +115,15 @@ public interface WebService {
 
 
     @GET("ride/completeridedetail")
-    Call<ResponseWrapper<CompleteRideDataEnt>> CompleteRideUserDetail(@Query("ride_id") int ride_id);
+    Call<ResponseWrapper<CompleteRideDataEnt>> CompleteRideUserDetail(@Query("ride_id") int ride_id,
+                                                                      @Query("user_id") int user_id,
+                                                                      @Query("driver_id") int driver_id
+                                                                    );
+
+    @FormUrlEncoded
+    @POST("driver/driverlogout")
+
+    Call<ResponseWrapper> LogoutDriver(@Field("driver_id") int driver_id);
 
 
 }

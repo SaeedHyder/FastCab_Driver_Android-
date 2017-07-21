@@ -78,7 +78,7 @@ public class CompletedRidesFragment extends BaseFragment implements View.OnClick
     private void getCompleteRidesData() {
 
         loadingStarted();
-        Call<ResponseWrapper<ArrayList<AssignRideEnt>>> call = webService.CompleteRides(12);
+        Call<ResponseWrapper<ArrayList<AssignRideEnt>>> call = webService.CompleteRides(Integer.parseInt(prefHelper.getDriverId()));
 
         call.enqueue(new Callback<ResponseWrapper<ArrayList<AssignRideEnt>>>() {
             @Override

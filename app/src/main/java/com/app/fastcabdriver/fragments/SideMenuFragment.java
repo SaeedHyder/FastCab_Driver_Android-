@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,11 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.app.fastcabdriver.R;
+import com.app.fastcabdriver.entities.DriverEnt;
 import com.app.fastcabdriver.entities.NavigationEnt;
+import com.app.fastcabdriver.entities.ResponseWrapper;
 import com.app.fastcabdriver.fragments.abstracts.BaseFragment;
+import com.app.fastcabdriver.global.WebServiceConstants;
 import com.app.fastcabdriver.helpers.ClickableSpanHelper;
 import com.app.fastcabdriver.helpers.DialogHelper;
 import com.app.fastcabdriver.helpers.UIHelper;
@@ -30,6 +34,9 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SideMenuFragment extends BaseFragment {
 
@@ -170,10 +177,7 @@ public class SideMenuFragment extends BaseFragment {
                         @Override
                         public void onClick(View v) {
                             logoutdialog.hideDialog();
-                            getMainActivity().getResideMenu().closeMenu();
-                            prefHelper.setLoginStatus(false);
-                            getDockActivity().popBackStackTillEntry(0);
-                            getDockActivity().replaceDockableFragment(LoginFragment.newInstance(), LoginFragment.class.getSimpleName());
+                           logoutDriver();
                         }
                     }, new View.OnClickListener() {
                         @Override
@@ -187,6 +191,36 @@ public class SideMenuFragment extends BaseFragment {
                 }
             }
         });
+    }
+
+    private void logoutDriver() {
+
+        loadingStarted();
+        Call<ResponseWrapper> call = webService.LogoutDriver(Integer.parseInt(prefHelper.getDriverId()));
+
+        call.enqueue(new Callback<ResponseWrapper>() {
+            @Override
+            public void onResponse(Call<ResponseWrapper> call, Response<ResponseWrapper> response) {
+                loadingFinished();
+                if (response.body().getResponse().equals(WebServiceConstants.SUCCESS_RESPONSE_CODE)) {
+                    getMainActivity().getResideMenu().closeMenu();
+                    prefHelper.setLoginStatus(false);
+                    getDockActivity().popBackStackTillEntry(0);
+                    getDockActivity().replaceDockableFragment(LoginFragment.newInstance(), LoginFragment.class.getSimpleName());
+                }
+                else {
+                    UIHelper.showShortToastInCenter(getDockActivity(), response.body().getMessage());
+                }
+                }
+
+            @Override
+            public void onFailure(Call<ResponseWrapper> call, Throwable t) {
+                loadingFinished();
+                Log.e(DriverProfileFragment.class.getSimpleName(), t.toString());
+            }
+        });
+
+
     }
 
     private void BindData() {

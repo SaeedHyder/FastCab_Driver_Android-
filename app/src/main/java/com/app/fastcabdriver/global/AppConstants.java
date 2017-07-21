@@ -18,4 +18,5 @@ public class AppConstants {
     public static  int START = 1;
     public static  int END = 2;
     public static final String DRIVER="driver";
+    public static final String USER="user";
 }

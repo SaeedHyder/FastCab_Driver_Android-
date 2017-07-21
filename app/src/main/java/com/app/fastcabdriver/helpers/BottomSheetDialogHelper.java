@@ -93,7 +93,7 @@ public class BottomSheetDialogHelper {
     public void RateUser(int UserId, int rideId)
     {
         context.onLoadingStarted();
-        Call<ResponseWrapper<DriverFeedBackEnt>> call = webService.DriverFeedBack(UserId,Integer.parseInt(prefHelper.getDriverId()),rideId,getRating(), AppConstants.DRIVER);
+        Call<ResponseWrapper<DriverFeedBackEnt>> call = webService.DriverFeedBack(UserId,Integer.parseInt(prefHelper.getDriverId()),rideId,getRating(), AppConstants.USER);
 
         call.enqueue(new Callback<ResponseWrapper<DriverFeedBackEnt>>() {
             @Override

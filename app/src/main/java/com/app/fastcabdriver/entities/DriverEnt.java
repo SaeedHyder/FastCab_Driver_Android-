@@ -109,6 +109,9 @@ public class DriverEnt {
     @SerializedName("total_distance")
     @Expose
     private Integer totalDistance;
+    @SerializedName("vehicle_detail")
+    @Expose
+    private VehicleDetail vehicleDetail;
 
     public Integer getId() {
         return id;
@@ -372,6 +375,14 @@ public class DriverEnt {
 
     public void setPromoCode(String promoCode) {
         this.promoCode = promoCode;
+    }
+
+    public VehicleDetail getVehicleDetail() {
+        return vehicleDetail;
+    }
+
+    public void setVehicleDetail(VehicleDetail vehicleDetail) {
+        this.vehicleDetail = vehicleDetail;
     }
 
 

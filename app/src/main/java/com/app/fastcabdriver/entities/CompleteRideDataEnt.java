@@ -82,6 +82,20 @@ public class CompleteRideDataEnt {
     @Expose
     private VechicleDetail vechicleDetail;
 
+    @SerializedName("rate_user")
+    @Expose
+    private Integer rateUser;
+
+    public Integer getRateUser() {
+        return rateUser;
+    }
+
+    public void setRateUser(Integer rateUser) {
+        this.rateUser = rateUser;
+    }
+
+
+
     public Integer getId() {
         return id;
     }

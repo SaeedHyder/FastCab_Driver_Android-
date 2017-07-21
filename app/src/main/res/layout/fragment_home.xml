@@ -181,17 +181,18 @@
                 android:id="@+id/rbAddRating"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/x20"
-                android:layout_alignTop="@+id/txt_driver_name"
                 android:layout_gravity="top|center_horizontal"
                 android:layout_marginLeft="@dimen/x5"
-                android:layout_toEndOf="@+id/txt_driver_name"
+                app:onlyForDisplay="true"
                 android:isIndicator="true"
                 android:visibility="visible"
                 app:maxStars="4"
                 app:starOff="@drawable/star_unfilled"
                 app:starOn="@drawable/star_filled"
                 app:starPadding="@dimen/x2"
-                app:stars="5" />
+                app:stars="5"
+                android:layout_alignTop="@+id/txt_driver_name"
+                android:layout_toEndOf="@+id/txt_driver_name" />
 
             <Button
                 android:id="@+id/btn_online_status"
@@ -224,8 +225,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txt_driver_name"
-                android:layout_toEndOf="@+id/circleImageView"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_alignStart="@+id/txt_driver_name"
+                android:weightSum="1">
 
                 <ImageView
                     android:id="@+id/mercedes"
@@ -243,17 +245,17 @@
                     android:text="Mercedes Benz"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x10"
-                    app:typeface="Roboto-Regular.ttf" />
+                    app:typeface="Roboto-Regular.ttf"
+                    android:layout_weight="5.42" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/circleImageView"
                 android:orientation="horizontal"
                 android:layout_below="@+id/ll_car"
-                android:layout_alignEnd="@+id/ll_car">
+                android:layout_alignStart="@+id/txt_driver_name">
 
                 <ImageView
                     android:id="@+id/license"
