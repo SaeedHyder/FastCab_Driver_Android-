@@ -4,11 +4,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by saeedhyder on 7/18/2017.
+ * Created by saeedhyder on 7/21/2017.
  */
 
-public class RideDetail {
-
+public class UserRideDetailRatingEnt {
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -45,9 +44,6 @@ public class RideDetail {
     @SerializedName("vehicle_id")
     @Expose
     private Integer vehicleId;
-    @SerializedName("promo_id")
-    @Expose
-    private Integer promoId;
     @SerializedName("date")
     @Expose
     private String date;
@@ -78,8 +74,15 @@ public class RideDetail {
     @SerializedName("rate_user")
     @Expose
     private Integer rateUser;
-
-
+    @SerializedName("user_detail")
+    @Expose
+    private UserDetail userDetail;
+    @SerializedName("cancel_detail")
+    @Expose
+    private Object cancelDetail;
+    @SerializedName("vechicle_detail")
+    @Expose
+    private VechicleDetail vechicleDetail;
 
     public Integer getId() {
         return id;
@@ -177,14 +180,6 @@ public class RideDetail {
         this.vehicleId = vehicleId;
     }
 
-    public Integer getPromoId() {
-        return promoId;
-    }
-
-    public void setPromoId(Integer promoId) {
-        this.promoId = promoId;
-    }
-
     public String getDate() {
         return date;
     }
@@ -264,4 +259,29 @@ public class RideDetail {
     public void setRateUser(Integer rateUser) {
         this.rateUser = rateUser;
     }
+
+    public UserDetail getUserDetail() {
+        return userDetail;
+    }
+
+    public void setUserDetail(UserDetail userDetail) {
+        this.userDetail = userDetail;
+    }
+
+    public Object getCancelDetail() {
+        return cancelDetail;
+    }
+
+    public void setCancelDetail(Object cancelDetail) {
+        this.cancelDetail = cancelDetail;
+    }
+
+    public VechicleDetail getVechicleDetail() {
+        return vechicleDetail;
+    }
+
+    public void setVechicleDetail(VechicleDetail vechicleDetail) {
+        this.vechicleDetail = vechicleDetail;
+    }
+
 }

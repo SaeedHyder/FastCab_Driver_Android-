@@ -7,6 +7,7 @@ import com.app.fastcabdriver.entities.DriverEnt;
 import com.app.fastcabdriver.entities.DriverFeedBackEnt;
 import com.app.fastcabdriver.entities.DriverMsgesEnt;
 import com.app.fastcabdriver.entities.ResponseWrapper;
+import com.app.fastcabdriver.entities.UserRideDetailRatingEnt;
 
 import java.util.ArrayList;
 
@@ -122,8 +123,10 @@ public interface WebService {
 
     @FormUrlEncoded
     @POST("driver/driverlogout")
-
     Call<ResponseWrapper> LogoutDriver(@Field("driver_id") int driver_id);
 
+
+    @GET("ride/userridedetail")
+    Call<ResponseWrapper<UserRideDetailRatingEnt>> UserDetailForRating(@Query("ride_id") int ride_id);
 
 }

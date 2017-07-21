@@ -9,25 +9,33 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.app.fastcabdriver.R;
 import com.app.fastcabdriver.activities.DockActivity;
 import com.app.fastcabdriver.entities.DriverFeedBackEnt;
 import com.app.fastcabdriver.entities.ResponseWrapper;
+import com.app.fastcabdriver.entities.UserRideDetailRatingEnt;
 import com.app.fastcabdriver.fragments.HomeFragment;
 import com.app.fastcabdriver.fragments.SettingFragment;
 import com.app.fastcabdriver.global.AppConstants;
 import com.app.fastcabdriver.global.WebServiceConstants;
 import com.app.fastcabdriver.retrofit.WebService;
+import com.app.fastcabdriver.ui.views.AnyTextView;
 import com.app.fastcabdriver.ui.views.CustomRatingBar;
 import com.app.fastcabdriver.ui.views.ExpandedBottomSheetBehavior;
+import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.R.attr.id;
+import static com.app.fastcabdriver.R.id.CircularImageSharePop;
 import static com.app.fastcabdriver.R.id.rbAddRating;
+import static com.app.fastcabdriver.R.id.txt_pick_text;
+import static com.app.fastcabdriver.R.string.submit;
 
 
 /**
@@ -41,12 +49,14 @@ public class BottomSheetDialogHelper {
     ExpandedBottomSheetBehavior bottomSheetBehavior;
     private WebService webService;
     BasePreferenceHelper prefHelper;
+    int RideId;
     private CoordinatorLayout mainParent;
-    public BottomSheetDialogHelper(DockActivity context, CoordinatorLayout mainParent, int LayoutID,WebService webService,BasePreferenceHelper prefHelper) {
+    public BottomSheetDialogHelper(DockActivity context, CoordinatorLayout mainParent, int LayoutID, WebService webService, BasePreferenceHelper prefHelper, int RideId) {
         this.context = context;
         this.mainParent = mainParent;
         this.webService=webService;
         this.prefHelper=prefHelper;
+        this.RideId=RideId;
         LayoutInflater inflater = LayoutInflater.from(context);
         dialog = (NestedScrollView) inflater.inflate(LayoutID, null, false);
         mainParent.addView(dialog);
@@ -67,9 +77,17 @@ public class BottomSheetDialogHelper {
     }
     public void initRatingDialog(View.OnClickListener onClickListener){
         bottomSheetBehavior.setPeekHeight((int)context.getResources().getDimension(R.dimen.x150));
+
+        CircleImageView CircularImageSharePop=(CircleImageView)dialog.findViewById(R.id.CircularImageSharePop);
+        AnyTextView txtDriverName=(AnyTextView)dialog.findViewById(R.id.txtDriverName) ;
+        AnyTextView txtPickText=(AnyTextView)dialog.findViewById(R.id.txt_pick_text) ;
+        AnyTextView txtDestinationText=(AnyTextView)dialog.findViewById(R.id.txt_destination_text) ;
+        AnyTextView txtFareAmount=(AnyTextView)dialog.findViewById(R.id.txtFareAmount) ;
+        RelativeLayout mainFrame=(RelativeLayout)dialog.findViewById(R.id.mainFrame);
+        mainFrame.setVisibility(View.GONE);
         Button submit = (Button)dialog.findViewById(R.id.SubmitButton);
         submit.setOnClickListener(onClickListener);
-
+        UserDetail(RideId,CircularImageSharePop,txtDriverName,txtPickText,txtDestinationText,txtFareAmount,mainFrame);
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -90,7 +108,7 @@ public class BottomSheetDialogHelper {
 
     }
 
-    public void RateUser(int UserId, int rideId)
+    public void RateUser(int UserId, final int rideId)
     {
         context.onLoadingStarted();
         Call<ResponseWrapper<DriverFeedBackEnt>> call = webService.DriverFeedBack(UserId,Integer.parseInt(prefHelper.getDriverId()),rideId,getRating(), AppConstants.USER);
@@ -112,6 +130,42 @@ public class BottomSheetDialogHelper {
                 context.onLoadingFinished();
                 Log.e(SettingFragment.class.getSimpleName(), t.toString());
 
+            }
+        });
+    }
+
+    public void UserDetail(int rideId, final CircleImageView circularImageSharePop, final AnyTextView txtDriverName, final AnyTextView txtPickText, final AnyTextView txtDestinationText, final AnyTextView txtFareAmount, final RelativeLayout mainFrame){
+        context.onLoadingStarted();
+        Call<ResponseWrapper<UserRideDetailRatingEnt>> call = webService.UserDetailForRating(rideId);
+
+        call.enqueue(new Callback<ResponseWrapper<UserRideDetailRatingEnt>>() {
+            @Override
+            public void onResponse(Call<ResponseWrapper<UserRideDetailRatingEnt>> call, Response<ResponseWrapper<UserRideDetailRatingEnt>> response) {
+                context.onLoadingFinished();
+                if (response.body().getResponse().equals(WebServiceConstants.SUCCESS_RESPONSE_CODE)) {
+
+                    mainFrame.setVisibility(View.VISIBLE);
+                    txtDriverName.setText(response.body().getResult().getUserDetail().getFullName()+"");
+                    txtPickText.setText(response.body().getResult().getPickupPlace()+" "+response.body().getResult().getPickupAddress());
+                    txtDestinationText.setText(response.body().getResult().getDestinationPlace()+" "+response.body().getResult().getDestinationAddress());
+
+                    Picasso.with(context).load(response.body().getResult().getUserDetail().getProfileImage()).into(circularImageSharePop);
+                    if(!response.body().getResult().getTotalAmount().equals("")){
+                        txtFareAmount.setText("AED " + response.body().getResult().getTotalAmount());}
+                    else{
+                        txtFareAmount.setText("AED 0");
+                    }
+
+                }
+                else {
+                    UIHelper.showShortToastInCenter(context, response.body().getMessage());
+                }
+                }
+
+            @Override
+            public void onFailure(Call<ResponseWrapper<UserRideDetailRatingEnt>> call, Throwable t) {
+                context.onLoadingFinished();
+                Log.e(SettingFragment.class.getSimpleName(), t.toString());
             }
         });
 

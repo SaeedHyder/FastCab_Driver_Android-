@@ -57,6 +57,9 @@ import com.kbeanie.imagechooser.api.ImageChooserManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.R.attr.direction;
+import static android.R.attr.type;
+
 
 public class MainActivity extends DockActivity implements OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,ImageChooserListener {
     public final int LocationResultCode = 1;
@@ -363,9 +366,21 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
             resideMenu.setMenuListener(getMenuListener());
             resideMenu.setScaleValue(0.52f);
 
+
             setMenuItemDirection(direction);
         }
     }
+
+    public void refreshSideMenu(){
+        sideMenuFragment = SideMenuFragment.newInstance();
+        FragmentTransaction transaction = getSupportFragmentManager()
+                .beginTransaction();
+        transaction.remove(sideMenuFragment).commit();
+        resideMenu.refreshDrawableState();
+       // settingSideMenu(sideMenuType, sideMenuDirection);
+    }
+
+
 
     private void setMenuItemDirection(String direction) {
 
