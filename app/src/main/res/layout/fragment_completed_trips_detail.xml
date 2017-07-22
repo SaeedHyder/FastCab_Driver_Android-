@@ -130,7 +130,6 @@
 
                     <ImageView
                         android:layout_width="wrap_content"
-
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_below="@+id/imageView"
@@ -138,14 +137,30 @@
                         android:src="@drawable/line" />
                 </RelativeLayout>
 
-                <View
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/x1"
-                    android:layout_marginTop="@dimen/x10"
-                    android:layout_marginLeft="@dimen/x45"
-                    android:layout_marginRight="@dimen/x15"
-                    android:alpha="0.2"
-                    android:background="@drawable/text" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/x11"
+                        android:layout_alignParentBottom="true"
+                        android:layout_below="@+id/imageView"
+                        android:layout_marginLeft="@dimen/x24"
+                        android:src="@drawable/line" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/x1"
+                        android:layout_marginTop="@dimen/x10"
+                        android:layout_marginLeft="@dimen/x25"
+                        android:layout_marginRight="@dimen/x15"
+                        android:alpha="0.2"
+                        android:background="@drawable/text" />
+
+                </LinearLayout>
+
+
 
 
                 <RelativeLayout

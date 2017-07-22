@@ -207,6 +207,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
 
         }
         setDriverData(prefHelper.getDriver());
+        getMainActivity().refreshSideMenu();
         setlistner();
         onNotificationReceived();
         if (map == null)
@@ -767,7 +768,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
         titlebar.setSubHeading(getResources().getString(R.string.rate));
 
         final BottomSheetDialogHelper ratingDialog =
-                new BottomSheetDialogHelper(getDockActivity(), MainFrame, R.layout.fragment_rate_user, webService, prefHelper);
+                new BottomSheetDialogHelper(getDockActivity(), MainFrame, R.layout.fragment_rate_user, webService, prefHelper,10);
         ratingDialog.initRatingDialog(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

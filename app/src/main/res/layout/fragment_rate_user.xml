@@ -12,6 +12,7 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
+        android:id="@+id/mainFrame"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
@@ -103,13 +104,12 @@ android:layout_marginBottom="@dimen/x10"
                         <com.app.fastcabdriver.ui.views.AnyTextView
                             android:id="@+id/txt_pick_text"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_below="@+id/txt_pickup"
                             android:layout_gravity="start"
-                            android:layout_marginTop="@dimen/x5"
                             android:layout_toEndOf="@+id/imageView"
                             android:alpha="0.8"
-                            android:gravity="start"
+                            android:gravity="center_vertical"
                             android:scrollbars="horizontal"
                             android:singleLine="true"
                             android:text="Al Masaken Al iqtisadeyah,Qesm Masaken Al iqti.."
@@ -127,15 +127,28 @@ android:layout_marginBottom="@dimen/x10"
                             android:src="@drawable/line" />
                     </RelativeLayout>
 
-                    <View
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/x1"
-                        android:layout_marginTop="@dimen/x10"
-                        android:layout_marginRight="@dimen/x10"
-                        android:layout_marginLeft="@dimen/x45"
-                        android:alpha="0.1"
-                        android:background="@drawable/text"/>
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/x11"
+                            android:layout_alignParentBottom="true"
+                            android:layout_below="@+id/imageView"
+                            android:layout_marginLeft="@dimen/x24"
+                            android:src="@drawable/line" />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/x1"
+                            android:layout_marginTop="@dimen/x10"
+                            android:layout_marginLeft="@dimen/x25"
+                            android:layout_marginRight="@dimen/x15"
+                            android:alpha="0.2"
+                            android:background="@drawable/text" />
+
+                    </LinearLayout>
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
@@ -181,13 +194,13 @@ android:layout_marginBottom="@dimen/x10"
                         <com.app.fastcabdriver.ui.views.AnyTextView
                             android:id="@+id/txt_destination_text"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_below="@+id/txt_destination"
                             android:layout_gravity="start"
-                            android:layout_marginTop="@dimen/x5"
+
                             android:layout_toEndOf="@+id/imageView_destination"
                             android:alpha="0.8"
-                            android:gravity="start"
+                            android:gravity="center_vertical"
                             android:scrollbars="horizontal"
                             android:singleLine="true"
                             android:text="Halwan Ash Sharqeyah ,Qesm Helwan..."

@@ -28,6 +28,7 @@ import com.app.fastcabdriver.ui.adapters.ArrayListAdapter;
 import com.app.fastcabdriver.ui.viewbinders.abstracts.NavigationItemBinder;
 import com.app.fastcabdriver.ui.views.AnyTextView;
 import com.app.fastcabdriver.ui.views.TitleBar;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -38,9 +39,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.app.fastcabdriver.R.id.CircularImageSharePop;
+import static com.app.fastcabdriver.R.id.img_driver;
+
 public class SideMenuFragment extends BaseFragment {
 
-    @BindView(R.id.img_driver)
+    @BindView(img_driver)
     CircleImageView imgDriver;
     @BindView(R.id.txt_drivername)
     AnyTextView txtDrivername;
@@ -106,6 +110,10 @@ public class SideMenuFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if(prefHelper.getDriver()!=null){
+        txtDrivername.setText(prefHelper.getDriver().getFullName()+"");
+        Picasso.with(getDockActivity()).load(prefHelper.getDriver().getProfileImage()).into(imgDriver);}
+
         BindData();
         setGooglePlayShortcut(getResources().getString(R.string.ride_with_fastcab),
                 getResources().getString(R.string.fastcab), txtDriveoption);
