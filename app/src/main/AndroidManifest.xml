@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.app.fastcabdriver" >
+    package="com.app.fastcabdriver">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -18,11 +18,11 @@
         android:allowBackup="true"
         android:icon="@drawable/fastcab"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name="com.app.fastcabdriver.activities.SplashActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,13 +34,14 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.SEND_MULTIPLE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="a92a52596c48271cca362e3b21601cf2a2703bdf" />
@@ -50,7 +51,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
 
 
         <service android:name="com.app.fastcabdriver.services.MyFirebaseMessagingService">
@@ -63,8 +63,38 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-    </application>
+        <service
+            android:name=".services.CurrentLocationFinder"
+            android:enabled="true" />
 
+        <receiver android:name=".locationrecievers.LocationChangedReceiver" />
+        <receiver android:name=".locationrecievers.PassiveLocationChangedReceiver" />
+        <receiver
+            android:name=".locationrecievers.ConnectivityChangedReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="com.radioactiveyak.places.retry_queued_checkins" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".locationrecievers.PowerStateChangedReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_BATTERY_LOW" />
+                <action android:name="android.intent.action.ACTION_BATTERY_OKAY" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".locationrecievers.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.REBOOT" />
+                <action android:name="android.intent.action.ACTION_EXTERNAL_APPLICATIONS_AVAILABLE" />
+                />
+            </intent-filter>
+        </receiver>
+    </application>
 
 
 </manifest>

@@ -1,6 +1,7 @@
 package com.app.fastcabdriver;
 
 import android.app.Application;
+import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -11,12 +12,14 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.utils.L;
 
 public class BaseApplication extends Application {
-	
+	private static Context context;
+
 	@Override
 	public void onCreate() {
 		// TODO Auto-generated method stub
 		super.onCreate();
 		initImageLoader();
+		context = getApplicationContext();
 	}
 	
 	public void initImageLoader() {
@@ -37,5 +40,8 @@ public class BaseApplication extends Application {
 		ImageLoader.getInstance().init( config );
 		L.disableLogging();
 	}
-	
+
+	public static Context getAppContext() {
+		return BaseApplication.context;
+	}
 }

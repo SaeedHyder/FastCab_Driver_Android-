@@ -1,8 +1,10 @@
 package com.app.fastcabdriver.fragments;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -15,15 +17,19 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -85,7 +91,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class HomeFragment extends BaseFragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, OnSettingActivateListener, DirectionFinderListener {
+public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        OnSettingActivateListener,
+        DirectionFinderListener {
 
 
     @BindView(R.id.rbAddRating)
@@ -142,8 +152,11 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
     private TitleBar titlebar;
     private boolean isTitleBarChange;
     private Location Mylocation;
+    private LocationListener listener;
 
+    private Marker carMarker;
 
+    private  BroadcastReceiver broadcastReceiver;
     public static HomeFragment newInstance() {
         return new HomeFragment();
     }
@@ -151,8 +164,6 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Nullable
@@ -197,7 +208,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
         }
         setDriverData(prefHelper.getDriver());
         setlistner();
-
+        onNotificationReceived();
         if (map == null)
             initMap();
 
@@ -211,7 +222,39 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
             }
         });
     }
+    private void onNotificationReceived() {
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                // checking for type intent filter
+                if (intent.getAction().equals(AppConstants.REGISTRATION_COMPLETE)) {
+                    System.out.println("registration complete");
+                    System.out.println(prefHelper.getFirebase_TOKEN());
 
+                } else if (intent.getAction().equals(AppConstants.PUSH_NOTIFICATION)) {
+                   /* Bundle bundle = intent.getExtras();
+                    if (bundle != null) {
+                        String rideID = bundle.getString("rideID");
+                        serviceHelper.enqueueCall(webService.getApproveDriver(rideID + ""), APPROVE_DRIVER);
+                    } else {
+                        UIHelper.showShortToastInCenter(getDockActivity(), "Notification Data is Empty");
+                    }*/
+                }
+                else if (intent.getAction().equals(AppConstants.LOCATION_RECIEVED)) {
+                    Bundle bundle = intent.getExtras();
+                    if (bundle != null) {
+                        String lat = bundle.getString("lat");
+                        String lon = bundle.getString("lon");
+                        LatLng latLng =  new LatLng(Double.parseDouble(lat+""),Double.parseDouble(lon+""));
+                        animateMarker(origin.getLatlng(),latLng,false);
+                        origin.setLatlng(latLng);
+                    } else {
+                        //UIHelper.showShortToastInCenter(getDockActivity(), "Notification Data is Empty");
+                    }
+                }
+            }
+        };
+    }
     private void initMap() {
         map = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
@@ -254,7 +297,6 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
             titleBar.setSubHeading(getResources().getString(R.string.home));
         }
     }
-
 
     @Override
     public void onMapReady(GoogleMap googlemap) {
@@ -313,16 +355,22 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
             getMainActivity().statusCheck();
             //getCurrentLocation();
         }
+        LocalBroadcastManager.getInstance(getDockActivity()).registerReceiver(broadcastReceiver,
+                new IntentFilter(AppConstants.REGISTRATION_COMPLETE));
+
+        LocalBroadcastManager.getInstance(getDockActivity()).registerReceiver(broadcastReceiver,
+                new IntentFilter(AppConstants.PUSH_NOTIFICATION));
+        LocalBroadcastManager.getInstance(getDockActivity()).registerReceiver(broadcastReceiver,
+                new IntentFilter(AppConstants.LOCATION_RECIEVED));
     }
 
     @Override
     public void onPause() {
+        LocalBroadcastManager.getInstance(getDockActivity()).unregisterReceiver(broadcastReceiver);
         super.onPause();
         UIHelper.hideSoftKeyboard(getDockActivity(), getMainActivity()
                 .getWindow().getDecorView());
     }
-
-    private LocationListener listener;
 
     private void getCurrentLocation() {
 
@@ -357,7 +405,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
                             }
                             origin = new LocationEnt(Address, new LatLng(latitude, longitude));
                             BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.car);
-                            googleMap.addMarker(new MarkerOptions().position(origin.getLatlng()).icon(icon));
+                            carMarker = googleMap.addMarker(new MarkerOptions().position(origin.getLatlng()).icon(icon));
 
                         } else {
                             origin = new LocationEnt("Un Named Street", new LatLng(latitude, longitude));
@@ -663,9 +711,10 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
         Picasso.with(getDockActivity()).load(result.getProfileImage()).into(circledriverView);
         txt_driver_name_trip.setText(result.getFullName() + "");
 
-        if(result.getVehicleDetail()!=null){
-        txtDriverCar.setText(result.getVehicleDetail().getVehicleName() + "");
-        txtDriverCarPlate.setText(result.getVehicleDetail().getVehicleNumber()+"");}
+        if (result.getVehicleDetail() != null) {
+            txtDriverCar.setText(result.getVehicleDetail().getVehicleName() + "");
+            txtDriverCarPlate.setText(result.getVehicleDetail().getVehicleNumber() + "");
+        }
 
 
         if (result.getAverageRate() != null) {
@@ -775,7 +824,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
                     .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.set_pickup_location_trip,
                             routesingle.duration.text, R.color.black))));
             BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.car);
-            googleMap.addMarker(new MarkerOptions().position(this.origin.getLatlng()).icon(icon));
+            carMarker =  googleMap.addMarker(new MarkerOptions().position(this.origin.getLatlng()).icon(icon));
 
             for (int i = 0; i < routesingle.points.size(); i++)
                 polylineOptions.add(routesingle.points.get(i));
@@ -828,6 +877,53 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback, Go
             drawable.draw(canvas);
         customMarkerView.draw(canvas);
         return returnedBitmap;
+    }
+
+    //This methos is used to move the marker of each car smoothly when there are any updates of their position
+    public void animateMarker(final LatLng startPosition, final LatLng toPosition,
+                              final boolean hideMarker) {
+
+
+        /*final Marker marker = googleMap.addMarker(new MarkerOptions()
+                .position(startPosition)
+                .title(mCarParcelableListCurrentLation.get(position).mCarName)
+                .snippet(mCarParcelableListCurrentLation.get(position).mAddress)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.car)));*/
+
+
+
+
+        final Handler handler = new Handler();
+        final long start = SystemClock.uptimeMillis();
+
+        final long duration = 1000;
+        final Interpolator interpolator = new LinearInterpolator();
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                long elapsed = SystemClock.uptimeMillis() - start;
+                float t = interpolator.getInterpolation((float) elapsed
+                        / duration);
+                double lng = t * toPosition.longitude + (1 - t)
+                        * startPosition.longitude;
+                double lat = t * toPosition.latitude + (1 - t)
+                        * startPosition.latitude;
+
+                carMarker.setPosition(new LatLng(lat, lng));
+
+                if (t < 1.0) {
+                    // Post again 16ms later.
+                    handler.postDelayed(this, 16);
+                } else {
+                    if (hideMarker) {
+                        carMarker.setVisible(false);
+                    } else {
+                        carMarker.setVisible(true);
+                    }
+                }
+            }
+        });
     }
 
 

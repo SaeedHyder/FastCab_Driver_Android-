@@ -20,6 +20,15 @@ public class BasePreferenceHelper extends PreferenceHelper {
     protected static final String Firebase_TOKEN = "Firebasetoken";
 
 
+    //For GPS Service
+    protected static final String SP_KEY_FOLLOW_LOCATION_CHANGES = "SP_KEY_FOLLOW_LOCATION_CHANGES";
+    protected static final String SP_KEY_LAST_LIST_UPDATE_TIME = "SP_KEY_LAST_LIST_UPDATE_TIME";
+    protected static final String SP_KEY_LAST_LIST_UPDATE_LAT = "SP_KEY_LAST_LIST_UPDATE_LAT";
+    protected static final String SP_KEY_LAST_LIST_UPDATE_LNG = "SP_KEY_LAST_LIST_UPDATE_LNG";
+    protected static final String SP_KEY_RUN_ONCE = "SP_KEY_RUN_ONCE";
+    protected static final String EXTRA_KEY_IN_BACKGROUND = "EXTRA_KEY_IN_BACKGROUND";
+
+
     public BasePreferenceHelper(Context c) {
         this.context = c;
     }
@@ -66,6 +75,70 @@ public class BasePreferenceHelper extends PreferenceHelper {
 
     public void setFirebase_TOKEN(String _token) {
         putStringPreference(context, FILENAME, Firebase_TOKEN, _token);
+    }
+
+
+
+    public void setIsFirstRun(boolean value){
+        putBooleanPreference(context, FILENAME, SP_KEY_RUN_ONCE, value);
+
+    }
+
+    public boolean getIsFirstRun(){
+        return getBooleanPreference(context,FILENAME,SP_KEY_RUN_ONCE);
+
+    }
+
+    public void setExtraInBackground(boolean value){
+        putBooleanPreference(context,FILENAME,EXTRA_KEY_IN_BACKGROUND,value);
+
+    }
+
+    public boolean getExtraInBackground(){
+        return getBooleanPreference(context,FILENAME,EXTRA_KEY_IN_BACKGROUND);
+
+    }
+
+    public void setFollowingLocationChanges(boolean value){
+        putBooleanPreference(context,FILENAME,SP_KEY_FOLLOW_LOCATION_CHANGES,value);
+
+    }
+
+/*
+   public boolean getFollowingLocationChanges(){
+        return getTrueBooleanPreference(context, FILENAME, SP_KEY_FOLLOW_LOCATION_CHANGES);
+
+    }
+*/
+
+    public void setListUpdateTime(long value){
+        putLongPreference(context, FILENAME, SP_KEY_LAST_LIST_UPDATE_TIME, value);
+
+    }
+
+    public long getListUpdateTime(){
+        return getLongPreference(context, FILENAME, SP_KEY_LAST_LIST_UPDATE_TIME);
+
+    }
+
+    public void setListUpdateLat(long value){
+        putLongPreference(context, FILENAME, SP_KEY_LAST_LIST_UPDATE_LAT, value);
+
+    }
+
+    public long getListUpdateLat(){
+        return getLongPreference(context, FILENAME, SP_KEY_LAST_LIST_UPDATE_LAT);
+
+    }
+
+    public void setListUpdateLng(long value){
+        putLongPreference(context, FILENAME, SP_KEY_LAST_LIST_UPDATE_LNG, value);
+
+    }
+
+    public long getListUpdateLng(){
+        return getLongPreference(context, FILENAME, SP_KEY_LAST_LIST_UPDATE_LNG);
+
     }
 
 
