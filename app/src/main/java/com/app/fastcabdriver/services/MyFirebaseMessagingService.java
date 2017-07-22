@@ -2,6 +2,7 @@ package com.app.fastcabdriver.services;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.app.fastcabdriver.R;
@@ -106,7 +107,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Intent pushNotification = new Intent(AppConstants.PUSH_NOTIFICATION);
         pushNotification.putExtra("message", message);
 
-        //LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(pushNotification);
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(pushNotification);
 
         showNotificationMessage(MyFirebaseMessagingService.this, title, message, "", resultIntent);
     }

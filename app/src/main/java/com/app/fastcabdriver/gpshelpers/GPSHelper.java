@@ -28,9 +28,7 @@ public class GPSHelper  {
     private static AlertDialog alert;
 
     public static void showGPSDisabledAlertToUser(final Activity context, GoogleApiClient apiClient) {
-
-
-            if (apiClient == null) {
+      /*      if (apiClient == null) {
                 apiClient = new GoogleApiClient.Builder(context)
                         .addApi(LocationServices.API)
                         .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
@@ -59,9 +57,9 @@ public class GPSHelper  {
                 LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                         .addLocationRequest(locationRequest);
 
-                //**************************
+                /*//**************************
                 builder.setAlwaysShow(true); //this is the key ingredient
-                //**************************
+                /*//**************************
 
                 PendingResult<LocationSettingsResult> result =
                         LocationServices.SettingsApi.checkLocationSettings(apiClient, builder.build());
@@ -95,7 +93,7 @@ public class GPSHelper  {
                         }
                     }
                 });
-            }
+            }*/
         }
 
 

@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.app.fastcabdriver.entities.ResponseWrapper;
@@ -40,10 +41,16 @@ public class CurrentLocationFinder extends Service {
     }
 
     @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
+        stopSelf();
+    }
+
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.e(TAG,"Started");
         handler.removeCallbacks(sendUpdatesToUI);
-        handler.postDelayed(sendUpdatesToUI, 1000); // 1 second
+        handler.postDelayed(sendUpdatesToUI, 2000); // 1 second
 
         return super.onStartCommand(intent, flags, startId);
     }
@@ -52,7 +59,7 @@ public class CurrentLocationFinder extends Service {
     private Runnable sendUpdatesToUI = new Runnable() {
         public void run() {
             broadcastUpdateInfo();
-            handler.postDelayed(this, 10000); // broadcast in every 10 seconds
+            handler.postDelayed(this, 7000); // broadcast in every 10 seconds
         }
     };
 
@@ -66,10 +73,10 @@ public class CurrentLocationFinder extends Service {
         call.enqueue(new Callback<ResponseWrapper<UpdatedLocationEnt>>() {
             @Override
             public void onResponse(Call<ResponseWrapper<UpdatedLocationEnt>> call, Response<ResponseWrapper<UpdatedLocationEnt>> response) {
-                if (response.body().getResponse().equals(WebServiceConstants.SUCCESS_RESPONSE_CODE)){
+                if (response!=null&&response.body()!=null&&response.body().getResponse()!=null&&response.body().getResponse().equals(WebServiceConstants.SUCCESS_RESPONSE_CODE)){
                     intent.putExtra("lat",response.body().getResult().getLatitude()+"");
                     intent.putExtra("lon",response.body().getResult().getLongitude()+"");
-                    sendBroadcast(intent);
+                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
                 }
             }
 

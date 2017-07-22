@@ -247,8 +247,10 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
                         String lat = bundle.getString("lat");
                         String lon = bundle.getString("lon");
                         LatLng latLng =  new LatLng(Double.parseDouble(lat+""),Double.parseDouble(lon+""));
-                        animateMarker(origin.getLatlng(),latLng,false);
-                        origin.setLatlng(latLng);
+                        if (origin!=null&&!origin.getLatlng().equals(new LatLng(0,0))) {
+                            animateMarker(origin.getLatlng(), latLng, false);
+                            origin.setLatlng(latLng);
+                        }
                     } else {
                         //UIHelper.showShortToastInCenter(getDockActivity(), "Notification Data is Empty");
                     }
@@ -477,7 +479,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
         googleMap.animateCamera(zoom);*/
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(latlng.latitude, latlng.longitude))
-                .zoom(13)
+                .zoom(15)
                 .bearing(0)
                 .tilt(45)
                 .build();
@@ -910,8 +912,14 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
                         * startPosition.longitude;
                 double lat = t * toPosition.latitude + (1 - t)
                         * startPosition.latitude;
-
+                double dLon = (toPosition.longitude-startPosition.longitude);
+                double y = Math.sin(dLon) * Math.cos(toPosition.latitude);
+                double x = Math.cos(startPosition.latitude)*Math.sin(toPosition.latitude) -
+                        Math.sin(startPosition.latitude)*Math.cos(toPosition.latitude)*Math.cos(dLon);
+                double brng = Math.toDegrees((Math.atan2(y, x)));
+                brng = (360 - ((brng + 360) % 360));
                 carMarker.setPosition(new LatLng(lat, lng));
+                carMarker.setRotation((float) brng);
 
                 if (t < 1.0) {
                     // Post again 16ms later.
@@ -925,6 +933,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
                 }
             }
         });
+        movemap(toPosition);
     }
 
 
