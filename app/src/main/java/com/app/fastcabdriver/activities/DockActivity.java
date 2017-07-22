@@ -1,6 +1,7 @@
 package com.app.fastcabdriver.activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import com.app.fastcabdriver.fragments.abstracts.BaseFragment;
 import com.app.fastcabdriver.helpers.BasePreferenceHelper;
 import com.app.fastcabdriver.interfaces.LoadingListener;
 import com.app.fastcabdriver.residemenu.ResideMenu;
+import com.app.fastcabdriver.services.CurrentLocationFinder;
 import com.app.fastcabdriver.ui.dialogs.DialogFactory;
 
 
@@ -30,18 +32,11 @@ public abstract class DockActivity extends AppCompatActivity implements
         LoadingListener {
 
     public static final String KEY_FRAG_FIRST = "firstFrag";
-
-    public abstract int getDockFrameLayoutId();
-
-    BaseFragment baseFragment;
-
-
+    public SideMenuFragment sideMenuFragment;
     protected BasePreferenceHelper prefHelper;
-
     //For side menu
     protected DrawerLayout drawerLayout;
-    public SideMenuFragment sideMenuFragment;
-
+    BaseFragment baseFragment;
     private ResideMenu.OnMenuListener menuListener = new ResideMenu.OnMenuListener() {
         @Override
         public void openMenu() {
@@ -54,10 +49,13 @@ public abstract class DockActivity extends AppCompatActivity implements
         }
     };
 
+    public abstract int getDockFrameLayoutId();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefHelper = new BasePreferenceHelper(this);
+        startService(new Intent(getApplicationContext(), CurrentLocationFinder.class));
     }
 
     @Override
@@ -96,9 +94,11 @@ public abstract class DockActivity extends AppCompatActivity implements
 
 
     }
-    protected DockActivity getDockActivity(){
-        return (DockActivity)this;
+
+    protected DockActivity getDockActivity() {
+        return (DockActivity) this;
     }
+
     public void replaceDockableFragment(BaseFragment frag, boolean isAnimate) {
 
         android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager()
@@ -117,6 +117,7 @@ public abstract class DockActivity extends AppCompatActivity implements
                         getSupportFragmentManager().getBackStackEntryCount() == 0 ? KEY_FRAG_FIRST
                                 : null).commit();
     }
+
     public void addDockableFragment(BaseFragment frag, String Tag) {
 
         android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager()
@@ -130,7 +131,8 @@ public abstract class DockActivity extends AppCompatActivity implements
 
 
     }
-    public DrawerLayout getDrawerLayout(){
+
+    public DrawerLayout getDrawerLayout() {
         return drawerLayout;
     }
 
@@ -240,7 +242,7 @@ public abstract class DockActivity extends AppCompatActivity implements
         return (BaseApplication) getApplication();
     }
 
-    public ResideMenu.OnMenuListener getMenuListener(){
+    public ResideMenu.OnMenuListener getMenuListener() {
         return menuListener;
     }
 

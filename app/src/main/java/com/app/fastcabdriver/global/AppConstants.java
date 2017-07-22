@@ -8,6 +8,7 @@ public class AppConstants {
 
     public static final String REGISTRATION_COMPLETE = "registrationComplete";
     public static final String PUSH_NOTIFICATION = "pushNotification";
+    public static final String LOCATION_RECIEVED = "LOCATION_RECIEVED";
     public static  int NOTIFICATION_ID = 100;
     public static final String Device_Type="android";
     public static  int ONLINE = 1;

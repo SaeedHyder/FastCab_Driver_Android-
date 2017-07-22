@@ -7,7 +7,11 @@ import com.app.fastcabdriver.entities.DriverEnt;
 import com.app.fastcabdriver.entities.DriverFeedBackEnt;
 import com.app.fastcabdriver.entities.DriverMsgesEnt;
 import com.app.fastcabdriver.entities.ResponseWrapper;
+
+import com.app.fastcabdriver.entities.UpdatedLocationEnt;
+
 import com.app.fastcabdriver.entities.UserRideDetailRatingEnt;
+
 
 import java.util.ArrayList;
 
@@ -125,6 +129,14 @@ public interface WebService {
     @POST("driver/driverlogout")
     Call<ResponseWrapper> LogoutDriver(@Field("driver_id") int driver_id);
 
+    @FormUrlEncoded
+    @POST("driver/driverchangelocation")
+    Call<ResponseWrapper>UpdateLatLng(@Field("driver_id") String driver_id,
+                                      @Field("latitude") String latitude,
+                                      @Field("longitude") String longitude
+                                      );
+    @GET("driver/getdriverlocation")
+    Call<ResponseWrapper<UpdatedLocationEnt>> getUpdatedLocation(@Query("driver_id")String driver_id);
 
     @GET("ride/userridedetail")
     Call<ResponseWrapper<UserRideDetailRatingEnt>> UserDetailForRating(@Query("ride_id") int ride_id);

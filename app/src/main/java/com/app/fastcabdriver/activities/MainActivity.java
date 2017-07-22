@@ -30,6 +30,7 @@ import com.app.fastcabdriver.fragments.SideMenuFragment;
 import com.app.fastcabdriver.fragments.abstracts.BaseFragment;
 import com.app.fastcabdriver.global.SideMenuChooser;
 import com.app.fastcabdriver.global.SideMenuDirection;
+import com.app.fastcabdriver.gpshelpers.SettingGPService;
 import com.app.fastcabdriver.helpers.ScreenHelper;
 import com.app.fastcabdriver.helpers.UIHelper;
 import com.app.fastcabdriver.interfaces.ImageSetter;
@@ -111,7 +112,11 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
         sideMenuDirection = SideMenuDirection.LEFT.getValue();
 
         settingSideMenu(sideMenuType, sideMenuDirection);
-
+        try {
+            SettingGPService.settingGPS(this, !this.prefHelper.isLogin());
+        } catch (Exception var5) {
+            var5.printStackTrace();
+        }
         titleBar.setMenuButtonListener(new OnClickListener() {
 
             @Override
