@@ -382,6 +382,7 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
                 .beginTransaction();
         transaction.remove(sideMenuFragment).commit();
         resideMenu.refreshDrawableState();
+        
        // settingSideMenu(sideMenuType, sideMenuDirection);
     }
 

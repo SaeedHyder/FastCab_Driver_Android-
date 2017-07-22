@@ -11,7 +11,7 @@
         android:id="@+id/ll_submitRating"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/x160"
+        android:layout_marginTop="@dimen/x190"
         android:orientation="vertical"
         android:background="@color/white">
 
@@ -74,7 +74,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
                 android:layout_weight="0.5"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -281,7 +282,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/x15"
+                android:layout_marginBottom="@dimen/x45"
                 android:layout_marginLeft="@dimen/x10"
                 android:layout_marginRight="@dimen/x10"
                 android:orientation="horizontal">
@@ -330,6 +331,7 @@
 
             </LinearLayout>
 
+
         </LinearLayout>
 
 
@@ -338,7 +340,7 @@
     <ImageView
         android:id="@+id/iv_staticmap"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/x160"
+        android:layout_height="@dimen/x190"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
@@ -349,7 +351,7 @@
         android:layout_height="@dimen/x100"
         android:layout_gravity="center"
         android:src="@drawable/image_holder"
-        android:layout_marginTop="108dp"
+        android:layout_marginTop="@dimen/x132"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
