@@ -121,7 +121,6 @@ public class ConnectivityChangedReceiver extends BroadcastReceiver {
 
                                     if(prefHelper.getDriver() != null) {
                                             LocationUpdater mLocationUpdater = new LocationUpdater();
-
                                             mLocationUpdater.updateLatLong(location, WebServiceFactory.getWebServiceInstanceWithCustomInterceptor(context,WebServiceConstants.SERVICE_URL),prefHelper.getDriverId());
 
                                     }
