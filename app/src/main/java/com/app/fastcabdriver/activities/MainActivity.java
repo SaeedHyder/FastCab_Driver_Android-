@@ -91,6 +91,7 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
     private boolean isActivityResultOver = false;
     private final static String TAG = "ICA";
     ImageSetter imageSetter;
+    int resideMenuCounter=1;
 
     public void setSettingActivateListener(OnSettingActivateListener settingActivateListener) {
         this.settingActivateListener = settingActivateListener;
@@ -111,7 +112,7 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
         sideMenuType = SideMenuChooser.RESIDE_MENU.getValue();
         sideMenuDirection = SideMenuDirection.LEFT.getValue();
 
-        settingSideMenu(sideMenuType, sideMenuDirection);
+        settingSideMenu(sideMenuType, sideMenuDirection,true);
         try {
             SettingGPService.settingGPS(this, !this.prefHelper.isLogin());
         } catch (Exception var5) {
@@ -342,7 +343,7 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
         startActivityForResult(i, requestCode);
     }
 
-    private void settingSideMenu(String type, String direction) {
+    private void settingSideMenu(String type, String direction,Boolean refresh) {
 
         if (type.equals(SideMenuChooser.DRAWER.getValue())) {
 
@@ -366,7 +367,7 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
 
             drawerLayout.closeDrawers();
         } else {
-            resideMenu = new ResideMenu(this);
+            resideMenu = new ResideMenu(this,refresh);
             resideMenu.attachToActivity(this);
             resideMenu.setMenuListener(getMenuListener());
             resideMenu.setScaleValue(0.52f);
@@ -377,13 +378,18 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
     }
 
     public void refreshSideMenu(){
+
+
+        if(resideMenuCounter==1){
+            settingSideMenu(sideMenuType, sideMenuDirection,true);
+            resideMenuCounter=2;
+        }
+        else {
         sideMenuFragment = SideMenuFragment.newInstance();
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction();
         transaction.remove(sideMenuFragment).commit();
-        resideMenu.refreshDrawableState();
-        
-       // settingSideMenu(sideMenuType, sideMenuDirection);
+        settingSideMenu(sideMenuType, sideMenuDirection,false);}
     }
 
 

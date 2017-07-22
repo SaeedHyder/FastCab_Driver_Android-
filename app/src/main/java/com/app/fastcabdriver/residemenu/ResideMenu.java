@@ -24,7 +24,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-
 import com.app.fastcabdriver.R;
 import com.app.fastcabdriver.activities.DockActivity;
 import com.app.fastcabdriver.global.SideMenuDirection;
@@ -52,6 +51,7 @@ public class ResideMenu extends FrameLayout {
 
     private ImageView imageViewShadow;
     private ImageView imageViewBackground;
+    int counter=1;
 
   /*  private LinearLayout layoutLeftMenu;
     private LinearLayout layoutRightMenu;*/
@@ -95,16 +95,17 @@ public class ResideMenu extends FrameLayout {
     private String scaleDirection;
 
     private DockActivity context;
+    private Boolean refresh;
 
     //private BlurTask blurTask;
 
 
-
-    public ResideMenu(DockActivity context) {
+    public ResideMenu(DockActivity context, Boolean refresh) {
         super(context);
         initViews(context, -1, -1);
 
         this.context = context;
+        this.refresh = refresh;
 
         //blurTask = new BlurTask(context, i, R.id.container).execute();
 
@@ -137,9 +138,13 @@ public class ResideMenu extends FrameLayout {
 
 
     }
+
     @Override
     protected boolean fitSystemWindows(Rect insets) {
-        setMyPadding(insets);
+
+
+            setMyPadding(insets);
+
         return true;
     }
 
@@ -152,7 +157,13 @@ public class ResideMenu extends FrameLayout {
                     insets.getSystemWindowInsetRight(),
                     insets.getSystemWindowInsetBottom()
             );
-            setMyPadding(rect);
+
+           if(refresh){
+                setMyPadding(rect);
+        }
+
+
+
             return insets.consumeSystemWindowInsets();
         }
         return super.onApplyWindowInsets(insets);
@@ -177,7 +188,10 @@ public class ResideMenu extends FrameLayout {
                 }
             }
         }
+
         setPadding(rect.left, rect.top, rect.right, rect.bottom);
+
+
     }
 
     private int getNavBarWidth() {
@@ -223,7 +237,8 @@ public class ResideMenu extends FrameLayout {
             boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
             boolean hasHomeKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_HOME);
             return !hasHomeKey && !hasBackKey;
-        }}
+        }
+    }
 
 
    /* @Override
@@ -433,7 +448,6 @@ public class ResideMenu extends FrameLayout {
             scaleDown_activity.start();
 
 
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -446,7 +460,6 @@ public class ResideMenu extends FrameLayout {
                 .async()
                 .onto(context.getMainContentFrame());*/
     }
-
 
 
     /**
@@ -464,8 +477,6 @@ public class ResideMenu extends FrameLayout {
             scaleUp_activity.playTogether(scaleUp_shadow);
             scaleUp_activity.playTogether(alpha_menu);
             scaleUp_activity.start();
-
-
 
 
         } catch (Exception e) {

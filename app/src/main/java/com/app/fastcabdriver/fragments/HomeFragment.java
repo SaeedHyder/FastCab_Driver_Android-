@@ -153,7 +153,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
     private boolean isTitleBarChange;
     private Location Mylocation;
     private LocationListener listener;
-
+    private Boolean resideMenuRefresh;
     private Marker carMarker;
 
     private  BroadcastReceiver broadcastReceiver;
@@ -207,7 +207,10 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
 
         }
         setDriverData(prefHelper.getDriver());
+
+
         getMainActivity().refreshSideMenu();
+
         setlistner();
         onNotificationReceived();
         if (map == null)
@@ -365,6 +368,8 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
                 new IntentFilter(AppConstants.PUSH_NOTIFICATION));
         LocalBroadcastManager.getInstance(getDockActivity()).registerReceiver(broadcastReceiver,
                 new IntentFilter(AppConstants.LOCATION_RECIEVED));
+
+
     }
 
     @Override
@@ -383,7 +388,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
 
             return;
         }
-        LocationRequest locationRequest = LocationRequest.create();
+        final LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         if (Mylocation == null) {
@@ -394,6 +399,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
             public void onLocationChanged(Location mlocation) {
                 if (mlocation != null) {
                     Mylocation = mlocation;
+                    LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, listener);
                     listener = null;
                     if (Mylocation != null) {
                         //Getting longitude and latitude
@@ -416,6 +422,9 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
                         }
 
                         movemap(origin.getLatlng());
+                       locationRequest.setNumUpdates(1);
+
+
                         // moveMap(new LatLng(latitude, longitude));
                     } else {
                         UIHelper.showShortToastInCenter(getDockActivity(), "Can't get your Location Try getting using Location Button");
@@ -919,7 +928,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
                 double brng = Math.toDegrees((Math.atan2(y, x)));
                 brng = (360 - ((brng + 360) % 360));
                 carMarker.setPosition(new LatLng(lat, lng));
-                carMarker.setRotation((float) brng);
+               // carMarker.setRotation((float) brng);
 
                 if (t < 1.0) {
                     // Post again 16ms later.
