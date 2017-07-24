@@ -63,8 +63,8 @@ public class PassiveLocationChangedReceiver extends BroadcastReceiver {
                 if (location != null) {
                     try {
                         if(prefHelper.getDriver() != null) {
-                            LocationUpdater mLocationUpdater = new LocationUpdater();
-                            mLocationUpdater.updateLatLong(location, WebServiceFactory.getWebServiceInstanceWithCustomInterceptor(context, WebServiceConstants.SERVICE_URL),prefHelper.getDriverId());
+                            LocationUpdater mLocationUpdater = new LocationUpdater(context,  WebServiceFactory.getWebServiceInstanceWithCustomInterceptor(context, WebServiceConstants.SERVICE_URL));
+                            mLocationUpdater.updateLatLong(location,prefHelper.getDriverId());
 
                         }
                     } catch (Exception error) {

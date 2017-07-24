@@ -91,6 +91,7 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
     private boolean isActivityResultOver = false;
     private final static String TAG = "ICA";
     ImageSetter imageSetter;
+    int resideMenuCounter=1;
 
     public void setSettingActivateListener(OnSettingActivateListener settingActivateListener) {
         this.settingActivateListener = settingActivateListener;
@@ -371,19 +372,24 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
             resideMenu.setMenuListener(getMenuListener());
             resideMenu.setScaleValue(0.52f);
 
-
             setMenuItemDirection(direction);
         }
     }
 
     public void refreshSideMenu(){
+
         sideMenuFragment = SideMenuFragment.newInstance();
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction();
         transaction.remove(sideMenuFragment).commit();
-        resideMenu.refreshDrawableState();
-        
-       // settingSideMenu(sideMenuType, sideMenuDirection);
+
+      /*  resideMenu = new ResideMenu(this);
+        resideMenu.attachToActivity(this);
+        resideMenu.setMenuListener(getMenuListener());
+        resideMenu.setScaleValue(0.52f);
+        resideMenu.setPadding(0,0,0,0);
+*/
+        setMenuItemDirection(sideMenuDirection);
     }
 
 

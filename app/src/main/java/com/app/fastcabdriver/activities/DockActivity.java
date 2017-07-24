@@ -55,7 +55,7 @@ public abstract class DockActivity extends AppCompatActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefHelper = new BasePreferenceHelper(this);
-        startService(new Intent(getApplicationContext(), CurrentLocationFinder.class));
+      //  startService(new Intent(getApplicationContext(), CurrentLocationFinder.class));
     }
 
     @Override

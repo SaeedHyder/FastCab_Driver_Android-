@@ -63,9 +63,9 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <service
+   <!--     <service
             android:name=".services.CurrentLocationFinder"
-            android:enabled="true" />
+            android:enabled="true" />-->
 
         <receiver android:name=".locationrecievers.LocationChangedReceiver" />
         <receiver android:name=".locationrecievers.PassiveLocationChangedReceiver" />
