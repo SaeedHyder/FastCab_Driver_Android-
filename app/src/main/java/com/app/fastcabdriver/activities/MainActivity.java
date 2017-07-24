@@ -112,7 +112,7 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
         sideMenuType = SideMenuChooser.RESIDE_MENU.getValue();
         sideMenuDirection = SideMenuDirection.LEFT.getValue();
 
-        settingSideMenu(sideMenuType, sideMenuDirection,true);
+        settingSideMenu(sideMenuType, sideMenuDirection);
         try {
             SettingGPService.settingGPS(this, !this.prefHelper.isLogin());
         } catch (Exception var5) {
@@ -343,7 +343,7 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
         startActivityForResult(i, requestCode);
     }
 
-    private void settingSideMenu(String type, String direction,Boolean refresh) {
+    private void settingSideMenu(String type, String direction) {
 
         if (type.equals(SideMenuChooser.DRAWER.getValue())) {
 
@@ -367,11 +367,10 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
 
             drawerLayout.closeDrawers();
         } else {
-            resideMenu = new ResideMenu(this,refresh);
+            resideMenu = new ResideMenu(this);
             resideMenu.attachToActivity(this);
             resideMenu.setMenuListener(getMenuListener());
             resideMenu.setScaleValue(0.52f);
-
 
             setMenuItemDirection(direction);
         }
@@ -379,17 +378,18 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
 
     public void refreshSideMenu(){
 
-
-        if(resideMenuCounter==1){
-            settingSideMenu(sideMenuType, sideMenuDirection,true);
-            resideMenuCounter=2;
-        }
-        else {
         sideMenuFragment = SideMenuFragment.newInstance();
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction();
         transaction.remove(sideMenuFragment).commit();
-        settingSideMenu(sideMenuType, sideMenuDirection,false);}
+
+      /*  resideMenu = new ResideMenu(this);
+        resideMenu.attachToActivity(this);
+        resideMenu.setMenuListener(getMenuListener());
+        resideMenu.setScaleValue(0.52f);
+        resideMenu.setPadding(0,0,0,0);
+*/
+        setMenuItemDirection(sideMenuDirection);
     }
 
 

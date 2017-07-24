@@ -6,9 +6,9 @@ public class GPSConstants {
     public static boolean DEVELOPER_MODE = true;
 
     // The maximum distance the user should travel between location updates.
-    public static int MAX_DISTANCE = 500;
+    public static int MAX_DISTANCE = 200;
     // The maximum time that should pass before the user gets a location update.
-    public static long MAX_TIME = 1 * 1000;
+    public static long MAX_TIME = 30 * 1000;
 
     public static int PASSIVE_MAX_DISTANCE = MAX_DISTANCE;
     // The location update time for passive updates

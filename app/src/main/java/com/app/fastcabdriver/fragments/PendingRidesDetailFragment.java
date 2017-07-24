@@ -148,9 +148,10 @@ public class PendingRidesDetailFragment extends BaseFragment implements View.OnC
     }
 
     private String getStaticMapURL(String origin, String destination, String routelist, String customMarkerOrigin, String customMarkerDestination, String APIKEY) {
-        return "https://maps.googleapis.com/maps/api/staticmap?visible=" + routelist + "&scale=2&size=300x150&maptype=roadmap" +
+      /*  return "https://maps.googleapis.com/maps/api/staticmap?visible=" + routelist + "&scale=2&size=300x150&maptype=roadmap" +
                 "&markers=icon:" + customMarkerOrigin + "|" + origin + "&markers=icon:" + customMarkerDestination + "|" + destination +
-                "&path=color:0x070707FF|weight:5|" + routelist + "&key=" + APIKEY;
+                "&path=color:0x070707FF|weight:5|" + routelist + "&key=" + APIKEY;*/
+      return "https://maps.googleapis.com/maps/api/staticmap?zoom=13&scale=2&size=360x160&maptype=roadmap" + "&markers=color:0x0E8593|25.240280,55.275444&key=AIzaSyBS_JjCOgolc9LobHBoJGgrkpxOkN7rGfo";
     }
 
     private void setListners() {

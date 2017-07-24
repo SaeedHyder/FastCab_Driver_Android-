@@ -100,12 +100,12 @@ public class ResideMenu extends FrameLayout {
     //private BlurTask blurTask;
 
 
-    public ResideMenu(DockActivity context, Boolean refresh) {
+    public ResideMenu(DockActivity context) {
         super(context);
         initViews(context, -1, -1);
 
         this.context = context;
-        this.refresh = refresh;
+
 
         //blurTask = new BlurTask(context, i, R.id.container).execute();
 
@@ -142,8 +142,19 @@ public class ResideMenu extends FrameLayout {
     @Override
     protected boolean fitSystemWindows(Rect insets) {
 
+        int bottomPadding=insets.bottom;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Resources resources = getResources();
+            int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                bottomPadding += resources.getDimensionPixelSize(resourceId);
+            }
+        }
+        this.setPadding(viewActivity.getPaddingLeft() + insets.left, viewActivity.getPaddingTop() + insets.top,
+                viewActivity.getPaddingRight() + insets.right, viewActivity.getPaddingBottom() + bottomPadding);
+        insets.left = insets.top = insets.right = insets.bottom = 0;
 
-            setMyPadding(insets);
+         //   setMyPadding(insets);
 
         return true;
     }
@@ -158,10 +169,8 @@ public class ResideMenu extends FrameLayout {
                     insets.getSystemWindowInsetBottom()
             );
 
-           if(refresh){
-                setMyPadding(rect);
-        }
 
+                setMyPadding(rect);
 
 
             return insets.consumeSystemWindowInsets();
@@ -346,7 +355,7 @@ public class ResideMenu extends FrameLayout {
      * <p/>
      * WARNING: It will be removed from v2.0.
      *
-     * @param menuItem
+  //   * @param menuItem
      */
 
     public void addMenuItem(android.support.v4.app.Fragment sideMenuView, String tag, String direction) {

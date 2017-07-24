@@ -29,7 +29,7 @@ import retrofit2.http.Query;
 public interface WebService {
 
     @FormUrlEncoded
-    @POST("notification/updatedevicetoken")
+    @POST("user/updateDeviceToken")
     Call<ResponseWrapper> updateToken(@Field("user_id") String userid,
                                       @Field("device_type") String deviceType,
                                       @Field("device_token") String token);

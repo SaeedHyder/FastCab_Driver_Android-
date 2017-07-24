@@ -208,7 +208,6 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
         }
         setDriverData(prefHelper.getDriver());
 
-
         getMainActivity().refreshSideMenu();
 
         setlistner();
@@ -355,6 +354,8 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
     @Override
     public void onResume() {
         super.onResume();
+
+
         UIHelper.hideSoftKeyboard(getDockActivity(), getMainActivity()
                 .getWindow().getDecorView());
         if (origin == null || origin.getLatlng().equals(new LatLng(0, 0))) {
@@ -399,8 +400,9 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
             public void onLocationChanged(Location mlocation) {
                 if (mlocation != null) {
                     Mylocation = mlocation;
+
                     LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, listener);
-                    listener = null;
+                    //listener = null;
                     if (Mylocation != null) {
                         //Getting longitude and latitude
                         longitude = Mylocation.getLongitude();
@@ -692,7 +694,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
 
         loadingStarted();
 
-        Call<ResponseWrapper<DriverEnt>> call = webService.GoOnline(Integer.parseInt(prefHelper.getDriverId()), String.valueOf(status), String.valueOf(origin.getLatlng().longitude), String.valueOf(origin.getLatlng().longitude));
+        Call<ResponseWrapper<DriverEnt>> call = webService.GoOnline(Integer.parseInt(prefHelper.getDriverId()), String.valueOf(status), String.valueOf(origin.getLatlng().latitude), String.valueOf(origin.getLatlng().longitude));
 
         call.enqueue(new Callback<ResponseWrapper<DriverEnt>>() {
             @Override
@@ -908,7 +910,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
         final Handler handler = new Handler();
         final long start = SystemClock.uptimeMillis();
 
-        final long duration = 1000;
+        final long duration = 2500;
         final Interpolator interpolator = new LinearInterpolator();
 
         handler.post(new Runnable() {
@@ -921,6 +923,8 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
                         * startPosition.longitude;
                 double lat = t * toPosition.latitude + (1 - t)
                         * startPosition.latitude;
+
+
                 double dLon = (toPosition.longitude-startPosition.longitude);
                 double y = Math.sin(dLon) * Math.cos(toPosition.latitude);
                 double x = Math.cos(startPosition.latitude)*Math.sin(toPosition.latitude) -
