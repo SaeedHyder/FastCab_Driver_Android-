@@ -2,6 +2,7 @@ package com.app.fastcabdriver.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,11 @@ import android.widget.LinearLayout;
 
 import com.app.fastcabdriver.R;
 import com.app.fastcabdriver.entities.AssignRideEnt;
+import com.app.fastcabdriver.entities.ResponseWrapper;
 import com.app.fastcabdriver.fragments.abstracts.BaseFragment;
+import com.app.fastcabdriver.global.AppConstants;
+import com.app.fastcabdriver.global.WebServiceConstants;
+import com.app.fastcabdriver.helpers.UIHelper;
 import com.app.fastcabdriver.ui.views.AnyTextView;
 import com.app.fastcabdriver.ui.views.TitleBar;
 import com.google.gson.Gson;
@@ -25,6 +30,9 @@ import DirectionModule.DirectionFinderListener;
 import DirectionModule.Route;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by saeedhyder on 7/4/2017.
@@ -105,7 +113,13 @@ public class PendingRidesDetailFragment extends BaseFragment implements View.OnC
         txtPickpTime.setText(entity.getRideDetail().getDate() + " " + entity.getRideDetail().getTime());
         txtPickup.setText(entity.getRideDetail().getPickupPlace()+"");
         txtDropOff.setText(entity.getRideDetail().getDestinationPlace()+"");
-        txtEstimatedFare.setText("AED " + entity.getRideDetail().getEstimateFare()+"");
+
+        if(!entity.getRideDetail().getEstimateFare().equals("")){
+            txtEstimatedFare.setText("AED " + entity.getRideDetail().getEstimateFare());}
+        else{
+            txtEstimatedFare.setText("AED 0");
+        }
+
     }
 
     private void setStaticMapData(View view, AssignRideEnt entity) {
@@ -164,15 +178,46 @@ public class PendingRidesDetailFragment extends BaseFragment implements View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_accept:
-                getDockActivity().replaceDockableFragment(CompletedRidesFragment.newInstance(), CompletedRidesFragment.class.getSimpleName());
+                AssignRideService(entity.getDriverDetail().getId(),entity.getRideDetail().getId(),
+                        AppConstants.REJECT,AppConstants.DEFUALT,entity.getRideDetail().getUserId());
                 break;
 
             case R.id.btn_reject:
-                getDockActivity().replaceDockableFragment(PendingRidesFragment.newInstance(), PendingRidesFragment.class.getSimpleName());
+                AssignRideService(entity.getDriverDetail().getId(),entity.getRideDetail().getId(),
+                        AppConstants.REJECT,AppConstants.DEFUALT,entity.getRideDetail().getUserId());
                 break;
         }
     }
+    private void AssignRideService(Integer driverID, Integer rideID, final int RideStatus, int DEFUALT, Integer userId) {
+        Call<ResponseWrapper<AssignRideEnt>> call = webService.AssignStatus(driverID+"", rideID+"", RideStatus, DEFUALT, userId+"");
 
+        call.enqueue(new Callback<ResponseWrapper<AssignRideEnt>>() {
+            @Override
+            public void onResponse(Call<ResponseWrapper<AssignRideEnt>> call, Response<ResponseWrapper<AssignRideEnt>> response) {
+
+                if (response.body().getResponse().equals(WebServiceConstants.SUCCESS_RESPONSE_CODE)) {
+                    if (RideStatus== AppConstants.ACCEPT){
+                        getDockActivity().popBackStackTillEntry(0);
+                        getDockActivity().replaceDockableFragment(HomeFragment.newInstance(entity,true), HomeFragment.class.getSimpleName());
+                    }else {
+                        getDockActivity().popBackStackTillEntry(0);
+                        getDockActivity().replaceDockableFragment(PendingRidesFragment.newInstance(), PendingRidesFragment.class.getSimpleName());
+                    }
+
+                } else {
+                    UIHelper.showShortToastInCenter(getDockActivity(), response.body().getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseWrapper<AssignRideEnt>> call, Throwable t) {
+                loadingFinished();
+                Log.e(SettingFragment.class.getSimpleName(), t.toString());
+            }
+        });
+
+
+    }
     @Override
     public void setTitleBar(TitleBar titleBar) {
         super.setTitleBar(titleBar);

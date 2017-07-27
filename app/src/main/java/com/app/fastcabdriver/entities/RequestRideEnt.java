@@ -4,10 +4,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by saeedhyder on 7/18/2017.
+ * Created on 7/25/2017.
  */
 
-public class RideDetail {
+public class RequestRideEnt {
 
     @SerializedName("id")
     @Expose
@@ -45,9 +45,6 @@ public class RideDetail {
     @SerializedName("vehicle_id")
     @Expose
     private Integer vehicleId;
-    @SerializedName("promo_id")
-    @Expose
-    private Integer promoId;
     @SerializedName("date")
     @Expose
     private String date;
@@ -81,7 +78,9 @@ public class RideDetail {
     @SerializedName("user_detail")
     @Expose
     private UserDetail userDetail;
-
+    @SerializedName("vechicle_detail")
+    @Expose
+    private VechicleDetail vechicleDetail;
 
     public Integer getId() {
         return id;
@@ -179,14 +178,6 @@ public class RideDetail {
         this.vehicleId = vehicleId;
     }
 
-    public Integer getPromoId() {
-        return promoId;
-    }
-
-    public void setPromoId(Integer promoId) {
-        this.promoId = promoId;
-    }
-
     public String getDate() {
         return date;
     }
@@ -273,5 +264,13 @@ public class RideDetail {
 
     public void setUserDetail(UserDetail userDetail) {
         this.userDetail = userDetail;
+    }
+
+    public VechicleDetail getVechicleDetail() {
+        return vechicleDetail;
+    }
+
+    public void setVechicleDetail(VechicleDetail vechicleDetail) {
+        this.vechicleDetail = vechicleDetail;
     }
 }

@@ -10,7 +10,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.app.fastcabdriver.R;
+import com.app.fastcabdriver.entities.RequestRideEnt;
 import com.app.fastcabdriver.ui.views.AnyTextView;
+import com.app.fastcabdriver.ui.views.CustomRatingBar;
 
 
 /**
@@ -25,11 +27,12 @@ public class DialogHelper {
         this.context = context;
         this.dialog = new Dialog(context);
     }
-    public Dialog initForgotPasswordDialog(int layoutID ,View.OnClickListener onclicklistener,String Title,String message) {
+
+    public Dialog initForgotPasswordDialog(int layoutID, View.OnClickListener onclicklistener, String Title, String message) {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         this.dialog.setContentView(layoutID);
-        TextView closeButton =(TextView) dialog.findViewById(R.id.btn_ok);
+        TextView closeButton = (TextView) dialog.findViewById(R.id.btn_ok);
         closeButton.setOnClickListener(onclicklistener);
         AnyTextView title = (AnyTextView) dialog.findViewById(R.id.txt_title);
         title.setText(Title);
@@ -37,7 +40,8 @@ public class DialogHelper {
         Message.setText(message);
         return this.dialog;
     }
-    public void setTextViewText(int ID,String Text){
+
+    public void setTextViewText(int ID, String Text) {
         AnyTextView textView = (AnyTextView) dialog.findViewById(ID);
         textView.setText(Text);
     }
@@ -71,10 +75,28 @@ public class DialogHelper {
         return this.dialog;
     }
 
-    public Dialog initNewRide(int layoutID, View.OnClickListener onokclicklistener, View.OnClickListener oncancelclicklistener) {
+    public Dialog initNewRide(int layoutID, View.OnClickListener onokclicklistener, View.OnClickListener oncancelclicklistener, RequestRideEnt rideEnt) {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         this.dialog.setContentView(layoutID);
+        AnyTextView username = (AnyTextView) dialog.findViewById(R.id.txt_username);
+        AnyTextView txt_orderId = (AnyTextView) dialog.findViewById(R.id.txt_orderId);
+        AnyTextView txt_estimatedFare = (AnyTextView) dialog.findViewById(R.id.txt_estimatedFare);
+        AnyTextView txt_pickupLocation = (AnyTextView) dialog.findViewById(R.id.txt_pickupLocation);
+        AnyTextView txt_destinationLocation = (AnyTextView) dialog.findViewById(R.id.txt_destinationLocation);
+        CustomRatingBar userRating = (CustomRatingBar) dialog.findViewById(R.id.rbAddRating);
+
+        username.setText(rideEnt.getUserDetail().getFullName() + "");
+        txt_orderId.setText(rideEnt.getId() + "");
+        txt_pickupLocation.setText(rideEnt.getPickupAddress() + " ");
+        txt_destinationLocation.setText(" " + rideEnt.getDestinationAddress());
+        txt_estimatedFare.setText("AED " + rideEnt.getEstimateFare());
+        if (rideEnt.getUserDetail().getAverageRate() != null) {
+            userRating.setScore((float) rideEnt.getUserDetail().getAverageRate());
+        } else {
+            userRating.setScore(0);
+        }
+
         Button okbutton = (Button) dialog.findViewById(R.id.btn_accept);
         okbutton.setOnClickListener(onokclicklistener);
         Button cancelbutton = (Button) dialog.findViewById(R.id.btnReject);
@@ -188,15 +210,17 @@ public class DialogHelper {
         return editTextView.getText().toString();
     }*/
 
-    public void showDialog(){
+    public void showDialog() {
 
         dialog.show();
     }
-    public void setCancelable(boolean isCancelable){
+
+    public void setCancelable(boolean isCancelable) {
         dialog.setCancelable(isCancelable);
         dialog.setCanceledOnTouchOutside(isCancelable);
     }
-    public void hideDialog(){
+
+    public void hideDialog() {
         dialog.dismiss();
     }
 }

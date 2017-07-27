@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.app.fastcabdriver.entities.DriverEnt;
+import com.app.fastcabdriver.entities.DriverSessionEnt;
 import com.app.fastcabdriver.retrofit.GsonFactory;
 
 
@@ -18,6 +19,8 @@ public class BasePreferenceHelper extends PreferenceHelper {
     protected static final String KEY_DRIVER = "key_driver";
     protected static final String DRIVERID = "driverId";
     protected static final String Firebase_TOKEN = "Firebasetoken";
+    protected static final String KEY_DRIVER_RIDE_IN_SESSION = "KEY_DRIVER_RIDE_IN_SESSION";
+    protected static final String KEY_DRIVER_SESSION = "DRIVERHOME";
 
 
     //For GPS Service
@@ -43,12 +46,21 @@ public class BasePreferenceHelper extends PreferenceHelper {
     public boolean isOnline() {
         return getBooleanPreference(context, FILENAME, KEY_USER_STATUS);
     }
+
     public void setLoginStatus( boolean isLogin ) {
         putBooleanPreference( context, FILENAME, KEY_LOGIN_STATUS, isLogin );
     }
 
     public boolean isLogin() {
         return getBooleanPreference(context, FILENAME, KEY_LOGIN_STATUS);
+    }
+
+    public void setRideStatus( boolean isInSession ) {
+        putBooleanPreference( context, FILENAME, KEY_DRIVER_RIDE_IN_SESSION, isInSession );
+    }
+
+    public boolean isInSession() {
+        return getBooleanPreference(context, FILENAME, KEY_DRIVER_RIDE_IN_SESSION);
     }
 
     public DriverEnt getDriver() {
@@ -58,6 +70,15 @@ public class BasePreferenceHelper extends PreferenceHelper {
 
     public void putDriver(DriverEnt user) {
         putStringPreference(context, FILENAME, KEY_DRIVER, GsonFactory
+                .getConfiguredGson().toJson(user));
+    }
+    public DriverSessionEnt getDriverSession() {
+        return GsonFactory.getConfiguredGson().fromJson(
+                getStringPreference(context, FILENAME, KEY_DRIVER_SESSION), DriverSessionEnt.class);
+    }
+
+    public void putDriverSession(DriverSessionEnt user) {
+        putStringPreference(context, FILENAME,KEY_DRIVER_SESSION , GsonFactory
                 .getConfiguredGson().toJson(user));
     }
 

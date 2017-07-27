@@ -20,4 +20,8 @@ public class AppConstants {
     public static  int END = 2;
     public static final String DRIVER="driver";
     public static final String USER="user";
+    public static final String KEY_SESSION_DEFAULT="new";
+    public static final String KEY_SESSION_RIDE_INPROGRESS="inprogress";
+    public static final String KEY_RIDE_COMPLETE_RATE="completRate";
+
 }

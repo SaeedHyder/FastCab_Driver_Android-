@@ -58,11 +58,9 @@ import com.kbeanie.imagechooser.api.ImageChooserManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.R.attr.direction;
-import static android.R.attr.type;
 
-
-public class MainActivity extends DockActivity implements OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,ImageChooserListener {
+public class MainActivity extends DockActivity implements OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ImageChooserListener {
+    private final static String TAG = "ICA";
     public final int LocationResultCode = 1;
     public final int WifiResultCode = 2;
     public TitleBar titleBar;
@@ -75,6 +73,8 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     AlertDialog alert;
+    ImageSetter imageSetter;
+    int resideMenuCounter = 1;
     private MainActivity mContext;
     private boolean loading;
     private ResideMenu resideMenu;
@@ -89,9 +89,6 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
     private String thumbnailFilePath;
     private String thumbnailSmallFilePath;
     private boolean isActivityResultOver = false;
-    private final static String TAG = "ICA";
-    ImageSetter imageSetter;
-    int resideMenuCounter=1;
 
     public void setSettingActivateListener(OnSettingActivateListener settingActivateListener) {
         this.settingActivateListener = settingActivateListener;
@@ -151,9 +148,9 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
                 }
             }
         });
+
         if (savedInstanceState == null)
             initFragment();
-
     }
 
     public ResideMenu getResideMenu() {
@@ -180,7 +177,21 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
 
     public boolean isConnected(Context context) {
 
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfoMob = cm.getNetworkInfo(cm.TYPE_MOBILE);
+        NetworkInfo netInfoWifi = cm.getNetworkInfo(cm.TYPE_WIFI);
+        if (netInfoMob != null && netInfoMob.isConnectedOrConnecting()) {
+            Log.v("TAG", "Mobile Internet connected");
+            return true;
+        }
+        if (netInfoWifi != null && netInfoWifi.isConnectedOrConnecting()) {
+            Log.v("TAG", "Wifi Internet connected");
+            return true;
+        }
+        buildAlertMessageNoGps(R.string.wifi_question, Settings.ACTION_WIFI_SETTINGS, WifiResultCode);
+        return false;
+
+     /*   ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netinfo = cm.getActiveNetworkInfo();
 
         if (netinfo != null && netinfo.isConnectedOrConnecting()) {
@@ -190,13 +201,13 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
             if ((mobile != null && mobile.isConnectedOrConnecting()) || (wifi != null && wifi.isConnectedOrConnecting()))
                 return true;
             else {
-
+                //isConnected(getApplicationContext());
                 return false;
             }
         } else {
             buildAlertMessageNoGps(R.string.wifi_question, Settings.ACTION_WIFI_SETTINGS, WifiResultCode);
             return false;
-        }
+        }*/
     }
 
     private void buildAlertMessageNoGps(final int StringResourceID, final String IntentType, final int requestCode) {
@@ -265,7 +276,7 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
                     final LocationSettingsStates state = result.getLocationSettingsStates();
                     switch (status.getStatusCode()) {
                         case LocationSettingsStatusCodes.SUCCESS:
-                            settingActivateListener.onLocationActivateListener();
+                            // settingActivateListener.onLocationActivateListener();
                             // All location settings are satisfied. The client can initialize location
                             // requests here.
                             break;
@@ -321,17 +332,17 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
             }
         }
 
-        if (requestCode == LocationResultCode) {
-            settingActivateListener.onLocationActivateListener();
+        /*if (requestCode == LocationResultCode) {
+          //  settingActivateListener.onLocationActivateListener();
         }
 
         if (requestCode == WifiResultCode) {
-            settingActivateListener.onNetworkActivateListener();
+           // settingActivateListener.onNetworkActivateListener();
 
         }
-        if (requestCode == 1000){
-            settingActivateListener.onLocationActivateListener();
-        }
+        if (requestCode == 1000) {
+            //settingActivateListener.onLocationActivateListener();
+        }*/
 
 
     }
@@ -376,7 +387,7 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
         }
     }
 
-    public void refreshSideMenu(){
+    public void refreshSideMenu() {
 
         sideMenuFragment = SideMenuFragment.newInstance();
         FragmentTransaction transaction = getSupportFragmentManager()
@@ -391,7 +402,6 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
 */
         setMenuItemDirection(sideMenuDirection);
     }
-
 
 
     private void setMenuItemDirection(String direction) {
@@ -419,10 +429,23 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
     public void initFragment() {
         getSupportFragmentManager().addOnBackStackChangedListener(getListener());
         if (prefHelper.isLogin()) {
-            replaceDockableFragment(HomeFragment.newInstance(), "HomeFragment");
+            Bundle bundle = getIntent().getExtras();
+            if (bundle != null) {
+                String sender_id = bundle.getString("sender_id");
+                String userID = bundle.getString("sender_id");
+                String rideID = bundle.getString("ride_id");
+                if (!isFragmentVisible(HomeFragment.class.getSimpleName()))
+                replaceDockableFragment(HomeFragment.newInstance(userID, rideID, true), HomeFragment.class.getSimpleName());
+            } else
+                replaceDockableFragment(HomeFragment.newInstance(), HomeFragment.class.getSimpleName());
         } else {
             replaceDockableFragment(LoginFragment.newInstance(), "LoginFragment");
         }
+    }
+
+    private boolean isFragmentVisible(String tag) {
+        BaseFragment currFrag = (BaseFragment) getSupportFragmentManager().findFragmentByTag(tag);
+        return currFrag != null && currFrag.isVisible();
     }
 
     private FragmentManager.OnBackStackChangedListener getListener() {

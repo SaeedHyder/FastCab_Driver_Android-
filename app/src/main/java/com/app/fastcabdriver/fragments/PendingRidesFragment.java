@@ -53,7 +53,7 @@ public class PendingRidesFragment extends BaseFragment implements View.OnClickLi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        adapter = new ArrayListAdapter<AssignRideEnt>(getDockActivity(), new PendingTripBinder(getDockActivity()));
+        adapter = new ArrayListAdapter<AssignRideEnt>(getDockActivity(), new PendingTripBinder(getDockActivity(),webService));
     }
 
     @Override

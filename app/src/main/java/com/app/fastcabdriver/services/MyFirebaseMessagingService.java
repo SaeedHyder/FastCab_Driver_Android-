@@ -96,7 +96,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void buildNotification(RemoteMessage messageBody) {
         String title = getString(R.string.app_name);
         String message = messageBody.getData().get("message");
-
+        String sender_id = messageBody.getData().get("sender_id");
+        String reciever_id =messageBody.getData().get("reciever_id");
+        String ride_id = messageBody.getData().get("ride_id");
 
         Log.e(TAG, "message: " + message);
 
@@ -104,9 +106,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         resultIntent.putExtra("message", message);
         resultIntent.putExtra("tapped", true);
+        resultIntent.putExtra("sender_id",sender_id);
+        resultIntent.putExtra("reciever_id",reciever_id);
+        resultIntent.putExtra("ride_id",ride_id);
         Intent pushNotification = new Intent(AppConstants.PUSH_NOTIFICATION);
         pushNotification.putExtra("message", message);
-
+        pushNotification.putExtra("sender_id",sender_id);
+        pushNotification.putExtra("reciever_id",reciever_id);
+        pushNotification.putExtra("ride_id",ride_id);
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(pushNotification);
 
         showNotificationMessage(MyFirebaseMessagingService.this, title, message, "", resultIntent);
