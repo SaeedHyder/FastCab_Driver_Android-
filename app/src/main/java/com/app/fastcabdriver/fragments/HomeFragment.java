@@ -39,7 +39,9 @@ import android.widget.TextView;
 import com.app.fastcabdriver.R;
 import com.app.fastcabdriver.entities.AssignRideEnt;
 import com.app.fastcabdriver.entities.DriverEnt;
+import com.app.fastcabdriver.entities.DriverSessionEnt;
 import com.app.fastcabdriver.entities.LocationEnt;
+import com.app.fastcabdriver.entities.RequestRideEnt;
 import com.app.fastcabdriver.entities.ResponseWrapper;
 import com.app.fastcabdriver.fragments.abstracts.BaseFragment;
 import com.app.fastcabdriver.global.AppConstants;
@@ -101,6 +103,11 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
         OnSettingActivateListener,
         DirectionFinderListener {
 
+    public static String PENDING_RIDES_DETAIL = "pending_rides_detail";
+    public static String Notification_USERID = "Notification_USERID";
+    public static String Notfication_RIDEID = "Notfication_RIDEID";
+    public static String IS_FROM_NOTIFICATION = "pending_rides_detail";
+    private static String isPendingRideKey = "isPendingRideKey";
 
     @BindView(R.id.rbAddRating)
     CustomRatingBar rbAddRating;
@@ -118,6 +125,12 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
     AnyTextView txtDriverCar;
     @BindView(R.id.txt_driver_car_plate)
     AnyTextView txtDriverCarPlate;
+    @BindView(R.id.txt_pick_text)
+    AnyTextView PickupText;
+    @BindView(R.id.txt_destination_text)
+    AnyTextView DestinationText;
+
+
     @BindView(R.id.Main_frame)
     CoordinatorLayout MainFrame;
     SupportMapFragment map;
@@ -142,11 +155,12 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
     CircleImageView circleImageView;
     @BindView(R.id.circledriverView)
     CircleImageView circledriverView;
-
-
+    Marker destinationMarker;
+    Marker pickupMarker;
     private View viewParent;
     private LocationEnt origin;
     private LocationEnt destination;
+    private LocationEnt pickup;
     private double longitude;
     private double latitude;
     private List<Marker> originMarkers = new ArrayList<>();
@@ -157,21 +171,59 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
     private boolean isTitleBarChange;
     private Location Mylocation;
     private LocationListener listener;
-    private Boolean resideMenuRefresh;
     private Marker carMarker;
+    private String rideID;
+    private String userID;
+    private BroadcastReceiver broadcastReceiver;
 
-    private HomeFragment homeFragment;
-    protected static final String KEY_HOME = "key_home";
+    private RequestRideEnt requestRideEnt;
+    private AssignRideEnt pendingRideEnt;
+    private AssignRideEnt currentRideEnt;
+    private String sessionState = AppConstants.KEY_SESSION_DEFAULT;
+    private boolean isPendingRide = false;
+    private boolean isFromNotification = false;
     String jsonString;
-
-    private  BroadcastReceiver broadcastReceiver;
     public static HomeFragment newInstance() {
         return new HomeFragment();
+    }
+
+    public static HomeFragment newInstance(AssignRideEnt entity, boolean isPendingRide) {
+
+        Bundle args = new Bundle();
+
+        args.putString(PENDING_RIDES_DETAIL, new Gson().toJson(entity));
+        args.putBoolean(isPendingRideKey, isPendingRide);
+        HomeFragment fragment = new HomeFragment();
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
+    public static BaseFragment newInstance(String userID, String rideID, boolean isFromNotification) {
+        Bundle args = new Bundle();
+
+        args.putString(Notfication_RIDEID, rideID);
+        args.putString(Notification_USERID, userID);
+        args.putBoolean(IS_FROM_NOTIFICATION, isFromNotification);
+        HomeFragment fragment = new HomeFragment();
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            String jsonString = getArguments().getString(PENDING_RIDES_DETAIL);
+            isPendingRide = getArguments().getBoolean(isPendingRideKey);
+            rideID = getArguments().getString(Notfication_RIDEID);
+            userID = getArguments().getString(Notification_USERID);
+            isFromNotification = getArguments().getBoolean(IS_FROM_NOTIFICATION);
+            if (jsonString != null)
+                pendingRideEnt = new Gson().fromJson(jsonString, AssignRideEnt.class);
+        }
+
     }
 
     @Nullable
@@ -203,12 +255,12 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
         if (prefHelper.isOnline() && !isRideinSession) {
             btnOnlineStatus.setText(R.string.go_offline);
             btnLocation.setVisibility(View.VISIBLE);
-            new Handler().postDelayed(new Runnable() {
+            /*new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     setupNewRideDialog();
                 }
-            }, 5000);
+            }, 5000);*/
         } else {
             btnOnlineStatus.setText(R.string.go_online);
             btnLocation.setVisibility(View.GONE);
@@ -233,31 +285,35 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
             }
         });
     }
+
     private void onNotificationReceived() {
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+
                 // checking for type intent filter
                 if (intent.getAction().equals(AppConstants.REGISTRATION_COMPLETE)) {
                     System.out.println("registration complete");
                     System.out.println(prefHelper.getFirebase_TOKEN());
 
                 } else if (intent.getAction().equals(AppConstants.PUSH_NOTIFICATION)) {
-                   /* Bundle bundle = intent.getExtras();
+                    Bundle bundle = intent.getExtras();
                     if (bundle != null) {
-                        String rideID = bundle.getString("rideID");
-                        serviceHelper.enqueueCall(webService.getApproveDriver(rideID + ""), APPROVE_DRIVER);
+                        String sender_id = bundle.getString("sender_id");
+
+                        userID = bundle.getString("sender_id");
+                        rideID = bundle.getString("ride_id");
+                        getRequestRideDetail(rideID);
                     } else {
                         UIHelper.showShortToastInCenter(getDockActivity(), "Notification Data is Empty");
-                    }*/
-                }
-                else if (intent.getAction().equals(AppConstants.LOCATION_RECIEVED)) {
+                    }
+                } else if (intent.getAction().equals(AppConstants.LOCATION_RECIEVED)) {
                     Bundle bundle = intent.getExtras();
                     if (bundle != null) {
                         String lat = bundle.getString("lat");
                         String lon = bundle.getString("lon");
-                        LatLng latLng =  new LatLng(Double.parseDouble(lat+""),Double.parseDouble(lon+""));
-                        if (origin!=null&&!origin.getLatlng().equals(new LatLng(0,0))) {
+                        LatLng latLng = new LatLng(Double.parseDouble(lat + ""), Double.parseDouble(lon + ""));
+                        if (origin != null && !origin.getLatlng().equals(new LatLng(0, 0))) {
                             animateMarker(origin.getLatlng(), latLng, false);
                             origin.setLatlng(latLng);
                         }
@@ -268,6 +324,30 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
             }
         };
     }
+
+    private void getRequestRideDetail(String rideID) {
+        loadingStarted();
+        Call<ResponseWrapper<RequestRideEnt>> call = webService.getRequestRideDetail(rideID + "");
+        call.enqueue(new Callback<ResponseWrapper<RequestRideEnt>>() {
+            @Override
+            public void onResponse(Call<ResponseWrapper<RequestRideEnt>> call, Response<ResponseWrapper<RequestRideEnt>> response) {
+                loadingFinished();
+                if (response.body().getResponse().equals(WebServiceConstants.SUCCESS_RESPONSE_CODE)) {
+                    requestRideEnt = response.body().getResult();
+                    setupNewRideDialog(requestRideEnt);
+                } else {
+                    UIHelper.showShortToastInCenter(getDockActivity(), response.body().getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseWrapper<RequestRideEnt>> call, Throwable t) {
+                loadingFinished();
+                Log.e("HomeFragment", t.toString());
+            }
+        });
+    }
+
     private void initMap() {
         map = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
@@ -314,25 +394,19 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
     @Override
     public void onMapReady(GoogleMap googlemap) {
         googleMap = googlemap;
-     /*   googleMap.setMyLocationEnabled(true);
-        googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-            @Override
-            public boolean onMyLocationButtonClick() {
-                if (origin == null || origin.getLatlng().equals(new LatLng(0, 0)))
-                    if (getMainActivity().statusCheck())
-                        getCurrentLocation();
-                return true;
-            }
-        });
-        View locationButton = map.getView().findViewById(0x2);
 
-// and next place it, for exemple, on bottom right (as Google Maps app)
-        RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
-// position on right bottom
-        rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
-        rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-        rlp.setMargins(0, 0, 0, (int) getResources().getDimension(R.dimen.x100));
-*/
+        //Check if From Pending Ride show Route
+        if (isPendingRide) {
+            setupRideScreens(pendingRideEnt);
+        }
+        //Check if Application is open from Notification
+        if (!isPendingRide && isFromNotification) {
+            getRequestRideDetail(rideID);
+        }
+        //Check if Ride was in session them Resume Current Ride
+        if (prefHelper.isInSession()){
+            RestoreState(prefHelper.getDriverSession());
+        }
 
     }
 
@@ -363,7 +437,6 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
     public void onResume() {
         super.onResume();
 
-
         UIHelper.hideSoftKeyboard(getDockActivity(), getMainActivity()
                 .getWindow().getDecorView());
         if (origin == null || origin.getLatlng().equals(new LatLng(0, 0))) {
@@ -384,6 +457,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
     @Override
     public void onPause() {
         LocalBroadcastManager.getInstance(getDockActivity()).unregisterReceiver(broadcastReceiver);
+        SaveCurrentState();
         super.onPause();
         UIHelper.hideSoftKeyboard(getDockActivity(), getMainActivity()
                 .getWindow().getDecorView());
@@ -432,10 +506,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
                         }
 
                         movemap(origin.getLatlng());
-                       locationRequest.setNumUpdates(1);
-
-
-                        // moveMap(new LatLng(latitude, longitude));
+                        locationRequest.setNumUpdates(1);
                     } else {
                         UIHelper.showShortToastInCenter(getDockActivity(), "Can't get your Location Try getting using Location Button");
                     }
@@ -446,26 +517,6 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
             {
                 LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, listener);
             }
-
-      /*  Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-        if (location != null) {
-            //Getting longitude and latitude
-            longitude = location.getLongitude();
-            latitude = location.getLatitude();
-            // origin = new LatLng(latitude, longitude);
-            String Address = getCurrentAddress(latitude, longitude);
-            if (Address != null) {
-                //  UIHelper.showShortToastInCenter(getDockActivity(),"Seems Like a problem Try Again");
-                origin = new LocationEnt(Address, new LatLng(latitude, longitude));
-                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.car);
-                googleMap.addMarker(new MarkerOptions().position(origin.getLatlng()).icon(icon));
-            } else {
-                origin = new LocationEnt("Un Named Street", new LatLng(latitude, longitude));
-
-            }
-
-            movemap(origin.getLatlng());*/
-            // moveMap(new LatLng(latitude, longitude));
         }
 
     }
@@ -487,70 +538,57 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
 
     }
 
-
     private void movemap(LatLng latlng) {
-
-     /*   CameraUpdate center =
-                CameraUpdateFactory.newLatLng(latlng);
-        CameraUpdate zoom = CameraUpdateFactory.zoomTo(13);
-
-        googleMap.moveCamera(center);
-        googleMap.animateCamera(zoom);*/
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(latlng.latitude, latlng.longitude))
                 .zoom(15)
                 .bearing(0)
-                .tilt(45)
+                .tilt(50)
                 .build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
-    private void setupNewRideDialog() {
+    private void setupNewRideDialog(final RequestRideEnt result) {
 
         final DialogHelper newRide = new DialogHelper(getDockActivity());
         newRide.initNewRide(R.layout.new_ride_request_dialog, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 newRide.hideDialog();
-                AssignRideService(22, AppConstants.ACCEPT, AppConstants.DEFUALT);
+                AssignRideService(AppConstants.ACCEPT, AppConstants.DEFUALT);
 
             }
         }, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 newRide.hideDialog();
-                AssignRideService(22, AppConstants.REJECT, AppConstants.DEFUALT);
+                AssignRideService(AppConstants.REJECT, AppConstants.DEFUALT);
 
             }
-        });
+        }, result);
         newRide.setCancelable(false);
         newRide.showDialog();
     }
 
-    private void AssignRideService(int rideId, final int rideStatus, final int tripStatus) {
+    private void AssignRideService(final int rideStatus, final int tripStatus) {
         loadingStarted();
-        Call<ResponseWrapper<AssignRideEnt>> call = webService.AssignStatus(Integer.parseInt(prefHelper.getDriverId()), rideId, rideStatus, tripStatus);
+        Call<ResponseWrapper<AssignRideEnt>> call = webService.AssignStatus(prefHelper.getDriverId(), rideID, rideStatus, tripStatus, userID);
 
         call.enqueue(new Callback<ResponseWrapper<AssignRideEnt>>() {
             @Override
             public void onResponse(Call<ResponseWrapper<AssignRideEnt>> call, Response<ResponseWrapper<AssignRideEnt>> response) {
                 loadingFinished();
                 if (response.body().getResponse().equals(WebServiceConstants.SUCCESS_RESPONSE_CODE)) {
+                    currentRideEnt = response.body().getResult();
                     if (rideStatus == AppConstants.ACCEPT) {
-                        setupRideScreens();
+                        prefHelper.setRideStatus(true);
+                        setupRideScreens(response.body().getResult());
                     } else if (tripStatus == AppConstants.START) {
+                        pickupMarker.setVisible(false);
+                        pickupMarker.remove();
                         btnTripStatus.setText(R.string.end_trip);
                     } else if (tripStatus == AppConstants.END) {
-                        isTitleBarChange = false;
-                        destination = null;
-                        googleMap.clear();
-                        getCurrentLocation();
-                        isRideinSession = false;
-                        LocationDetail.setVisibility(View.GONE);
-                        TripContainer.setVisibility(View.GONE);
-                        DetailContainer.setVisibility(View.VISIBLE);
-                        btnTripStatus.setText(getResources().getString(R.string.start_trip));
-                        showRatingDialog();
+                        setupEndtripScreens(response.body().getResult());
                     }
                 } else {
                     UIHelper.showShortToastInCenter(getDockActivity(), response.body().getMessage());
@@ -567,7 +605,22 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
 
     }
 
-    private void setupRideScreens() {
+    private void setupEndtripScreens(AssignRideEnt result) {
+        isTitleBarChange = false;
+        destination = null;
+        googleMap.clear();
+        getCurrentLocation();
+        isRideinSession = false;
+        LocationDetail.setVisibility(View.GONE);
+        TripContainer.setVisibility(View.GONE);
+        DetailContainer.setVisibility(View.VISIBLE);
+        btnTripStatus.setText(getResources().getString(R.string.start_trip));
+        sessionState = AppConstants.KEY_RIDE_COMPLETE_RATE;
+        showRatingDialog(result);
+    }
+
+    private void setupRideScreens(AssignRideEnt rideEnt) {
+        sessionState = AppConstants.KEY_SESSION_RIDE_INPROGRESS;
         if (origin == null)
             origin = new LocationEnt("Unnamed Address", new LatLng(0, 0));
 
@@ -575,10 +628,14 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
         DetailContainer.setVisibility(View.GONE);
         TripContainer.setVisibility(View.VISIBLE);
         isRideinSession = true;
-
-        LatLng des = translateCoordinates(8000, origin.getLatlng(), 90);
-        destination = new LocationEnt(getCurrentAddress(des.latitude, des.longitude), des);
+        PickupText.setText(rideEnt.getRideDetail().getPickupAddress() + "");
+        DestinationText.setText(rideEnt.getRideDetail().getDestinationAddress() + "");
+        pickup = new LocationEnt(rideEnt.getRideDetail().getDestinationAddress() + "", new LatLng(Double.parseDouble(rideEnt.getRideDetail().getPickupLatitude()),
+                Double.parseDouble(rideEnt.getRideDetail().getPickupLongitude())));
+        destination = new LocationEnt(rideEnt.getRideDetail().getDestinationAddress() + "", new LatLng(Double.parseDouble(rideEnt.getRideDetail().getDestinationLatitude()),
+                Double.parseDouble(rideEnt.getRideDetail().getDestinationLongitude())));
         setRoute();
+
         isTitleBarChange = true;
         adjustTitleBar();
 
@@ -626,15 +683,14 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
     }
 
     private void setRoute() {
-        if (origin != null && destination != null) {
-            LatLng pick = origin.getLatlng();
+        if (pickup != null && destination != null) {
+            LatLng pick = pickup.getLatlng();
             LatLng destinat = destination.getLatlng();
             String origin_string = String.valueOf(pick.latitude) + "," + String.valueOf(pick.longitude);
             String destination_string = String.valueOf(destinat.latitude) + "," + String.valueOf(destinat.longitude);
             sendRequest(origin_string, destination_string);
         }
     }
-
 
     @Override
     public void onLocationActivateListener() {
@@ -647,7 +703,6 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
       /*  if (origin == null || origin.getLatlng().equals(new LatLng(0, 0)))
             getCurrentLocation();*/
     }
-
 
     @OnClick({R.id.btn_online_status, R.id._online_btn, R.id.btn_location, R.id.btn_trip_status})
     public void onViewClicked(View view) {
@@ -673,14 +728,6 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
                 prefHelper.setUserStatus(true);
                 ((ViewGroup) viewParent.getParent()).setPadding(0, (int) getResources().getDimension(R.dimen.x50), 0, 0);
                 titlebar.showTitleBar();
-                if (!isRideinSession) {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            setupNewRideDialog();
-                        }
-                    }, 5000);
-                }
                 break;
             case R.id.btn_location:
                 if (getMainActivity().statusCheck())
@@ -688,10 +735,11 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
                 break;
             case R.id.btn_trip_status:
                 if (btnTripStatus.getText().toString().equals(getResources().getString(R.string.start_trip))) {
-                    AssignRideService(22, AppConstants.DEFUALT, AppConstants.START);
+                    AssignRideService(AppConstants.DEFUALT, AppConstants.START);
                     // btnTripStatus.setText(R.string.end_trip);
                     LocationDetail.setVisibility(View.GONE);
                 } else {
+                    AssignRideService(AppConstants.DEFUALT, AppConstants.END);
                     setupEndRideDialog();
                 }
                 break;
@@ -759,7 +807,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
             @Override
             public void onClick(View v) {
                 endride.hideDialog();
-                AssignRideService(22, AppConstants.DEFUALT, AppConstants.END);
+                AssignRideService(AppConstants.DEFUALT, AppConstants.END);
 
                /* isTitleBarChange = false;
                 destination = null;
@@ -783,23 +831,25 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
         endride.showDialog();
     }
 
-    private void showRatingDialog() {
+    private void showRatingDialog(AssignRideEnt result) {
         titlebar.hideButtons();
         titlebar.showMenuButton();
         titlebar.setSubHeading(getResources().getString(R.string.rate));
 
         final BottomSheetDialogHelper ratingDialog =
-                new BottomSheetDialogHelper(getDockActivity(), MainFrame, R.layout.fragment_rate_user, webService, prefHelper,10);
+                new BottomSheetDialogHelper(getDockActivity(), MainFrame, R.layout.fragment_rate_user, webService, prefHelper, 10);
         ratingDialog.initRatingDialog(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ratingDialog.RateUser(10, 22);
+                ratingDialog.RateUser(userID, rideID);
                 ratingDialog.hideDialog();
                 titlebar.hideButtons();
                 titlebar.setSubHeading(getResources().getString(R.string.home));
                 titlebar.showMenuButton();
+                prefHelper.setRideStatus(false);
+                prefHelper.removeRideSessionPreferences();
             }
-        });
+        },result);
         ratingDialog.showDialog();
     }
 
@@ -830,23 +880,17 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
         polylinePaths = new ArrayList<>();
         originMarkers = new ArrayList<>();
         destinationMarkers = new ArrayList<>();
-      /*  googleMap.addMarker(new MarkerOptions().position(destination.getLatlng())
-                .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.set_pickup_location_trip,
-                        "14 min", R.color.black))));
-        BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.car);
-        googleMap.addMarker(new MarkerOptions().position(origin.getLatlng()).icon(icon));*/
-        //  movemap(origin.getLatlng());
         for (Route routesingle : route) {
             PolylineOptions polylineOptions = new PolylineOptions().
                     geodesic(true).
                     color(Color.BLACK).
                     width(15);
 
-            googleMap.addMarker(new MarkerOptions().position(this.destination.getLatlng())
+            destinationMarker = googleMap.addMarker(new MarkerOptions().position(this.destination.getLatlng())
                     .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.set_pickup_location_trip,
                             routesingle.duration.text, R.color.black))));
-            BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.car);
-            carMarker =  googleMap.addMarker(new MarkerOptions().position(this.origin.getLatlng()).icon(icon));
+            BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.destination_icon_);
+            pickupMarker = googleMap.addMarker(new MarkerOptions().position(this.pickup.getLatlng()).icon(icon));
 
             for (int i = 0; i < routesingle.points.size(); i++)
                 polylineOptions.add(routesingle.points.get(i));
@@ -884,6 +928,17 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
         ImageView markerImageView = (ImageView) customMarkerView.findViewById(R.id.img_icon);
         TextView textView = (TextView) customMarkerView.findViewById(R.id.txt_pick_text);
         textView.setText(title);
+        ImageView userImageView = (ImageView) customMarkerView.findViewById(R.id.img_userProfile);
+        String userImage = "thisisdummyitwillchangewhenuserobjectisnotnull";
+        if (requestRideEnt != null && requestRideEnt.getUserDetail() != null)
+            userImage = requestRideEnt.getUserDetail().getProfileImage();
+        else if (pendingRideEnt != null && pendingRideEnt.getRideDetail().getUserDetail() != null)
+            userImage = pendingRideEnt.getRideDetail().getUserDetail().getProfileImage();
+        else if (currentRideEnt != null && currentRideEnt.getRideDetail().getUserDetail() != null)
+            userImage = currentRideEnt.getRideDetail().getUserDetail().getProfileImage();
+
+        Picasso.with(getDockActivity()).load(userImage).placeholder(R.drawable.com_facebook_profile_picture_blank_square)
+                .into(userImageView);
         //textView.setTextColor(getResources().getColor(R.color.black));
         // textView.setBackgroundColor(getResources().getColor(R.color.white));
         markerImageView.setImageResource(resId);
@@ -913,8 +968,6 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.car)));*/
 
 
-
-
         final Handler handler = new Handler();
         final long start = SystemClock.uptimeMillis();
 
@@ -933,14 +986,14 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
                         * startPosition.latitude;
 
 
-                double dLon = (toPosition.longitude-startPosition.longitude);
+                double dLon = (toPosition.longitude - startPosition.longitude);
                 double y = Math.sin(dLon) * Math.cos(toPosition.latitude);
-                double x = Math.cos(startPosition.latitude)*Math.sin(toPosition.latitude) -
-                        Math.sin(startPosition.latitude)*Math.cos(toPosition.latitude)*Math.cos(dLon);
+                double x = Math.cos(startPosition.latitude) * Math.sin(toPosition.latitude) -
+                        Math.sin(startPosition.latitude) * Math.cos(toPosition.latitude) * Math.cos(dLon);
                 double brng = Math.toDegrees((Math.atan2(y, x)));
                 brng = (360 - ((brng + 360) % 360));
                 carMarker.setPosition(new LatLng(lat, lng));
-               // carMarker.setRotation((float) brng);
+                // carMarker.setRotation((float) brng);
 
                 if (t < 1.0) {
                     // Post again 16ms later.
@@ -957,24 +1010,53 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
         movemap(toPosition);
     }
 
-
-    @Override
-    public void onSaveInstanceState(Bundle state) {
-        super.onSaveInstanceState(state);
-
-
+    public void SaveCurrentState(){
+        DriverSessionEnt session = new DriverSessionEnt();
+        session.setRequestRideEnt(requestRideEnt);
+        session.setPendingRide(isPendingRide);
+        session.setDestination(destination);
+        session.setFromNotification(isFromNotification);
+        session.setLongitude(longitude);
+        session.setLatitude(latitude);
+        session.setOrigin(origin);
+        session.setPickup(pickup);
+        session.setRideID(rideID);
+        session.setUserID(userID);
+        session.setRideinSession(isRideinSession);
+        session.setTitleBarChange(isTitleBarChange);
+        session.setPendingRideEnt(pendingRideEnt);
+        session.setSessionState(sessionState);
+        session.setCurrentRideEnt(currentRideEnt);
+        prefHelper.putDriverSession(session);
+    }
+    private void RestoreState(DriverSessionEnt session){
+        if (session!=null){
+            requestRideEnt = session.getRequestRideEnt();
+            isPendingRide=session.isPendingRide();
+            destination = session.getDestination();
+            isFromNotification= session.isFromNotification();
+            longitude=session.getLongitude();
+            latitude= session.getLatitude();
+          // session.setOrigin(origin);
+            pickup =  session.getPickup();
+            rideID =  session.getRideID();
+            userID = session.getUserID();
+            isRideinSession =  session.isRideinSession();
+            isTitleBarChange = session.isTitleBarChange();
+            pendingRideEnt =  session.getPendingRideEnt();
+            sessionState = session.getSessionState();
+            currentRideEnt = session.getCurrentRideEnt();
+            if (sessionState.equals(AppConstants.KEY_SESSION_RIDE_INPROGRESS)){
+                //Check if From Pending Ride show Route
+                    setupRideScreens(currentRideEnt);
+            }else if(sessionState.equals(AppConstants.KEY_RIDE_COMPLETE_RATE)){
+                showRatingDialog(currentRideEnt);
+            }
+        }
     }
 
 
 
-    @Override
-    public void onActivityCreated(@android.support.annotation.Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
 
 
-       if(savedInstanceState!=null){
-        jsonString= savedInstanceState.getString(KEY_HOME);}
-
-        homeFragment = new Gson().fromJson(jsonString, HomeFragment.class);
-    }
 }

@@ -6,12 +6,10 @@ import com.app.fastcabdriver.entities.CompleteRideDataEnt;
 import com.app.fastcabdriver.entities.DriverEnt;
 import com.app.fastcabdriver.entities.DriverFeedBackEnt;
 import com.app.fastcabdriver.entities.DriverMsgesEnt;
+import com.app.fastcabdriver.entities.RequestRideEnt;
 import com.app.fastcabdriver.entities.ResponseWrapper;
-
 import com.app.fastcabdriver.entities.UpdatedLocationEnt;
-
 import com.app.fastcabdriver.entities.UserRideDetailRatingEnt;
-
 
 import java.util.ArrayList;
 
@@ -37,7 +35,7 @@ public interface WebService {
     @FormUrlEncoded
     @POST("changepushnotificationstatus")
     Call<ResponseWrapper<DriverEnt>> ChangeNotifiationStatus(@Field("user_id") String user_id,
-                                                           @Field("push_status") Integer status);
+                                                             @Field("push_status") Integer status);
 
     @Multipart
     @POST("driver/register")
@@ -61,7 +59,7 @@ public interface WebService {
     @FormUrlEncoded
     @POST("user/login")
     Call<ResponseWrapper<DriverEnt>> loginDriver(@Field("email") String email,
-                                             @Field("password") String password
+                                                 @Field("password") String password
     );
 
     @FormUrlEncoded
@@ -79,9 +77,9 @@ public interface WebService {
     @FormUrlEncoded
     @POST("driver/changeavaibilitystatus")
     Call<ResponseWrapper<DriverEnt>> GoOnline(@Field("driver_id") int driver_id,
-                                                  @Field("avaibility_status") String avaibility_status,
-                                                  @Field("latitude") String latitude,
-                                                  @Field("longitude") String longitude
+                                              @Field("avaibility_status") String avaibility_status,
+                                              @Field("latitude") String latitude,
+                                              @Field("longitude") String longitude
     );
 
     @FormUrlEncoded
@@ -97,23 +95,24 @@ public interface WebService {
 
     @FormUrlEncoded
     @POST("ride/driverassignstatus")
-    Call<ResponseWrapper<AssignRideEnt>> AssignStatus(@Field("driver_id") int driver_id,
-                                                      @Field("ride_id") int ride_id,
+    Call<ResponseWrapper<AssignRideEnt>> AssignStatus(@Field("driver_id") String driver_id,
+                                                      @Field("ride_id") String ride_id,
                                                       @Field("ride_status") int ride_status,
-                                                      @Field("trip_status") int trip_status);
+                                                      @Field("trip_status") int trip_status,
+                                                      @Field("user_id") String user_id);
 
 
     @GET("ride/driverinprogressride")
     Call<ResponseWrapper<ArrayList<AssignRideEnt>>> InProgressRides(@Query("driver_id") int driver_id);
 
     @GET("ride/drivercompleteride")
-    Call<ResponseWrapper<ArrayList<AssignRideEnt>>>  CompleteRides(@Query("driver_id") int driver_id);
+    Call<ResponseWrapper<ArrayList<AssignRideEnt>>> CompleteRides(@Query("driver_id") int driver_id);
 
     @FormUrlEncoded
     @POST("driver/feedback")
-    Call<ResponseWrapper<DriverFeedBackEnt>> DriverFeedBack(@Field("user_id") int user_id,
-                                                            @Field("driver_id") int driver_id,
-                                                            @Field("ride_id") int ride_id,
+    Call<ResponseWrapper<DriverFeedBackEnt>> DriverFeedBack(@Field("user_id") String user_id,
+                                                            @Field("driver_id") String driver_id,
+                                                            @Field("ride_id") String ride_id,
                                                             @Field("rate") int rate,
                                                             @Field("type") String type
     );
@@ -123,7 +122,7 @@ public interface WebService {
     Call<ResponseWrapper<CompleteRideDataEnt>> CompleteRideUserDetail(@Query("ride_id") int ride_id,
                                                                       @Query("user_id") int user_id,
                                                                       @Query("driver_id") int driver_id
-                                                                    );
+    );
 
     @FormUrlEncoded
     @POST("driver/driverlogout")
@@ -131,14 +130,18 @@ public interface WebService {
 
     @FormUrlEncoded
     @POST("driver/driverchangelocation")
-    Call<ResponseWrapper>UpdateLatLng(@Field("driver_id") String driver_id,
-                                      @Field("latitude") String latitude,
-                                      @Field("longitude") String longitude
-                                      );
+    Call<ResponseWrapper> UpdateLatLng(@Field("driver_id") String driver_id,
+                                       @Field("latitude") String latitude,
+                                       @Field("longitude") String longitude
+    );
+
     @GET("driver/getdriverlocation")
-    Call<ResponseWrapper<UpdatedLocationEnt>> getUpdatedLocation(@Query("driver_id")String driver_id);
+    Call<ResponseWrapper<UpdatedLocationEnt>> getUpdatedLocation(@Query("driver_id") String driver_id);
 
     @GET("ride/userridedetail")
     Call<ResponseWrapper<UserRideDetailRatingEnt>> UserDetailForRating(@Query("ride_id") int ride_id);
+
+    @GET("ride/technicianridedetail")
+    Call<ResponseWrapper<RequestRideEnt>> getRequestRideDetail(@Query("ride_id") String ride_id);
 
 }

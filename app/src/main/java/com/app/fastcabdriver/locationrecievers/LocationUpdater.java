@@ -20,8 +20,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
-import static com.facebook.GraphRequest.TAG;
 
 /**
  * Created by khan_muhammad on 7/12/2017.
@@ -69,14 +67,14 @@ public class LocationUpdater {
                 if (response!=null&&response.body()!=null&&response.body().getResponse()!=null&&response.body().getResponse().equals(WebServiceConstants.SUCCESS_RESPONSE_CODE)){
                     intent.putExtra("lat",response.body().getResult().getLatitude()+"");
                     intent.putExtra("lon",response.body().getResult().getLongitude()+"");
-                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+                    LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseWrapper<UpdatedLocationEnt>> call, Throwable t) {
-                Log.e(TAG,t.toString());
+                Log.e(LocationUpdater.class.getSimpleName(),t.toString());
             }
         });
 

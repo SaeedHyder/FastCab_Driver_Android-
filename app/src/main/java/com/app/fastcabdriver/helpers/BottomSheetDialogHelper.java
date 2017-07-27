@@ -1,6 +1,5 @@
 package com.app.fastcabdriver.helpers;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
@@ -13,6 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.app.fastcabdriver.R;
 import com.app.fastcabdriver.activities.DockActivity;
+import com.app.fastcabdriver.entities.AssignRideEnt;
 import com.app.fastcabdriver.entities.DriverFeedBackEnt;
 import com.app.fastcabdriver.entities.ResponseWrapper;
 import com.app.fastcabdriver.entities.UserRideDetailRatingEnt;
@@ -31,32 +31,27 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.R.attr.id;
-import static com.app.fastcabdriver.R.id.CircularImageSharePop;
-import static com.app.fastcabdriver.R.id.rbAddRating;
-import static com.app.fastcabdriver.R.id.txt_pick_text;
-import static com.app.fastcabdriver.R.string.submit;
-
 
 /**
  * Created on 6/30/2017.
  */
 
 public class BottomSheetDialogHelper {
-   // private BottomSheetDialog dialog;
-    private NestedScrollView dialog;
-    private DockActivity context;
     ExpandedBottomSheetBehavior bottomSheetBehavior;
-    private WebService webService;
     BasePreferenceHelper prefHelper;
     int RideId;
+    // private BottomSheetDialog dialog;
+    private NestedScrollView dialog;
+    private DockActivity context;
+    private WebService webService;
     private CoordinatorLayout mainParent;
+
     public BottomSheetDialogHelper(DockActivity context, CoordinatorLayout mainParent, int LayoutID, WebService webService, BasePreferenceHelper prefHelper, int RideId) {
         this.context = context;
         this.mainParent = mainParent;
-        this.webService=webService;
-        this.prefHelper=prefHelper;
-        this.RideId=RideId;
+        this.webService = webService;
+        this.prefHelper = prefHelper;
+        this.RideId = RideId;
         LayoutInflater inflater = LayoutInflater.from(context);
         dialog = (NestedScrollView) inflater.inflate(LayoutID, null, false);
         mainParent.addView(dialog);
@@ -75,19 +70,27 @@ public class BottomSheetDialogHelper {
         bottomSheetBehavior.setAllowUserDragging(false);
         bottomSheetBehavior.setPeekHeight(0);
     }
-    public void initRatingDialog(View.OnClickListener onClickListener){
-        bottomSheetBehavior.setPeekHeight((int)context.getResources().getDimension(R.dimen.x150));
 
-        CircleImageView CircularImageSharePop=(CircleImageView)dialog.findViewById(R.id.CircularImageSharePop);
-        AnyTextView txtDriverName=(AnyTextView)dialog.findViewById(R.id.txtDriverName) ;
-        AnyTextView txtPickText=(AnyTextView)dialog.findViewById(R.id.txt_pick_text) ;
-        AnyTextView txtDestinationText=(AnyTextView)dialog.findViewById(R.id.txt_destination_text) ;
-        AnyTextView txtFareAmount=(AnyTextView)dialog.findViewById(R.id.txtFareAmount) ;
-        RelativeLayout mainFrame=(RelativeLayout)dialog.findViewById(R.id.mainFrame);
+    public void initRatingDialog(View.OnClickListener onClickListener, AssignRideEnt result) {
+        bottomSheetBehavior.setPeekHeight((int) context.getResources().getDimension(R.dimen.x150));
+
+        CircleImageView CircularImageSharePop = (CircleImageView) dialog.findViewById(R.id.CircularImageSharePop);
+        AnyTextView txtDriverName = (AnyTextView) dialog.findViewById(R.id.txtDriverName);
+        AnyTextView txtPickText = (AnyTextView) dialog.findViewById(R.id.txt_pick_text);
+        AnyTextView txtDestinationText = (AnyTextView) dialog.findViewById(R.id.txt_destination_text);
+        AnyTextView txtFareAmount = (AnyTextView) dialog.findViewById(R.id.txtFareAmount);
+        RelativeLayout mainFrame = (RelativeLayout) dialog.findViewById(R.id.mainFrame);
         mainFrame.setVisibility(View.GONE);
-        Button submit = (Button)dialog.findViewById(R.id.SubmitButton);
+        Button submit = (Button) dialog.findViewById(R.id.SubmitButton);
         submit.setOnClickListener(onClickListener);
-        UserDetail(RideId,CircularImageSharePop,txtDriverName,txtPickText,txtDestinationText,txtFareAmount,mainFrame);
+        if (result.getRideDetail().getUserDetail() != null) {
+            Picasso.with(context).load(result.getRideDetail().getUserDetail().getProfileImage()).into(CircularImageSharePop);
+            txtDriverName.setText(result.getRideDetail().getUserDetail().getFullName() + "");
+        }
+        txtPickText.setText(result.getRideDetail().getPickupAddress() + "");
+        txtDestinationText.setText(result.getRideDetail().getDestinationAddress() + "");
+        txtFareAmount.setText(result.getRideDetail().getTotalAmount() + "");
+        //UserDetail(RideId, CircularImageSharePop, txtDriverName, txtPickText, txtDestinationText, txtFareAmount, mainFrame);
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -102,25 +105,24 @@ public class BottomSheetDialogHelper {
         });
     }
 
-    private int getRating(){
-        CustomRatingBar customRatingBar = (CustomRatingBar)dialog.findViewById(R.id.rbAddRating);
-        return (int)customRatingBar.getScore();
+    private int getRating() {
+        CustomRatingBar customRatingBar = (CustomRatingBar) dialog.findViewById(R.id.rbAddRating);
+        return (int) customRatingBar.getScore();
 
     }
 
-    public void RateUser(int UserId, final int rideId)
-    {
+    public void RateUser(String UserId, final String rideId) {
         context.onLoadingStarted();
-        Call<ResponseWrapper<DriverFeedBackEnt>> call = webService.DriverFeedBack(UserId,Integer.parseInt(prefHelper.getDriverId()),rideId,getRating(), AppConstants.USER);
+        Call<ResponseWrapper<DriverFeedBackEnt>> call = webService.DriverFeedBack(UserId, prefHelper.getDriverId(), rideId, getRating(), AppConstants.USER);
 
         call.enqueue(new Callback<ResponseWrapper<DriverFeedBackEnt>>() {
             @Override
             public void onResponse(Call<ResponseWrapper<DriverFeedBackEnt>> call, Response<ResponseWrapper<DriverFeedBackEnt>> response) {
                 context.onLoadingFinished();
                 if (response.body().getResponse().equals(WebServiceConstants.SUCCESS_RESPONSE_CODE)) {
-                    context.replaceDockableFragment(HomeFragment.newInstance(),HomeFragment.class.getSimpleName());
-                }
-                else {
+                    context.popBackStackTillEntry(0);
+                    context.replaceDockableFragment(HomeFragment.newInstance(), HomeFragment.class.getSimpleName());
+                } else {
                     UIHelper.showShortToastInCenter(context, response.body().getMessage());
                 }
             }
@@ -134,7 +136,7 @@ public class BottomSheetDialogHelper {
         });
     }
 
-    public void UserDetail(int rideId, final CircleImageView circularImageSharePop, final AnyTextView txtDriverName, final AnyTextView txtPickText, final AnyTextView txtDestinationText, final AnyTextView txtFareAmount, final RelativeLayout mainFrame){
+    public void UserDetail(int rideId, final CircleImageView circularImageSharePop, final AnyTextView txtDriverName, final AnyTextView txtPickText, final AnyTextView txtDestinationText, final AnyTextView txtFareAmount, final RelativeLayout mainFrame) {
         context.onLoadingStarted();
         Call<ResponseWrapper<UserRideDetailRatingEnt>> call = webService.UserDetailForRating(rideId);
 
@@ -145,22 +147,21 @@ public class BottomSheetDialogHelper {
                 if (response.body().getResponse().equals(WebServiceConstants.SUCCESS_RESPONSE_CODE)) {
 
                     mainFrame.setVisibility(View.VISIBLE);
-                    txtDriverName.setText(response.body().getResult().getUserDetail().getFullName()+"");
-                    txtPickText.setText(response.body().getResult().getPickupPlace()+" "+response.body().getResult().getPickupAddress());
-                    txtDestinationText.setText(response.body().getResult().getDestinationPlace()+" "+response.body().getResult().getDestinationAddress());
+                    txtDriverName.setText(response.body().getResult().getUserDetail().getFullName() + "");
+                    txtPickText.setText(response.body().getResult().getPickupPlace() + " " + response.body().getResult().getPickupAddress());
+                    txtDestinationText.setText(response.body().getResult().getDestinationPlace() + " " + response.body().getResult().getDestinationAddress());
 
                     Picasso.with(context).load(response.body().getResult().getUserDetail().getProfileImage()).into(circularImageSharePop);
-                    if(!response.body().getResult().getTotalAmount().equals("")){
-                        txtFareAmount.setText("AED " + response.body().getResult().getTotalAmount());}
-                    else{
+                    if (!response.body().getResult().getTotalAmount().equals("")) {
+                        txtFareAmount.setText("AED " + response.body().getResult().getTotalAmount());
+                    } else {
                         txtFareAmount.setText("AED 0");
                     }
 
-                }
-                else {
+                } else {
                     UIHelper.showShortToastInCenter(context, response.body().getMessage());
                 }
-                }
+            }
 
             @Override
             public void onFailure(Call<ResponseWrapper<UserRideDetailRatingEnt>> call, Throwable t) {
@@ -171,7 +172,7 @@ public class BottomSheetDialogHelper {
 
     }
 
-    public void showDialog(){
+    public void showDialog() {
         // setupRideNowDialog();
 // init the bottom sheet behavior
 
@@ -188,22 +189,23 @@ public class BottomSheetDialogHelper {
 
         //dialog.show();
     }
-    public void setCancelable(boolean isCancelable){
+
+    public void setCancelable(boolean isCancelable) {
         //dialog.setCancelable(isCancelable);
-      //  dialog.setCanceledOnTouchOutside(isCancelable);
+        //  dialog.setCanceledOnTouchOutside(isCancelable);
     }
-    public void hideDialog(){
+
+    public void hideDialog() {
         bottomSheetBehavior.setHideable(true);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         RemoveDialog();
-       // dialog.dismiss();
-    }
-    private void RemoveDialog(){
-        mainParent.removeView(dialog);
         // dialog.dismiss();
     }
 
-
+    private void RemoveDialog() {
+        mainParent.removeView(dialog);
+        // dialog.dismiss();
+    }
 
 
 }

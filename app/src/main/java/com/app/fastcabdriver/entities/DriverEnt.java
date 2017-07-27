@@ -108,7 +108,7 @@ public class DriverEnt {
     private Integer totalRide;
     @SerializedName("total_distance")
     @Expose
-    private Integer totalDistance;
+    private String totalDistance;
     @SerializedName("vehicle_detail")
     @Expose
     private VehicleDetail vehicleDetail;
@@ -361,11 +361,11 @@ public class DriverEnt {
         this.totalRide = totalRide;
     }
 
-    public Integer getTotalDistance() {
+    public String getTotalDistance() {
         return totalDistance;
     }
 
-    public void setTotalDistance(Integer totalDistance) {
+    public void setTotalDistance(String totalDistance) {
         this.totalDistance = totalDistance;
     }
 

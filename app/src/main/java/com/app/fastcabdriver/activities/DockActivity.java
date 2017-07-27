@@ -86,7 +86,7 @@ public abstract class DockActivity extends AppCompatActivity implements
         android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction();
 
-        transaction.replace(getDockFrameLayoutId(), frag);
+        transaction.replace(getDockFrameLayoutId(), frag,Tag);
         transaction
                 .addToBackStack(
                         getSupportFragmentManager().getBackStackEntryCount() == 0 ? KEY_FRAG_FIRST
