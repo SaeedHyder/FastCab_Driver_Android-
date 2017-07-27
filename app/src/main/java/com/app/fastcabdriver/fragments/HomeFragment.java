@@ -43,6 +43,7 @@ import com.app.fastcabdriver.entities.LocationEnt;
 import com.app.fastcabdriver.entities.ResponseWrapper;
 import com.app.fastcabdriver.fragments.abstracts.BaseFragment;
 import com.app.fastcabdriver.global.AppConstants;
+import com.app.fastcabdriver.global.SignUpFormConstant;
 import com.app.fastcabdriver.global.WebServiceConstants;
 import com.app.fastcabdriver.helpers.BottomSheetDialogHelper;
 import com.app.fastcabdriver.helpers.DialogHelper;
@@ -70,6 +71,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.Nullable;
@@ -89,6 +91,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.app.fastcabdriver.fragments.SignUp2Fragment.SIGNUP_MODEL;
 
 
 public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
@@ -155,6 +159,10 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
     private LocationListener listener;
     private Boolean resideMenuRefresh;
     private Marker carMarker;
+
+    private HomeFragment homeFragment;
+    protected static final String KEY_HOME = "key_home";
+    String jsonString;
 
     private  BroadcastReceiver broadcastReceiver;
     public static HomeFragment newInstance() {
@@ -950,4 +958,23 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
     }
 
 
+    @Override
+    public void onSaveInstanceState(Bundle state) {
+        super.onSaveInstanceState(state);
+
+
+    }
+
+
+
+    @Override
+    public void onActivityCreated(@android.support.annotation.Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+
+       if(savedInstanceState!=null){
+        jsonString= savedInstanceState.getString(KEY_HOME);}
+
+        homeFragment = new Gson().fromJson(jsonString, HomeFragment.class);
+    }
 }

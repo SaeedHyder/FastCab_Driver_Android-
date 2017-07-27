@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.app.fastcabdriver.entities.DriverEnt;
+import com.app.fastcabdriver.fragments.HomeFragment;
 import com.app.fastcabdriver.retrofit.GsonFactory;
 
 
@@ -18,6 +19,7 @@ public class BasePreferenceHelper extends PreferenceHelper {
     protected static final String KEY_DRIVER = "key_driver";
     protected static final String DRIVERID = "driverId";
     protected static final String Firebase_TOKEN = "Firebasetoken";
+    protected static final String KEY_HOME = "key_home";
 
 
     //For GPS Service
@@ -140,6 +142,18 @@ public class BasePreferenceHelper extends PreferenceHelper {
         return getLongPreference(context, FILENAME, SP_KEY_LAST_LIST_UPDATE_LNG);
 
     }
+
+    public void putHomeScreen(HomeFragment home) {
+        putStringPreference(context, FILENAME, KEY_HOME, GsonFactory
+                .getConfiguredGson().toJson(home));
+    }
+
+    public HomeFragment getHomeScreen() {
+        return GsonFactory.getConfiguredGson().fromJson(
+                getStringPreference(context, FILENAME, KEY_HOME), HomeFragment.class);
+    }
+
+
 
 
 }
