@@ -165,7 +165,7 @@ public class SignUp2Fragment extends BaseFragment implements View.OnClickListene
                 if (response.body().getResponse().equals(WebServiceConstants.SUCCESS_RESPONSE_CODE)) {
                     prefHelper.putDriver(response.body().getResult());
                     prefHelper.setDriverId(String.valueOf(response.body().getResult().getId()));
-
+                    prefHelper.setUserStatus(response.body().getResult().getAvaibilityStatus() == 1);
                     TokenUpdater.getInstance().UpdateToken(getDockActivity(),
                             prefHelper.getDriverId(),
                             AppConstants.Device_Type,

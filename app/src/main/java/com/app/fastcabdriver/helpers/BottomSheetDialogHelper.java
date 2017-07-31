@@ -79,8 +79,7 @@ public class BottomSheetDialogHelper {
         AnyTextView txtPickText = (AnyTextView) dialog.findViewById(R.id.txt_pick_text);
         AnyTextView txtDestinationText = (AnyTextView) dialog.findViewById(R.id.txt_destination_text);
         AnyTextView txtFareAmount = (AnyTextView) dialog.findViewById(R.id.txtFareAmount);
-        RelativeLayout mainFrame = (RelativeLayout) dialog.findViewById(R.id.mainFrame);
-        mainFrame.setVisibility(View.GONE);
+
         Button submit = (Button) dialog.findViewById(R.id.SubmitButton);
         submit.setOnClickListener(onClickListener);
         if (result.getRideDetail().getUserDetail() != null) {

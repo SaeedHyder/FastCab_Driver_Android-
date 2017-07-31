@@ -28,6 +28,7 @@ import com.app.fastcabdriver.fragments.HomeFragment;
 import com.app.fastcabdriver.fragments.LoginFragment;
 import com.app.fastcabdriver.fragments.SideMenuFragment;
 import com.app.fastcabdriver.fragments.abstracts.BaseFragment;
+import com.app.fastcabdriver.global.AppConstants;
 import com.app.fastcabdriver.global.SideMenuChooser;
 import com.app.fastcabdriver.global.SideMenuDirection;
 import com.app.fastcabdriver.gpshelpers.SettingGPService;
@@ -110,6 +111,7 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
         sideMenuDirection = SideMenuDirection.LEFT.getValue();
 
         settingSideMenu(sideMenuType, sideMenuDirection);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         try {
             SettingGPService.settingGPS(this, !this.prefHelper.isLogin());
         } catch (Exception var5) {
@@ -119,7 +121,7 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
 
             @Override
             public void onClick(View v) {
-                if (getDrawerLayout() != null) {
+                if (getDrawerLayout() == null) {
                     if (sideMenuDirection.equals(SideMenuDirection.LEFT.getValue())) {
                         drawerLayout.openDrawer(Gravity.LEFT);
                     } else {
@@ -434,8 +436,14 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
                 String sender_id = bundle.getString("sender_id");
                 String userID = bundle.getString("sender_id");
                 String rideID = bundle.getString("ride_id");
-                if (!isFragmentVisible(HomeFragment.class.getSimpleName()))
-                replaceDockableFragment(HomeFragment.newInstance(userID, rideID, true), HomeFragment.class.getSimpleName());
+                String Type =bundle.getString("pushtype");
+                if (Type!=null&&Type.equals(AppConstants.KEY_RIDE_CANCEL)){
+                    replaceDockableFragment(HomeFragment.newInstance(), HomeFragment.class.getSimpleName());
+                }else{
+                    replaceDockableFragment(HomeFragment.newInstance(userID, rideID, true), HomeFragment.class.getSimpleName());
+                }
+               // if (!isFragmentVisible(HomeFragment.class.getSimpleName()))
+
             } else
                 replaceDockableFragment(HomeFragment.newInstance(), HomeFragment.class.getSimpleName());
         } else {

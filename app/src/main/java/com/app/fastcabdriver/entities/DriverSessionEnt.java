@@ -20,6 +20,7 @@ public class DriverSessionEnt {
     private boolean isPendingRide = false;
     private boolean isFromNotification = false;
     private String sessionState ;
+    private int TripStatus;
     public LocationEnt getOrigin() {
         return origin;
     }
@@ -138,5 +139,13 @@ public class DriverSessionEnt {
 
     public void setCurrentRideEnt(AssignRideEnt currentRideEnt) {
         this.currentRideEnt = currentRideEnt;
+    }
+
+    public int getTripStatus() {
+        return TripStatus;
+    }
+
+    public void setTripStatus(int tripStatus) {
+        TripStatus = tripStatus;
     }
 }

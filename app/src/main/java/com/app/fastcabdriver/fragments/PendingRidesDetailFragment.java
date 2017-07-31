@@ -178,8 +178,12 @@ public class PendingRidesDetailFragment extends BaseFragment implements View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_accept:
-                AssignRideService(entity.getDriverDetail().getId(),entity.getRideDetail().getId(),
-                        AppConstants.REJECT,AppConstants.DEFUALT,entity.getRideDetail().getUserId());
+                if (!prefHelper.isInSession()) {
+                    AssignRideService(entity.getDriverDetail().getId(), entity.getRideDetail().getId(),
+                            AppConstants.ACCEPT, AppConstants.DEFUALT, entity.getRideDetail().getUserId());
+                }else{
+                    UIHelper.showShortToastInCenter(getDockActivity(),getString(R.string.already_on_trip_error));
+                }
                 break;
 
             case R.id.btn_reject:

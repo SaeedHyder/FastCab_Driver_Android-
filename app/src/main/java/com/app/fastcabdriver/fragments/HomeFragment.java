@@ -45,7 +45,6 @@ import com.app.fastcabdriver.entities.RequestRideEnt;
 import com.app.fastcabdriver.entities.ResponseWrapper;
 import com.app.fastcabdriver.fragments.abstracts.BaseFragment;
 import com.app.fastcabdriver.global.AppConstants;
-import com.app.fastcabdriver.global.SignUpFormConstant;
 import com.app.fastcabdriver.global.WebServiceConstants;
 import com.app.fastcabdriver.helpers.BottomSheetDialogHelper;
 import com.app.fastcabdriver.helpers.DialogHelper;
@@ -94,7 +93,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.app.fastcabdriver.fragments.SignUp2Fragment.SIGNUP_MODEL;
+import static com.app.fastcabdriver.global.AppConstants.KEY_RIDE_CANCEL;
 
 
 public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
@@ -157,6 +156,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
     CircleImageView circledriverView;
     Marker destinationMarker;
     Marker pickupMarker;
+    String jsonString;
     private View viewParent;
     private LocationEnt origin;
     private LocationEnt destination;
@@ -175,14 +175,15 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
     private String rideID;
     private String userID;
     private BroadcastReceiver broadcastReceiver;
-
     private RequestRideEnt requestRideEnt;
     private AssignRideEnt pendingRideEnt;
     private AssignRideEnt currentRideEnt;
     private String sessionState = AppConstants.KEY_SESSION_DEFAULT;
     private boolean isPendingRide = false;
     private boolean isFromNotification = false;
-    String jsonString;
+    private int TripStatus = R.string.start_trip;
+
+
     public static HomeFragment newInstance() {
         return new HomeFragment();
     }
@@ -252,19 +253,13 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
     @Override
     public void onViewCreated(View view, @android.support.annotation.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         if (prefHelper.isOnline() && !isRideinSession) {
             btnOnlineStatus.setText(R.string.go_offline);
             btnLocation.setVisibility(View.VISIBLE);
-            /*new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    setupNewRideDialog();
-                }
-            }, 5000);*/
         } else {
             btnOnlineStatus.setText(R.string.go_online);
             btnLocation.setVisibility(View.GONE);
-
         }
         setDriverData(prefHelper.getDriver());
 
@@ -300,10 +295,18 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
                     Bundle bundle = intent.getExtras();
                     if (bundle != null) {
                         String sender_id = bundle.getString("sender_id");
-
+                        String Type =bundle.getString("pushtype");
                         userID = bundle.getString("sender_id");
                         rideID = bundle.getString("ride_id");
-                        getRequestRideDetail(rideID);
+                        if (Type!=null&&!Type.equals(KEY_RIDE_CANCEL)) {
+                            getRequestRideDetail(rideID);
+                        }
+                        else if (Type!=null&&Type.equals(KEY_RIDE_CANCEL)){
+                            prefHelper.setRideStatus(false);
+                            prefHelper.removeRideSessionPreferences();
+                            getDockActivity().popBackStackTillEntry(0);
+                            getMainActivity().initFragment();
+                        }
                     } else {
                         UIHelper.showShortToastInCenter(getDockActivity(), "Notification Data is Empty");
                     }
@@ -397,14 +400,17 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
 
         //Check if From Pending Ride show Route
         if (isPendingRide) {
+            userID = pendingRideEnt.getRideDetail().getUserId() + "";
+            rideID = pendingRideEnt.getRideDetail().getId() + "";
             setupRideScreens(pendingRideEnt);
         }
         //Check if Application is open from Notification
         if (!isPendingRide && isFromNotification) {
-            getRequestRideDetail(rideID);
+            if (!prefHelper.isInSession())
+                getRequestRideDetail(rideID);
         }
         //Check if Ride was in session them Resume Current Ride
-        if (prefHelper.isInSession()){
+        if (prefHelper.isInSession()) {
             RestoreState(prefHelper.getDriverSession());
         }
 
@@ -584,8 +590,11 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
                         prefHelper.setRideStatus(true);
                         setupRideScreens(response.body().getResult());
                     } else if (tripStatus == AppConstants.START) {
-                        pickupMarker.setVisible(false);
-                        pickupMarker.remove();
+                        if (pickupMarker!=null) {
+                            pickupMarker.setVisible(false);
+                            pickupMarker.remove();
+                        }
+                        TripStatus = R.string.End_Trip;
                         btnTripStatus.setText(R.string.end_trip);
                     } else if (tripStatus == AppConstants.END) {
                         setupEndtripScreens(response.body().getResult());
@@ -598,7 +607,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
             @Override
             public void onFailure(Call<ResponseWrapper<AssignRideEnt>> call, Throwable t) {
                 loadingFinished();
-                Log.e(SettingFragment.class.getSimpleName(), t.toString());
+                Log.e(HomeFragment.class.getSimpleName(), t.toString());
             }
         });
 
@@ -614,6 +623,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
         LocationDetail.setVisibility(View.GONE);
         TripContainer.setVisibility(View.GONE);
         DetailContainer.setVisibility(View.VISIBLE);
+        TripStatus = R.string.start_trip;
         btnTripStatus.setText(getResources().getString(R.string.start_trip));
         sessionState = AppConstants.KEY_RIDE_COMPLETE_RATE;
         showRatingDialog(result);
@@ -627,6 +637,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
         LocationDetail.setVisibility(View.VISIBLE);
         DetailContainer.setVisibility(View.GONE);
         TripContainer.setVisibility(View.VISIBLE);
+        btnTripStatus.setText(TripStatus);
         isRideinSession = true;
         PickupText.setText(rideEnt.getRideDetail().getPickupAddress() + "");
         DestinationText.setText(rideEnt.getRideDetail().getDestinationAddress() + "");
@@ -739,7 +750,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
                     // btnTripStatus.setText(R.string.end_trip);
                     LocationDetail.setVisibility(View.GONE);
                 } else {
-                    AssignRideService(AppConstants.DEFUALT, AppConstants.END);
+                    //AssignRideService(AppConstants.DEFUALT, AppConstants.END);
                     setupEndRideDialog();
                 }
                 break;
@@ -788,13 +799,13 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
 
 
         if (result.getAverageRate() != null) {
-            rbAddRating.setScore(result.getAverageRate());
+            rbAddRating.setScore((int)(Float.parseFloat( prefHelper.getDriver().getAverageRate())));;
         } else {
             rbAddRating.setScore(0);
         }
 
         if (result.getAverageRate() != null) {
-            rbAddRating_trip.setScore(result.getAverageRate());
+            rbAddRating_trip.setScore((int)(Float.parseFloat( prefHelper.getDriver().getAverageRate())));
         } else {
             rbAddRating_trip.setScore(0);
         }
@@ -849,7 +860,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
                 prefHelper.setRideStatus(false);
                 prefHelper.removeRideSessionPreferences();
             }
-        },result);
+        }, result);
         ratingDialog.showDialog();
     }
 
@@ -1010,53 +1021,55 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
         movemap(toPosition);
     }
 
-    public void SaveCurrentState(){
-        DriverSessionEnt session = new DriverSessionEnt();
-        session.setRequestRideEnt(requestRideEnt);
-        session.setPendingRide(isPendingRide);
-        session.setDestination(destination);
-        session.setFromNotification(isFromNotification);
-        session.setLongitude(longitude);
-        session.setLatitude(latitude);
-        session.setOrigin(origin);
-        session.setPickup(pickup);
-        session.setRideID(rideID);
-        session.setUserID(userID);
-        session.setRideinSession(isRideinSession);
-        session.setTitleBarChange(isTitleBarChange);
-        session.setPendingRideEnt(pendingRideEnt);
-        session.setSessionState(sessionState);
-        session.setCurrentRideEnt(currentRideEnt);
-        prefHelper.putDriverSession(session);
+    public void SaveCurrentState() {
+        if (prefHelper.isInSession()) {
+            DriverSessionEnt session = new DriverSessionEnt();
+            session.setRequestRideEnt(requestRideEnt);
+            session.setPendingRide(isPendingRide);
+            session.setDestination(destination);
+            session.setFromNotification(isFromNotification);
+            session.setLongitude(longitude);
+            session.setLatitude(latitude);
+            session.setOrigin(origin);
+            session.setPickup(pickup);
+            session.setRideID(rideID);
+            session.setUserID(userID);
+            session.setRideinSession(isRideinSession);
+            session.setTitleBarChange(isTitleBarChange);
+            session.setPendingRideEnt(pendingRideEnt);
+            session.setSessionState(sessionState);
+            session.setCurrentRideEnt(currentRideEnt);
+            session.setTripStatus(TripStatus);
+            prefHelper.putDriverSession(session);
+        }
     }
-    private void RestoreState(DriverSessionEnt session){
-        if (session!=null){
+
+    private void RestoreState(DriverSessionEnt session) {
+        if (session != null && prefHelper.isInSession()) {
             requestRideEnt = session.getRequestRideEnt();
-            isPendingRide=session.isPendingRide();
+            isPendingRide = session.isPendingRide();
             destination = session.getDestination();
-            isFromNotification= session.isFromNotification();
-            longitude=session.getLongitude();
-            latitude= session.getLatitude();
-          // session.setOrigin(origin);
-            pickup =  session.getPickup();
-            rideID =  session.getRideID();
+            isFromNotification = session.isFromNotification();
+            longitude = session.getLongitude();
+            latitude = session.getLatitude();
+            // session.setOrigin(origin);
+            pickup = session.getPickup();
+            rideID = session.getRideID();
             userID = session.getUserID();
-            isRideinSession =  session.isRideinSession();
+            isRideinSession = session.isRideinSession();
             isTitleBarChange = session.isTitleBarChange();
-            pendingRideEnt =  session.getPendingRideEnt();
+            pendingRideEnt = session.getPendingRideEnt();
             sessionState = session.getSessionState();
             currentRideEnt = session.getCurrentRideEnt();
-            if (sessionState.equals(AppConstants.KEY_SESSION_RIDE_INPROGRESS)){
+            TripStatus = session.getTripStatus();
+            if (sessionState.equals(AppConstants.KEY_SESSION_RIDE_INPROGRESS)) {
                 //Check if From Pending Ride show Route
-                    setupRideScreens(currentRideEnt);
-            }else if(sessionState.equals(AppConstants.KEY_RIDE_COMPLETE_RATE)){
+                setupRideScreens(currentRideEnt);
+            } else if (sessionState.equals(AppConstants.KEY_RIDE_COMPLETE_RATE)) {
                 showRatingDialog(currentRideEnt);
             }
         }
     }
-
-
-
 
 
 }

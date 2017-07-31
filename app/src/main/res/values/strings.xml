@@ -253,5 +253,6 @@
     <string name="previous_work_history">Previous Work History...</string>
     <string name="confirm_new_password">Confirm New Password</string>
     <string name="user_app_package_name">com.app.fastcab</string>
+    <string name="already_on_trip_error">You are Already on a Trip</string>
 
 </resources>

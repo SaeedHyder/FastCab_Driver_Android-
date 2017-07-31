@@ -144,7 +144,7 @@ public class DriverProfileFragment extends BaseFragment {
         if (driver.getAverageRate()==null) {
             rbAddRating.setScore(0);
 
-        } else {rbAddRating.setScore((float) driver.getAverageRate());}
+        } else {rbAddRating.setScore(Float.parseFloat( driver.getAverageRate()));}
 
         if(driver.getTotalRide()==null)
         {

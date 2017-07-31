@@ -54,7 +54,7 @@ public interface WebService {
 
     @GET("driver/getprofile")
     Call<ResponseWrapper<DriverEnt>> getProfile(
-            @Query("driver_id") int driver_id);
+            @Query("user_id") int driver_id);
 
     @FormUrlEncoded
     @POST("user/login")
