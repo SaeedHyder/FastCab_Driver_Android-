@@ -24,7 +24,7 @@ public class OKHttpClientCreator {
 
         return new OkHttpClient.Builder()
                 .addNetworkInterceptor(new CustomInterceptor(progressListener))
-                .addInterceptor(interceptor)
+//                .addInterceptor(interceptor)
                 .build();
 
     }

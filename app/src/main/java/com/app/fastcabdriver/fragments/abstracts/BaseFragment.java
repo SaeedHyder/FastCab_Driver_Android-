@@ -36,7 +36,7 @@ public abstract class BaseFragment extends Fragment {
 
 	protected BasePreferenceHelper prefHelper;
 
-	protected static WebService webService;
+	protected WebService webService;
 
 	protected GPSTracker mGpsTracker;
 

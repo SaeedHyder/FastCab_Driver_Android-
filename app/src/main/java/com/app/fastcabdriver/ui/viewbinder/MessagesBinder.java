@@ -24,10 +24,12 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class MessagesBinder extends ViewBinder<DriverMsgesEnt> {
 
     BasePreferenceHelper preferenceHelper;
+    String mobileNo;
 
-    public MessagesBinder(BasePreferenceHelper preferenceHelper) {
+    public MessagesBinder(BasePreferenceHelper preferenceHelper, String mobileNo) {
         super(R.layout.messages_item);
         this.preferenceHelper=preferenceHelper;
+        this.mobileNo=mobileNo;
     }
 
     @Override
@@ -45,7 +47,7 @@ public class MessagesBinder extends ViewBinder<DriverMsgesEnt> {
         viewHolder.btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendSMS(preferenceHelper.getDriver().getPhoneNo(),entity.getTitle());
+                sendSMS(mobileNo,entity.getTitle());
             }
         });
 

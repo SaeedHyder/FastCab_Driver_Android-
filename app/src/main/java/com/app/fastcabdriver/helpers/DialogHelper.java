@@ -92,7 +92,7 @@ public class DialogHelper {
         txt_destinationLocation.setText(" " + rideEnt.getDestinationAddress());
         txt_estimatedFare.setText("AED " + rideEnt.getEstimateFare());
         if (rideEnt.getUserDetail().getAverageRate() != null) {
-            userRating.setScore((float) rideEnt.getUserDetail().getAverageRate());
+            userRating.setScore(Float.parseFloat(rideEnt.getUserDetail().getAverageRate()));
         } else {
             userRating.setScore(0);
         }

@@ -236,6 +236,8 @@ public class SideMenuFragment extends BaseFragment {
                 if (response.body().getResponse().equals(WebServiceConstants.SUCCESS_RESPONSE_CODE)) {
                     getMainActivity().getResideMenu().closeMenu();
                     prefHelper.setLoginStatus(false);
+                    prefHelper.setRideStatus(false);
+                    prefHelper.removeRideSessionPreferences();
                     getDockActivity().popBackStackTillEntry(0);
                     getDockActivity().replaceDockableFragment(LoginFragment.newInstance(), LoginFragment.class.getSimpleName());
                 }

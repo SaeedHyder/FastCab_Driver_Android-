@@ -24,6 +24,7 @@ import com.app.fastcabdriver.retrofit.WebService;
 import com.app.fastcabdriver.ui.views.AnyTextView;
 import com.app.fastcabdriver.ui.views.CustomRatingBar;
 import com.app.fastcabdriver.ui.views.ExpandedBottomSheetBehavior;
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -83,7 +84,7 @@ public class BottomSheetDialogHelper {
         Button submit = (Button) dialog.findViewById(R.id.SubmitButton);
         submit.setOnClickListener(onClickListener);
         if (result.getRideDetail().getUserDetail() != null) {
-            Picasso.with(context).load(result.getRideDetail().getUserDetail().getProfileImage()).into(CircularImageSharePop);
+            Glide.with(context).load(result.getRideDetail().getUserDetail().getProfileImage()).into(CircularImageSharePop);
             txtDriverName.setText(result.getRideDetail().getUserDetail().getFullName() + "");
         }
         txtPickText.setText(result.getRideDetail().getPickupAddress() + "");

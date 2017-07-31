@@ -182,6 +182,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
     private boolean isPendingRide = false;
     private boolean isFromNotification = false;
     private int TripStatus = R.string.start_trip;
+    String userPhone;
 
 
     public static HomeFragment newInstance() {
@@ -304,6 +305,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
                         else if (Type!=null&&Type.equals(KEY_RIDE_CANCEL)){
                             prefHelper.setRideStatus(false);
                             prefHelper.removeRideSessionPreferences();
+                            getMainActivity().getIntent().replaceExtras(bundle);
                             getDockActivity().popBackStackTillEntry(0);
                             getMainActivity().initFragment();
                         }
@@ -584,21 +586,9 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
             @Override
             public void onResponse(Call<ResponseWrapper<AssignRideEnt>> call, Response<ResponseWrapper<AssignRideEnt>> response) {
                 loadingFinished();
+
                 if (response.body().getResponse().equals(WebServiceConstants.SUCCESS_RESPONSE_CODE)) {
-                    currentRideEnt = response.body().getResult();
-                    if (rideStatus == AppConstants.ACCEPT) {
-                        prefHelper.setRideStatus(true);
-                        setupRideScreens(response.body().getResult());
-                    } else if (tripStatus == AppConstants.START) {
-                        if (pickupMarker!=null) {
-                            pickupMarker.setVisible(false);
-                            pickupMarker.remove();
-                        }
-                        TripStatus = R.string.End_Trip;
-                        btnTripStatus.setText(R.string.end_trip);
-                    } else if (tripStatus == AppConstants.END) {
-                        setupEndtripScreens(response.body().getResult());
-                    }
+                    setStatusViews(response, rideStatus, tripStatus);
                 } else {
                     UIHelper.showShortToastInCenter(getDockActivity(), response.body().getMessage());
                 }
@@ -608,10 +598,27 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
             public void onFailure(Call<ResponseWrapper<AssignRideEnt>> call, Throwable t) {
                 loadingFinished();
                 Log.e(HomeFragment.class.getSimpleName(), t.toString());
-            }
+          t.printStackTrace();  }
         });
 
 
+    }
+
+    private void setStatusViews(Response<ResponseWrapper<AssignRideEnt>> response, int rideStatus, int tripStatus) {
+        currentRideEnt = response.body().getResult();
+        if (rideStatus == AppConstants.ACCEPT) {
+            prefHelper.setRideStatus(true);
+            setupRideScreens(response.body().getResult());
+        } else if (tripStatus == AppConstants.START) {
+            if (pickupMarker!=null) {
+                pickupMarker.setVisible(false);
+                pickupMarker.remove();
+            }
+            TripStatus = R.string.End_Trip;
+            btnTripStatus.setText(R.string.end_trip);
+        } else if (tripStatus == AppConstants.END) {
+            setupEndtripScreens(response.body().getResult());
+        }
     }
 
     private void setupEndtripScreens(AssignRideEnt result) {
@@ -657,17 +664,25 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
         titlebar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
         titlebar.showMenuButton();
         titlebar.setSubHeading(getResources().getString(R.string.home));
+        userPhone = "0000";
+        if (requestRideEnt != null && requestRideEnt.getUserDetail() != null)
+            userPhone = requestRideEnt.getUserDetail().getPhoneNo();
+        else if (pendingRideEnt != null && pendingRideEnt.getRideDetail().getUserDetail() != null)
+            userPhone = pendingRideEnt.getRideDetail().getUserDetail().getPhoneNo();
+        else if (currentRideEnt != null && currentRideEnt.getRideDetail().getUserDetail() != null)
+            userPhone = currentRideEnt.getRideDetail().getUserDetail().getPhoneNo();
         titlebar.showMessageButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getDockActivity().replaceDockableFragment(MessagesFragment.newInstance(), MessagesFragment.class.getSimpleName());
+                getDockActivity().replaceDockableFragment(MessagesFragment.newInstance(userPhone), MessagesFragment.class.getSimpleName());
             }
         });
+        final String finalUserPhone = userPhone;
         titlebar.showCallButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel: 999888555222"));
+                intent.setData(Uri.parse("tel: "+ finalUserPhone));
                 startActivity(intent);
             }
         });

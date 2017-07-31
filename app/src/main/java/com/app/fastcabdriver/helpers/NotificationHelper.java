@@ -48,7 +48,7 @@ public class NotificationHelper {
                         mContext,
                         INTENT_ID,
                         intent,
-                        PendingIntent.FLAG_ONE_SHOT
+                        PendingIntent.FLAG_ONE_SHOT|PendingIntent.FLAG_UPDATE_CURRENT
                 );
         INTENT_ID++;
         final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(

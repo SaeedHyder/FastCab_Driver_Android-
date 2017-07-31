@@ -18,6 +18,7 @@ import com.app.fastcabdriver.ui.adapters.ArrayListAdapter;
 import com.app.fastcabdriver.ui.viewbinder.MessagesBinder;
 import com.app.fastcabdriver.ui.views.AnyTextView;
 import com.app.fastcabdriver.ui.views.TitleBar;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -26,6 +27,8 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.app.fastcabdriver.fragments.SignUp2Fragment.SIGNUP_MODEL;
 
 /**
  * Created by saeedhyder on 6/22/2017.
@@ -40,15 +43,31 @@ public class MessagesFragment extends BaseFragment implements View.OnClickListen
 
     private ArrayListAdapter<DriverMsgesEnt> adapter;
     private ArrayList<DriverMsgesEnt> userCollection;
+    public static String MOBILENO = "mobile_no";
+    String MobileNo;
 
     public static MessagesFragment newInstance() {
         return new MessagesFragment();
     }
 
+    public static MessagesFragment newInstance(String userPhone) {
+
+        Bundle args = new Bundle();
+        args.putString(MOBILENO, userPhone);
+        MessagesFragment fragment = new MessagesFragment();
+        fragment.setArguments(args);
+
+        return fragment;
+
+    }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter = new ArrayListAdapter<DriverMsgesEnt>(getDockActivity(), new MessagesBinder(prefHelper));
+        MobileNo = getArguments().getString(MOBILENO);
+        adapter = new ArrayListAdapter<DriverMsgesEnt>(getDockActivity(), new MessagesBinder(prefHelper,MobileNo));
+
     }
 
     @Override

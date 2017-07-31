@@ -101,7 +101,7 @@ public class UserDetail {
     private String profileImage;
     @SerializedName("average_rate")
     @Expose
-    private Object averageRate;
+    private String averageRate;
     @SerializedName("total_ride")
     @Expose
     private Integer totalRide;
@@ -349,11 +349,9 @@ public class UserDetail {
         this.profileImage = profileImage;
     }
 
-    public Object getAverageRate() {
-        return averageRate;
-    }
 
-    public void setAverageRate(Object averageRate) {
+
+    public void setAverageRate(String averageRate) {
         this.averageRate = averageRate;
     }
 
@@ -371,5 +369,9 @@ public class UserDetail {
 
     public void setTotalDistance(String totalDistance) {
         this.totalDistance = totalDistance;
+    }
+
+    public String getAverageRate() {
+        return averageRate;
     }
 }
