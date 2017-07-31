@@ -102,7 +102,7 @@ public class DriverEnt {
     private String profileImage;
     @SerializedName("average_rate")
     @Expose
-    private Integer averageRate;
+    private String averageRate;
     @SerializedName("total_ride")
     @Expose
     private Integer totalRide;
@@ -345,11 +345,11 @@ public class DriverEnt {
         this.profileImage = profileImage;
     }
 
-    public Integer getAverageRate() {
+    public String getAverageRate() {
         return averageRate;
     }
 
-    public void setAverageRate(Integer averageRate) {
+    public void setAverageRate(String averageRate) {
         this.averageRate = averageRate;
     }
 

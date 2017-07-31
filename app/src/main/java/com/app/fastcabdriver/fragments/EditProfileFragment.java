@@ -125,7 +125,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         if (prefHelper.getDriver().getAverageRate()==null) {
             rbAddRating.setScore(0);
 
-        } else {rbAddRating.setScore((float) prefHelper.getDriver().getAverageRate());}
+        } else {rbAddRating.setScore((Float.parseFloat( prefHelper.getDriver().getAverageRate())));}
 
 
         txtRides.setText(prefHelper.getDriver().getTotalRide().toString());

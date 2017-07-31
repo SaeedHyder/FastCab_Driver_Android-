@@ -22,6 +22,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static com.app.fastcabdriver.global.AppConstants.INTENT_ID;
+
 /**
  * Created on 5/8/2017.
  */
@@ -44,10 +46,11 @@ public class NotificationHelper {
         final PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(
                         mContext,
-                        0,
+                        INTENT_ID,
                         intent,
-                        PendingIntent.FLAG_UPDATE_CURRENT
+                        PendingIntent.FLAG_ONE_SHOT
                 );
+        INTENT_ID++;
         final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
                 mContext);
         //notification sound here
@@ -75,8 +78,9 @@ public class NotificationHelper {
                 .build();
 
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(AppConstants.NOTIFICATION_ID);
         notificationManager.notify(AppConstants.NOTIFICATION_ID, notification);
-        AppConstants.NOTIFICATION_ID++;
+       // AppConstants.NOTIFICATION_ID++;
 
     }
 

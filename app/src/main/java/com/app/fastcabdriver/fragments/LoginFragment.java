@@ -135,6 +135,7 @@ public class LoginFragment extends BaseFragment  {
                     prefHelper.putDriver(response.body().getResult());
                     prefHelper.setDriverId(response.body().getResult().getId() + "");
                     prefHelper.setLoginStatus(true);
+                    prefHelper.setUserStatus(response.body().getResult().getAvaibilityStatus() == 1);
                     TokenUpdater.getInstance().UpdateToken(getDockActivity(),
                             prefHelper.getDriverId(),
                             AppConstants.Device_Type,

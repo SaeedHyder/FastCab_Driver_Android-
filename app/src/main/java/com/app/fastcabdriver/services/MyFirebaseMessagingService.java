@@ -99,7 +99,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String sender_id = messageBody.getData().get("sender_id");
         String reciever_id =messageBody.getData().get("reciever_id");
         String ride_id = messageBody.getData().get("ride_id");
-
+        String Type = messageBody.getData().get("type");
         Log.e(TAG, "message: " + message);
 
         Intent resultIntent = new Intent(MyFirebaseMessagingService.this, MainActivity.class);
@@ -109,11 +109,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         resultIntent.putExtra("sender_id",sender_id);
         resultIntent.putExtra("reciever_id",reciever_id);
         resultIntent.putExtra("ride_id",ride_id);
+        resultIntent.putExtra("pushtype", Type);
         Intent pushNotification = new Intent(AppConstants.PUSH_NOTIFICATION);
         pushNotification.putExtra("message", message);
         pushNotification.putExtra("sender_id",sender_id);
         pushNotification.putExtra("reciever_id",reciever_id);
         pushNotification.putExtra("ride_id",ride_id);
+        pushNotification.putExtra("pushtype", Type);
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(pushNotification);
 
         showNotificationMessage(MyFirebaseMessagingService.this, title, message, "", resultIntent);

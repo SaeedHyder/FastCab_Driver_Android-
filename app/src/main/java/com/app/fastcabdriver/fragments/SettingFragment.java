@@ -58,7 +58,8 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        prefHelper.setRideStatus(false);
+        prefHelper.removeRideSessionPreferences();
         setListners();
     }
 
