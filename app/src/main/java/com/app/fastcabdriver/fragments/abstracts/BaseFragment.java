@@ -63,7 +63,9 @@ public abstract class BaseFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 	//	setTitleBar( ((MainActivity) getDockActivity()).titleBar );
-
+		if (getMainActivity() != null && getMainActivity().getWindow().getDecorView() != null) {
+			UIHelper.hideSoftKeyboard(getMainActivity(), getMainActivity().getWindow().getDecorView());
+		}
 		if(getDockActivity().getDrawerLayout() != null){
 			getDockActivity().lockDrawer();
 		}
@@ -84,6 +86,9 @@ public abstract class BaseFragment extends Fragment {
 	
 	@Override
 	public void onPause() {
+		if (getMainActivity() != null && getMainActivity().getWindow().getDecorView() != null) {
+			UIHelper.hideSoftKeyboard(getMainActivity(), getMainActivity().getWindow().getDecorView());
+		}
 		super.onPause();
 		
 		if ( getDockActivity().getWindow() != null )

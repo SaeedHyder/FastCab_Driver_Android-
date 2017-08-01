@@ -610,10 +610,10 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
             prefHelper.setRideStatus(true);
             setupRideScreens(response.body().getResult());
         } else if (tripStatus == AppConstants.START) {
-            if (pickupMarker!=null) {
+           /* if (pickupMarker!=null) {
                 pickupMarker.setVisible(false);
                 pickupMarker.remove();
-            }
+            }*/
             TripStatus = R.string.End_Trip;
             btnTripStatus.setText(R.string.end_trip);
         } else if (tripStatus == AppConstants.END) {
@@ -997,7 +997,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
         final Handler handler = new Handler();
         final long start = SystemClock.uptimeMillis();
 
-        final long duration = 2500;
+        final long duration = 3000;
         final Interpolator interpolator = new LinearInterpolator();
 
         handler.post(new Runnable() {
