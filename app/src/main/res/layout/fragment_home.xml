@@ -241,7 +241,7 @@
                     android:layout_height="match_parent"
                     android:layout_above="@+id/license"
                     android:paddingLeft="@dimen/x5"
-                    android:text="Mercedes Benz"
+
                     android:textColor="@color/black"
                     android:textSize="@dimen/x10"
                     app:typeface="Roboto-Regular.ttf"
@@ -269,7 +269,7 @@
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/license"
                     android:paddingLeft="@dimen/x5"
-                    android:text="ABC-1234"
+
                     android:textColor="@color/black"
                     android:textSize="@dimen/x10"
                     app:typeface="Roboto-Regular.ttf" />

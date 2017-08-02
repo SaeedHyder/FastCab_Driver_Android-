@@ -57,7 +57,7 @@ public interface WebService {
             @Query("user_id") int driver_id);
 
     @FormUrlEncoded
-    @POST("user/login")
+    @POST("driver/login")
     Call<ResponseWrapper<DriverEnt>> loginDriver(@Field("email") String email,
                                                  @Field("password") String password
     );
