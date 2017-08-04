@@ -104,7 +104,7 @@
                     android:layout_height="match_parent"
                     android:isIndicator="true"
                     android:visibility="visible"
-                    app:maxStars="4"
+                    app:maxStars="5"
                     app:onlyForDisplay="true"
                     app:starOff="@drawable/star_unfilled"
                     app:starOn="@drawable/star_filled"

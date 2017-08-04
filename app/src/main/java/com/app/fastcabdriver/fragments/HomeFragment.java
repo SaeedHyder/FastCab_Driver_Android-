@@ -950,7 +950,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
 
     private Bitmap getMarkerBitmapFromView(@DrawableRes int resId, String title, int ColorID) {
 
-        View customMarkerView = ((LayoutInflater) getMainActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker, null);
+        View customMarkerView = ((LayoutInflater) getMainActivity().getSystemService(getDockActivity().LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker, null);
         ImageView markerImageView = (ImageView) customMarkerView.findViewById(R.id.img_icon);
         TextView textView = (TextView) customMarkerView.findViewById(R.id.txt_pick_text);
         textView.setText(title);
