@@ -48,6 +48,7 @@ import com.app.fastcabdriver.global.AppConstants;
 import com.app.fastcabdriver.global.WebServiceConstants;
 import com.app.fastcabdriver.helpers.BottomSheetDialogHelper;
 import com.app.fastcabdriver.helpers.DialogHelper;
+import com.app.fastcabdriver.helpers.TokenUpdater;
 import com.app.fastcabdriver.helpers.UIHelper;
 import com.app.fastcabdriver.interfaces.OnSettingActivateListener;
 import com.app.fastcabdriver.ui.views.AnyTextView;
@@ -783,7 +784,8 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
             public void onResponse(Call<ResponseWrapper<DriverEnt>> call, Response<ResponseWrapper<DriverEnt>> response) {
                 loadingFinished();
                 if (response.body().getResponse().equals(WebServiceConstants.SUCCESS_RESPONSE_CODE)) {
-
+                    prefHelper.putDriver(response.body().getResult());
+                    prefHelper.setDriverId(response.body().getResult().getId() + "");
                     setDriverData(response.body().getResult());
                 } else {
                     UIHelper.showShortToastInCenter(getDockActivity(), response.body().getMessage());
@@ -814,7 +816,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
 
 
         if (result.getAverageRate() != null) {
-            rbAddRating.setScore((int)(Float.parseFloat( prefHelper.getDriver().getAverageRate())));;
+            rbAddRating.setScore((Float.parseFloat( prefHelper.getDriver().getAverageRate())));;
         } else {
             rbAddRating.setScore(0);
         }
