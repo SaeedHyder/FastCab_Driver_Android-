@@ -75,6 +75,10 @@ public class RideDetail {
     @SerializedName("distance")
     @Expose
     private String distance;
+    @SerializedName("image_url")
+    @Expose
+    private String map_image;
+
     @SerializedName("rate_user")
     @Expose
     private Integer rateUser;
@@ -273,5 +277,13 @@ public class RideDetail {
 
     public void setUserDetail(UserDetail userDetail) {
         this.userDetail = userDetail;
+    }
+
+    public String getMap_image() {
+        return map_image;
+    }
+
+    public void setMap_image(String map_image) {
+        this.map_image = map_image;
     }
 }

@@ -51,12 +51,37 @@ public class CompletedTripBinder extends ViewBinder<AssignRideEnt> implements Di
 
 
     @Override
-    public void bindView(AssignRideEnt entity, int position, int grpPosition, View view, Activity activity) {
+    public void bindView(final AssignRideEnt entity, int position, int grpPosition, View view, Activity activity) {
 
         final ViewHolder viewHolder = (ViewHolder) view.getTag();
 
+        final String image_map = entity.getRideDetail().getMap_image();
         viewHolder.mainFrame.setVisibility(View.GONE);
-        setStaticMapData(view,entity);
+        Picasso.with(view.getContext()).load(image_map==null||image_map.trim().equals("")
+                ?"asd":image_map)
+                .fit().into(viewHolder.ivCompletedTrips);
+
+        //setCompleteRideData(viewHolder,entity);
+
+
+        //final String finalRoutesList = routesList;
+        viewHolder.llCompleteTripDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.replaceDockableFragment(CompletedRIdesDetailFragment.newInstance(image_map==null||image_map.trim().equals("")
+                        ?"asd":image_map,entity),CompletedRIdesDetailFragment.class.getSimpleName());
+
+            }
+        });
+        viewHolder.mainFrame.setVisibility(View.VISIBLE);
+        viewHolder.txtRideNo.setText(entity.getRideId().toString()+"");
+        if(!entity.getRideDetail().getTotalAmount().equals("")){
+            viewHolder.txtFare.setText("AED " + entity.getRideDetail().getTotalAmount());}
+        else{
+            viewHolder.txtFare.setText("AED 0");
+        }
+        viewHolder.txtTimeDate.setText(entity.getRideDetail().getDate() + " " + entity.getRideDetail().getTime());
+        //setStaticMapData(view,entity);
 
     }
 

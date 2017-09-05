@@ -40,6 +40,8 @@ import retrofit2.Response;
 
 public class PendingRidesDetailFragment extends BaseFragment implements View.OnClickListener, DirectionFinderListener {
 
+    public static String PENDING_RIDES_DETAIL = "pending_rides_detail";
+    public AssignRideEnt entity;
     @BindView(R.id.iv_pendingRides)
     ImageView ivPendingRides;
     @BindView(R.id.txt_pickpTime)
@@ -66,9 +68,6 @@ public class PendingRidesDetailFragment extends BaseFragment implements View.OnC
     Button btnAccept;
     @BindView(R.id.btn_reject)
     Button btnReject;
-
-    public static String PENDING_RIDES_DETAIL = "pending_rides_detail";
-    public AssignRideEnt entity;
     @BindView(R.id.mainframe)
     LinearLayout mainframe;
 
@@ -104,20 +103,26 @@ public class PendingRidesDetailFragment extends BaseFragment implements View.OnC
         super.onViewCreated(view, savedInstanceState);
         mainframe.setVisibility(View.GONE);
         setListners();
-        setStaticMapData(view, entity);
-
+        //setStaticMapData(view, entity);
+        setPendingRideDetailData();
     }
 
     private void setPendingRideDetailData() {
-        mainframe.setVisibility(View.VISIBLE);
-        txtPickpTime.setText(entity.getRideDetail().getDate() + " " + entity.getRideDetail().getTime());
-        txtPickup.setText(entity.getRideDetail().getPickupPlace()+"");
-        txtDropOff.setText(entity.getRideDetail().getDestinationPlace()+"");
+        if (entity != null) {
+            mainframe.setVisibility(View.VISIBLE);
+            txtPickpTime.setText(entity.getRideDetail().getDate() + " " + entity.getRideDetail().getTime());
+            txtPickup.setText(entity.getRideDetail().getPickupPlace() + "");
+            txtDropOff.setText(entity.getRideDetail().getDestinationPlace() + "");
+            String image_map = entity.getRideDetail().getMap_image();
+            Picasso.with(getDockActivity()).load(image_map==null||image_map.trim().equals("")
+                    ?"asd":image_map)
+                    .fit().into(ivPendingRides);
 
-        if(!entity.getRideDetail().getEstimateFare().equals("")){
-            txtEstimatedFare.setText("AED " + entity.getRideDetail().getEstimateFare());}
-        else{
-            txtEstimatedFare.setText("AED 0");
+            if (!entity.getRideDetail().getEstimateFare().equals("")) {
+                txtEstimatedFare.setText("AED " + entity.getRideDetail().getEstimateFare());
+            } else {
+                txtEstimatedFare.setText("AED 0");
+            }
         }
 
     }
@@ -181,29 +186,30 @@ public class PendingRidesDetailFragment extends BaseFragment implements View.OnC
                 if (!prefHelper.isInSession()) {
                     AssignRideService(entity.getDriverDetail().getId(), entity.getRideDetail().getId(),
                             AppConstants.ACCEPT, AppConstants.DEFUALT, entity.getRideDetail().getUserId());
-                }else{
-                    UIHelper.showShortToastInCenter(getDockActivity(),getString(R.string.already_on_trip_error));
+                } else {
+                    UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.already_on_trip_error));
                 }
                 break;
 
             case R.id.btn_reject:
-                AssignRideService(entity.getDriverDetail().getId(),entity.getRideDetail().getId(),
-                        AppConstants.REJECT,AppConstants.DEFUALT,entity.getRideDetail().getUserId());
+                AssignRideService(entity.getDriverDetail().getId(), entity.getRideDetail().getId(),
+                        AppConstants.REJECT, AppConstants.DEFUALT, entity.getRideDetail().getUserId());
                 break;
         }
     }
+
     private void AssignRideService(Integer driverID, Integer rideID, final int RideStatus, int DEFUALT, Integer userId) {
-        Call<ResponseWrapper<AssignRideEnt>> call = webService.AssignStatus(driverID+"", rideID+"", RideStatus, DEFUALT, userId+"");
+        Call<ResponseWrapper<AssignRideEnt>> call = webService.AssignStatus(driverID + "", rideID + "", RideStatus, DEFUALT, userId + "");
 
         call.enqueue(new Callback<ResponseWrapper<AssignRideEnt>>() {
             @Override
             public void onResponse(Call<ResponseWrapper<AssignRideEnt>> call, Response<ResponseWrapper<AssignRideEnt>> response) {
 
                 if (response.body().getResponse().equals(WebServiceConstants.SUCCESS_RESPONSE_CODE)) {
-                    if (RideStatus== AppConstants.ACCEPT){
+                    if (RideStatus == AppConstants.ACCEPT) {
                         getDockActivity().popBackStackTillEntry(0);
-                        getDockActivity().replaceDockableFragment(HomeFragment.newInstance(entity,true), HomeFragment.class.getSimpleName());
-                    }else {
+                        getDockActivity().replaceDockableFragment(HomeFragment.newInstance(entity, true), HomeFragment.class.getSimpleName());
+                    } else {
                         getDockActivity().popBackStackTillEntry(0);
                         getDockActivity().replaceDockableFragment(PendingRidesFragment.newInstance(), PendingRidesFragment.class.getSimpleName());
                     }
@@ -222,6 +228,7 @@ public class PendingRidesDetailFragment extends BaseFragment implements View.OnC
 
 
     }
+
     @Override
     public void setTitleBar(TitleBar titleBar) {
         super.setTitleBar(titleBar);
@@ -236,7 +243,6 @@ public class PendingRidesDetailFragment extends BaseFragment implements View.OnC
     public void onDirectionFinderStart() {
 
     }
-
 
 
 }
