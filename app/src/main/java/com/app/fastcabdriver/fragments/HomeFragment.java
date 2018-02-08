@@ -249,7 +249,7 @@ public class HomeFragment extends BaseFragment implements OnMapReadyCallback,
             ButterKnife.bind(this, viewParent);
 
         return viewParent;
-    }
+     }
 
     @Override
     public void onViewCreated(View view, @android.support.annotation.Nullable Bundle savedInstanceState) {
