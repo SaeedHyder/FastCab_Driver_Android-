@@ -152,7 +152,7 @@ public class DriverProfileFragment extends BaseFragment {
         }
         else
         {
-            txtRides.setText(driver.getTotalRide().toString());
+            txtRides.setText(driver.getTotalRide()+"");
         }
 
         txtdob.setText(driver.getDob());

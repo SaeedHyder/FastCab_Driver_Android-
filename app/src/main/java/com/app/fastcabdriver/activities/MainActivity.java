@@ -407,6 +407,8 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
 
 
     private void setMenuItemDirection(String direction) {
+try {
+
 
         if (direction.equals(SideMenuDirection.LEFT.getValue())) {
 
@@ -419,7 +421,9 @@ public class MainActivity extends DockActivity implements OnClickListener, Googl
             resideMenu.addMenuItem(rightSideMenuFragment, "RightSideMenuFragment", direction);
 
         }
-
+}catch (Exception e){
+    e.printStackTrace();
+}
     }
 
     private int getSideMenuFrameLayoutId() {

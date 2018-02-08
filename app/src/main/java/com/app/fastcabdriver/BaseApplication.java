@@ -3,6 +3,7 @@ package com.app.fastcabdriver;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.multidex.MultiDex;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -21,7 +22,10 @@ public class BaseApplication extends Application {
 		initImageLoader();
 		context = getApplicationContext();
 	}
-	
+	protected void attachBaseContext(Context base) {
+		super.attachBaseContext(base);
+		MultiDex.install(this);
+	}
 	public void initImageLoader() {
 		
 		DisplayImageOptions options = new DisplayImageOptions.Builder()
